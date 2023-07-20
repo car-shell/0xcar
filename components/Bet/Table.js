@@ -248,6 +248,13 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
                                                         </div>
                                                     </TableCell>
                                                     :
+                                                column.accessor==='total'?
+                                                    <TableCell sx={{color: "#fff", borderColor:'#000'}} key={column.accessor} >
+                                                        <div style={{textAlign: 'right', width: "10%", direction: 'rtl', position: 'relative', left: '65%'}} >
+                                                            {column.format(value, row.amount)}
+                                                        </div>
+                                                    </TableCell>
+                                                    :
                                                 column.accessor==='id'?
                                                      <TableCell sx={{color: "#02A7F0",  cursor: 'pointer', borderColor:'#000' }} key={column.accessor} align={column.align} onClick={e=>clickTime(row)} >
                                                         {formatTime(value)}
@@ -289,7 +296,7 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
                     </TableBody>
                 </Table>
                 {rows.length == 0 && <div style={{zIndex: 1000, lineHeight: 'calc(478px - 48px)', alignItems: 'center', textAlign:"center", position: 'relative', top: '50%', color: "#06FC99"}}>
-                    No records
+                    Loading, please wait...
                 </div>}
             </TableContainer>
         </Paper>

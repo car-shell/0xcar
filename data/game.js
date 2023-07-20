@@ -237,7 +237,8 @@ export const useGameContract = (monitor=false)  => {
         if ( lastRecordError || lastLoading ) {
             return {}
         }
-        return {id: lastRecord[0].toNumber(), amount: lastRecord[1].div(ethers.BigNumber.from('1000000000000000000')).toString(), number: lastRecord[3], odds: odds[lastRecord[2]], status: status(lastRecord[3], lastRecord[5], lastRecord[6]), random: lastRecord[5]}
+        let s = status(lastRecord[3], lastRecord[5], lastRecord[6])
+        return {id: lastRecord[0].toNumber(), amount: lastRecord[1].div(ethers.BigNumber.from('1000000000000000000')).toString(), number: lastRecord[3], odds: odds[lastRecord[2]], status: s, random: s!=BetStatus.timeout?lastRecord[5]:'-'}
     }
 
     return { poolDetails, bet, result, withdraw, logs, last: formatLast()}

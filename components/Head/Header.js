@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import useToast from '../Toast'
 
 import { InjectedConnector } from 'wagmi/connectors/injected';
-import { signIn, signOut, useSession } from 'next-auth/react';
+// import { signIn, signOut, useSession } from 'next-auth/react';
 import { useAccount, useConnect, useDisconnect, useNetwork } from 'wagmi';
 
 // import { useAuthRequestChallengeEvm } from '@moralisweb3/next';
@@ -129,11 +129,10 @@ const Header = ({showMenu=true}) => {
           <div className={styles.menuItem} style={curRouter=='/swap'?{color: '#06FC99'}:{}}>
               <BaseLink href="/swap" >Swap</BaseLink>
               {curRouter=='/swap' && <div className={styles.underline}></div>}
-          </div>
-          <div className={styles.menuItem} style={curRouter=='/governance'?{color: '#06FC99'}:{}}>
-              <BaseLink href="/governance" >Governance</BaseLink>
-              {curRouter=='/governance' && <div className={styles.underline}></div>}
-          </div> */}
+          </div>*/}
+          <div className={styles.menuItem} style={curRouter=='/ranking'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+              <BaseLink href="/ranking" >Ranking</BaseLink>
+          </div> 
           <div className={styles.menuItem} style={curRouter=='/faucet'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/faucet" >Faucet</BaseLink>
           </div>

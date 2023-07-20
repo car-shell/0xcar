@@ -1,4 +1,4 @@
-import 'tailwindcss/tailwind.css'
+// import 'tailwindcss/tailwind.css'
 import '../styles/globals.css'
 import '../styles/common.css'
 import "@rainbow-me/rainbowkit/styles.css";

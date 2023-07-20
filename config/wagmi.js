@@ -19,7 +19,8 @@ export const { chains, provider, webSocketProvider } = configureChains(
         jsonRpcProvider({ rpc: (chain) =>  {
             if (chain.id == 97) {
                 return {
-                    http: "https://data-seed-prebsc-1-s1.binance.org:8545",
+                    // http: "https://data-seed-prebsc-1-s1.binance.org:8545",
+                    http: "https://bsc-testnet.publicnode.com",
                 }
             } else if (chain.id == 421613 ) {
                 return {

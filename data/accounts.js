@@ -1,5 +1,4 @@
 import { useState, useCallback, useEffect, useContext } from "react";
-import { useAsync } from 'react-async-hook'
 import { ethers } from "ethers";
 
 import { store, SET_SELECTED_ADDR } from '../store/store'

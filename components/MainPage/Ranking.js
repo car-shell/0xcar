@@ -64,6 +64,7 @@ export default function Ranking() {
   }
 
   const getWinLogs = React.useCallback(async ()=>{
+    try {
       const logs = await getUrl({params : {
           module: 'logs',
           action: 'getLogs',
@@ -83,9 +84,15 @@ export default function Ranking() {
         ranking[address] = ranking[address] === undefined ? [data[2]/1e18, 1] : [ranking[address][0]+data[2]/1e18, ranking[address][1]+1]
       }
       setWinRows(makeRankingData(ranking))
+      
+    } catch (error) {
+      
+    }
+      
   }, [winRows])
 
   const getBetLogs = React.useCallback(async ()=>{
+    try {
       const logs = await getUrl({params : {
           module: 'logs',
           action: 'getLogs',
@@ -104,6 +111,10 @@ export default function Ranking() {
         ranking[address] = ranking[address] === undefined ? [data[1]/1e18, 1] : [ranking[address][0]+data[1]/1e18, ranking[address][1]+1]
       }
       setBetRows(makeRankingData(ranking))
+    } catch (error) {
+      
+    }
+      
   }, [betRows])
 
   React.useEffect(()=>{

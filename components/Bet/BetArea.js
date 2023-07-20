@@ -2,7 +2,6 @@ import { useCallback, useState, useRef, useEffect, useContext } from "react";
 import { useTokenContract } from "../../data/token";
 import { useGameContract } from "../../data/game";
 import {ethers} from "ethers"
-import classNames from 'classnames'
 import styles from "../../styles/Bet.module.css";
 import Fireworks from "../animPaper";
 import ReactLoading from 'react-loading';
@@ -342,10 +341,9 @@ const BetArea = () => {
             setActiveStep('bet', 3, <>
                 <span style={{font: '650 20px normal sans', color: '#F03434', textAlign: 'center', padding: '40px 0px 20px 0px'}}>TIME OUT</span>
                 <div style={{paddingBottom: '20px'}}>
-                <span style={{font: '650 18px normal sans', color: '#FFFFFF', textAlign: 'center'}}><p>Due to network congestion, there has been a timeout. <br />Please Withdraw And Bet again</p></span>
+                <span style={{font: '650 18px normal sans', color: '#FFFFFF', textAlign: 'center'}}><p>Due to network congestion, there has been a timeout. <br />Please withdraw the principal of this bet and bet again.</p></span>
                 </div>
                 </>)
-      
           } else if (e?.reason != undefined && e?.reason?.indexOf("no betting") != -1){
             setBetResult(BetStatus.revert, '-')
             setActiveStep('bet', 3, <>
