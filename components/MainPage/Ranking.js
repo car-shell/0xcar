@@ -68,7 +68,7 @@ export default function Ranking({width = '920px'}) {
       const logs = await getUrl({params : {
           module: 'logs',
           action: 'getLogs',
-          fromBlock: 30652902,
+          fromBlock: 31458740,
           address: addressGameContract,
           topic0: ADDRESSES[chainId].topic_win,
           apikey: "447AKQ7VAC9WVQ4NW41DH8I5YGD2MD72RE"}})
@@ -96,7 +96,7 @@ export default function Ranking({width = '920px'}) {
       const logs = await getUrl({params : {
           module: 'logs',
           action: 'getLogs',
-          fromBlock: 30652902,
+          fromBlock: 31458740,
           address: addressGameContract,
           topic0: ADDRESSES[chainId].topic_bet,
           apikey: "447AKQ7VAC9WVQ4NW41DH8I5YGD2MD72RE"}})
