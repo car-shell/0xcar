@@ -230,8 +230,8 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
                                                     </TableCell>
                                                     :
                                                 column.accessor==='winner'?
-                                                    <TableCell sx={{color: "#02A7F0",  cursor: 'pointer', borderColor:'#000'}} key={column.accessor} align={column.align} onClick={e=>clickAddress(row)} >
-                                                        {column.format(value)}
+                                                    <TableCell sx={{color: "#02A7F0",  borderColor:'#000'}} key={column.accessor} align={column.align} >
+                                                        <a style={{cursor: 'pointer'}} onClick={e=>clickAddress(row)} >{column.format(value)}</a>
                                                     </TableCell>
                                                     :
                                                 column.accessor==='amount' ?
@@ -261,8 +261,8 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
                                                     </TableCell>
                                                     :
                                                 column.accessor==='time'?
-                                                     <TableCell sx={{color: "#02A7F0",  cursor: 'pointer', borderColor:'#000'}} key={column.accessor} align={column.align} onClick={e=>clickBetTime(row)}>
-                                                        {formatTime(row.id, true)}
+                                                     <TableCell sx={{color: "#02A7F0",  borderColor:'#000'}} key={column.accessor} align={column.align} >
+                                                        <a style={{cursor: 'pointer'}} onClick={e=>clickBetTime(row)}> {formatTime(row.id, true)} </a>
                                                     </TableCell>
                                                     :
                                                 column.accessor==='random'?
