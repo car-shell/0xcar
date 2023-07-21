@@ -24,7 +24,7 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Ranking() {
+export default function Ranking({width = '920px'}) {
   const [value, setValue] = React.useState(0);
   const [winRows, setWinRows] = React.useState([]);
   const [betRows, setBetRows] = React.useState([]);
@@ -228,7 +228,7 @@ export default function Ranking() {
           </StyledTabs>
       </Box>
       <Box hidden={value!==0} sx={{
-        width: '920px',
+        width: width,
         border: '1px solid #333333',
         borderRadius: '5px',
         borderTop: '1px solid #06FC99',
@@ -237,7 +237,7 @@ export default function Ranking() {
         <StickyHeadTable columns={winColumns} data={winRows}/>
       </Box>
       <Box hidden={value!==1} sx={{
-        width: '920px',
+        width: width,
         border: '1px solid #333333',
         borderRadius: '5px',
         borderTop: '1px solid #06FC99',

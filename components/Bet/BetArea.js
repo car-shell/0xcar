@@ -374,7 +374,7 @@ const BetArea = () => {
       setIsLoading(false)
       if (err.reason && err.reason.indexOf("you win, please withdraw") != -1) {
         // showModel(<span style={{color: '#F59A23', textAlign: 'center', fontWeight: 'bold'}}><p></p> <p>please withdraw first before placing your bet</p></span>, "Please withdraw first before betting", 'Withdraw')
-        showToast("You have a non-withdrawal record, please withdraw before placing your bet!")
+        showToast("You have a non-withdrawal record, please withdraw before placing your bet!", 'error')
       } else {
         setTipInfo((preTip)=>{
           return {...preTip, status: BetStatus.revert}
@@ -482,15 +482,15 @@ const BetArea = () => {
           <div className={styles.tipValue}>{formatAmount(amount?amount:'')}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{win?'Payout':'Potential Payout' }</div>
+          <div className={styles.tipTilte}>{status!=BetArea.win?'Payout':'Potential Payout' }</div>
           <div className={styles.tipValue}>{formatAmount(amount*odds)}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{win?'Profit':'Potential Profit'}</div>
+          <div className={styles.tipTilte}>{status!=BetArea.win?'Profit':'Potential Profit'}</div>
           <div className={styles.tipValue}>{formatAmount(amount*odds-amount)}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{win?'Net Win':'Potenitial Net Win'}</div>
+          <div className={styles.tipTilte}>{status!=BetArea.win?'Net Win':'Potenitial Net Win'}</div>
           <div className={styles.tipValue}>{formatAmount(amount*((odds-1)*0.8+1))}</div>
         </div></>)
   }

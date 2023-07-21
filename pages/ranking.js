@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <Layout showMenu={true}>
         <div className={`${styles.container} ${styles.flex_column}`} style={{marginTop: '32px'}}>
-            <Ranking />
+            <Ranking width='70%'/>
         </div>
     </Layout>
   )
