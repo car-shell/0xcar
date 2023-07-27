@@ -37,82 +37,31 @@ export default function Ranking({width = '920px'}) {
       setValue(newValue);
   };
 
-  const parseData = (datastr)=>{
-    datastr = datastr.substr(2)
-    let data = []
-    for (let index = 0; index < datastr.length; index+=64) {
-      data.push(parseInt(datastr.substr(index, 64), 16))
-    }
-    return data;
-  }
-
-  const makeRankingData = (ranking)=>{
-    console.log(ranking);
-    let arr = Object.keys(ranking).map((key)=>{
-      return [key, ranking[key]]
-    })
-    
-    arr.sort((a, b)=>{
-      return b[1][0] - a[1][0]
-    })
-
-    const r = arr.map((item, i)=>{
-      return createData(i+1, item[0], item[1][1], item[1][0])
-    })
-    console.log(r);
-    return r
-  }
-
   const getWinLogs = React.useCallback(async ()=>{
     try {
-      const logs = await getUrl({params : {
-          module: 'logs',
-          action: 'getLogs',
-          fromBlock: 31458740,
-          address: addressGameContract,
-          topic0: ADDRESSES[chainId].topic_win,
-          apikey: "447AKQ7VAC9WVQ4NW41DH8I5YGD2MD72RE"}})
-
-      console.log(logs.data);
-      const results = logs.data['result']
-      let ranking = {}
-      for (let index = 0; index < results.length; index++) {
-       const element = results[index];
-        let address = '0x'+element['topics'][1].substr(26)
-        let data = parseData(element['data'])
-        
-        ranking[address] = ranking[address] === undefined ? [data[2]/1e18, 1] : [ranking[address][0]+data[2]/1e18, ranking[address][1]+1]
-      }
-      setWinRows(makeRankingData(ranking))
+      const logs = await getUrl("/bet_ranking", {params : {type: "win"}})
+      console.log(logs);
+      const r = logs.data.map((item, i)=>{
+        return createData(i+1, item["address"], item["win_count"], item["total_win"])
+      })
       
+      setWinRows(r)
     } catch (error) {
-      
+      console.log(error);
     }
       
   }, [winRows])
 
   const getBetLogs = React.useCallback(async ()=>{
     try {
-      const logs = await getUrl({params : {
-          module: 'logs',
-          action: 'getLogs',
-          fromBlock: 31458740,
-          address: addressGameContract,
-          topic0: ADDRESSES[chainId].topic_bet,
-          apikey: "447AKQ7VAC9WVQ4NW41DH8I5YGD2MD72RE"}})
-
-      const results = logs.data['result']
-      let ranking = {}
-      for (let index = 0; index < results.length; index++) {
-        const element = results[index];
-        let address = '0x'+element['topics'][1].substr(26)
-        let data = parseData(element['data'])
-        console.log(data);
-        ranking[address] = ranking[address] === undefined ? [data[1]/1e18, 1] : [ranking[address][0]+data[1]/1e18, ranking[address][1]+1]
-      }
-      setBetRows(makeRankingData(ranking))
+      const logs = await getUrl("/bet_ranking", {params : {type: "bet"}})
+      console.log(logs);
+      const r = logs.data.map((item, i)=>{
+        return createData(i+1, item["address"], item["bet_count"], item["total_bet"])
+      })
+      setBetRows(r)
     } catch (error) {
-      
+      console.log(error);
     }
       
   }, [betRows])

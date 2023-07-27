@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiAxios = axios.create({
-  baseURL: 'https://api-testnet.bscscan.com/api',
+  baseURL: 'https://devnet.api.0xcardinal.io/api/v1',
   timeout: 50000,
   headers: {
     'Content-Type': 'application/json; charset=utf-8'
@@ -46,8 +46,8 @@ apiAxios.interceptors.response.use(
     }
 )
 
-export const getUrl = (params = {}) => {
-    return apiAxios.get('/', params);
+export const getUrl = (url, params = {}) => {
+    return apiAxios.get(url, params);
 };
 
 export const remove = (url, params = {}) => {

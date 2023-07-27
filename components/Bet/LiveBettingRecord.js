@@ -5,12 +5,32 @@ import { store, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import StickyHeadTable from "./Table";
 import { formatAmount } from "../utils"
+import {getUrl} from "../../pages/api/axios";
 
 const LiveBettingRecord = () => {
-    const {
-            state: { winLogs },
-    } = useContext(store)
-    
+    const [betRows, setBetRows] = useState([]);
+
+    useEffect(()=>{
+        let i = setInterval(async () => {
+            const logs = await getUrl("/bet_record", {})
+            console.log(logs);
+            const r = logs.data.map((item, i)=>{
+                return { 
+                    id: item["bet_time"] + item["player"],
+                    time: item["bet_time"], 
+                    winner: item["player"], 
+                    amount: item["bet_amount"], 
+                    odds: item["odds"],
+                    profit: item["profit"],
+                    transactionHash: item["trans_hash"]}
+            })
+            setBetRows(r)
+        }, 10000);
+        return () => {
+            clearInterval(i)
+        }
+    }, [])
+
     const columns = useMemo(
         () => [
             {
@@ -48,8 +68,9 @@ const LiveBettingRecord = () => {
                 Header: "Profit",
                 accessor: "profit",
                 align: "center",
-                format: (i, a)=>{
-                    return i != '0'?formatAmount(i) + '+':formatAmount(a)+'-'; 
+                format: (i)=>{
+                    let s = formatAmount(i)
+                    return i > '0'? s + '+':s.substr(1) + "-"; 
                 }
             },
         ],
@@ -58,7 +79,7 @@ const LiveBettingRecord = () => {
 
     return (<>
         {
-            !winLogs?<div style={{color: "#06FC99", textAlign:"center", lineHeight: "400px"}}>No Data</div>:<StickyHeadTable  columns={columns} data={winLogs}/>
+            !betRows?<div style={{color: "#06FC99", textAlign:"center", lineHeight: "400px"}}>No Data</div>:<StickyHeadTable  columns={columns} data={betRows}/>
         }
         </>
     )

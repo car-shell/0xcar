@@ -32,7 +32,7 @@ export const ADDRESSES = {
        
         topic_bet: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
         topic_win: "0x9f8ce2e31646e98e72e097e8abe5539ff064932fc90b722b121b9c83f9351b40",
-        topic_got_result: "",
+        topic_got_result: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
         sponsor: "0x838E1EEa13250Bf6C04cE7b0Baf9d2e0aF99C1E0",
     }
 };

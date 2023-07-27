@@ -13,7 +13,6 @@ import Modal, { ConfirmationModal, useModal } from '../Tips';
 import { store, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import { BetStatus } from '..//constant'
-import {getUrl} from "../../pages/api/axios";
 
 function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) { 
     
@@ -96,30 +95,10 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
         window.open("https://testnet.bscscan.com/tx/"+item.transaction, '_bank')
     }
 
-    const getTransHash = async  (h, address)=>{
-        const logs = await getUrl({params:{module: 'logs',
-          action: 'getLogs',
-          fromBlock: h,
-          toBlock: h,
-          topic0: '0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4',
-          topic0_1_opr: 'and',
-          topic1: "0x000000000000000000000000"+address.substr(2),
-          apikey: "447AKQ7VAC9WVQ4NW41DH8I5YGD2MD72RE"}})
-          console.log(logs);
-        const results = logs.data.result
-        if (results.length <= 0) {
-            return null
-        }
-
-        return results[0].transactionHash
-    }
 
     const clickBetTime = async (item) => {
-        if (!item.height) {
-            return
-        }
         console.log(item);
-        const transactionHash = await getTransHash(item.height, item.winner)
+        const transactionHash = item.transactionHash
         if ( transactionHash ) {
             console.log(transactionHash);
             window.open("https://testnet.bscscan.com/tx/"+ transactionHash, '_bank')
@@ -242,9 +221,9 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
                                                     </TableCell>
                                                     :
                                                 column.accessor==='profit' ?
-                                                    <TableCell sx={{color: value!=='0'?"#06FC99":"white", borderColor:'#000' }} key={column.accessor} >
+                                                    <TableCell sx={{color: value>0?"#06FC99":"white", borderColor:'#000' }} key={column.accessor} >
                                                         <div style={{textAlign: 'right', width: "10%", direction: 'rtl', position: 'relative', left: '50%'}} >
-                                                            {column.format(value, row.amount)}
+                                                            {column.format(value)}
                                                         </div>
                                                     </TableCell>
                                                     :
@@ -262,7 +241,7 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
                                                     :
                                                 column.accessor==='time'?
                                                      <TableCell sx={{color: "#02A7F0",  borderColor:'#000'}} key={column.accessor} align={column.align} >
-                                                        <a style={{cursor: 'pointer'}} onClick={e=>clickBetTime(row)}> {formatTime(row.id, true)} </a>
+                                                        <a style={{cursor: 'pointer'}} onClick={e=>clickBetTime(row)}> {value} </a>
                                                     </TableCell>
                                                     :
                                                 column.accessor==='random'?
