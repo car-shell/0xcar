@@ -31,7 +31,7 @@ const MainPage = () => {
                     Binance Smart Chain Betting Platform.
                 </div> 
                 <div className={styles.fontTitle + ' ' + styles.white + ' ' + styles.midlleStress}>
-                    The world's first coin-centric betting platform.
+                    The world&apos;s first coin-centric betting platform.
                 </div> 
                 <div className={styles.fontTitle + ' ' + styles.gray}>
                     Open-source, decentralized，and Community-governed
