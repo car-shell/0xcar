@@ -8,7 +8,8 @@ const MainPage = () => {
     const [questionIndex, setQuestionIndex] = useState(0)
     const {balance, token, deadBalance} = useTokenContract();
     return <>
-        <div className={`${styles.container} ${styles.flex_column} ${styles.pageBackground}`}>
+        <div className={`${styles.container} ${styles.flex_column}`} 
+            style={{background: "url('/cardinal.png') center center no-repeat"} }>
             {/* <div className={styles.header + ' ' + styles.flex_row}>
                 <img src='cardinal.png' className={styles.img} />
                 
