@@ -56,7 +56,8 @@ const Header = ({showMenu=true}) => {
 
   const walletButton = (e) => {
     if (e.target.innerText == 'Launch App >') {
-      router.push('/app.html')
+      // router.push('/app.html')
+      showToast("Coming soon")
       return
     }
 

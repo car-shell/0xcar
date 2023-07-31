@@ -16,8 +16,9 @@
 .container {
     position: relative;
     /* top: 70px; */
-    margin: 0% 4% 4% 4%;
-
+    margin: 0% 4% 0% 4%;
+    min-height: 720px;
+    min-width: 1200px;
     color: #fff;
 }
 
@@ -38,6 +39,10 @@
 
 .bigStress {
     margin: 48px 0px 48px;
+}
+
+.topStress {
+    margin: 48px 0px 0px;
 }
 
 .buttonRow {
@@ -64,22 +69,32 @@
 }
 
 .pageBackground {
-    background-image: url('../public/vercel.svg');
-    background-size: 100% 100%;
+    /* background-image: url('../public/cardinal.png');
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center; */
+
+    background: url('../public/cardinal.png') center top no-repeat;
+    background-size: 40%;
+    opacity: 0.9;
 }
 
 .fontTitle {
-    font-size: 32px;
+    font-size: 42px;
     font-weight: bold;
     font-style: normal;
     text-align: center;
 }
 
 .fontBigTitle {
-    font-size: 28px;
+    font-size: 48px;
     font-weight: bold;
     font-style: normal;
     text-align: center;
+}
+
+.fontLargeTilte {
+    font: 650 72px normal sans;
 }
 
 .fontNormal {
