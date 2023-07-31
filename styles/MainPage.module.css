@@ -47,6 +47,8 @@
 
 .buttonRow {
     /* font-weight: 650; */
+    position: relative;
+
     font-style: normal;
     font-size: 16px;
     color: #FFFFFF;
@@ -63,9 +65,10 @@
     border-radius: 5px;
 
     line-height: 50px;
-    box-sizing: border-box;
 
     text-align: center;
+
+    cursor: pointer;
 }
 
 .pageBackground {
@@ -79,10 +82,11 @@
     opacity: 0.9;
 }
 
-.container:before{
+.container::after{
     content: ' ';
     display: block;
     position: absolute;
+    z-index: -100;
     left: 0;
     top: 0;
     width: 100%;

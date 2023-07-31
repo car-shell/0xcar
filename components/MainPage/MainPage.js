@@ -3,11 +3,14 @@ import { useState } from "react";
 import Ranking from "./Ranking"
 import { useTokenContract } from "../../data/token";
 import { formatAmount } from "../utils";
+import useToast from '../Toast'
 
 const MainPage = () => {
     const [questionIndex, setQuestionIndex] = useState(0)
     const {balance, token, deadBalance} = useTokenContract();
+    const {ToastUI, showToast} = useToast();
     return <>
+        <ToastUI />
         <div className={`${styles.container} ${styles.flex_column}`} >
             {/* <div className={styles.header + ' ' + styles.flex_row}>
                 <img src='cardinal.png' className={styles.img} />
@@ -38,16 +41,16 @@ const MainPage = () => {
                 </div> 
 
                 <div className={`${styles.flex_row} ${styles.buttonRow} ${styles.topStress}`}>
-                    <div className={styles.button}>
+                    <div className={styles.button} onClick={()=>showToast("Coming soon")}>
                             Why 0xCardinal?
                     </div>
-                    <div className={styles.button}>
+                    <div className={styles.button} onClick={()=>showToast("Coming soon")}>
                             Tokenomics
                     </div>
-                    <div className={styles.button}>
+                    <div className={styles.button} onClick={()=>showToast("Coming soon")}>
                             Rodmap
                     </div>
-                    <div className={styles.button}>
+                    <div className={styles.button} onClick={()=>{showToast("Coming soon")}}>
                             FAQ
                     </div>
                 </div>
