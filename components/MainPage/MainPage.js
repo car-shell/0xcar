@@ -57,7 +57,7 @@ const MainPage = () => {
                 </div> */}
             </div> 
 
-            <Image width='270' height='270' alt='logo image' src='/cardinal.png' />
+            <Image width='340' height='340' alt='0xcardinal image' src='/cardinal.png' />
             {/* <div className={`${styles.fontBigTitle} ${styles.bigStress}`}>
                    Burned: <span style={{color: '#D9001B'}}>-{formatAmount(deadBalance)} {token?.symbol}</span> <span style={{color: '#02A7F0'}}>({(deadBalance/(token?.totalSupply.value/1e18)*100).toFixed(6)}%)</span>
             </div> */}

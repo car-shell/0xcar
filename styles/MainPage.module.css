@@ -14,11 +14,15 @@
 }
 
 .container {
-    position: relative;
+    position: absolute;
     /* top: 70px; */
-    margin: 0% 4% 0% 4%;
-    min-height: 640px;
-    min-width: 1200px;
+    margin: auto;
+    top: 0;
+    left: 0; 
+    right: 0;
+    bottom: 0;
+    /* min-height: 640px;
+    min-width: 1200px; */
     color: #fff;
 }
 
