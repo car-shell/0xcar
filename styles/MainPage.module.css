@@ -34,15 +34,15 @@
 }
 
 .stress {
-    row-gap: 8px;
+    margin-top: 8px;
 }
 
 .bigStress {
-    margin: 48px 0px 48px;
+    margin-top: 64px;
 }
 
-.topStress {
-    margin: 48px 0px 0px;
+.midlleStress {
+    margin-top: 56px;
 }
 
 .buttonRow {
@@ -82,7 +82,7 @@
     opacity: 0.9;
 }
 
-.container::after{
+/* .container::after{
     content: ' ';
     display: block;
     position: absolute;
@@ -96,25 +96,18 @@
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: center;
-    /* background-size: contain; */
-}
+} */
 
 .fontTitle {
-    font-size: 42px;
-    font-weight: bold;
-    font-style: normal;
-    text-align: center;
+    font: 650 20px normal sans;
 }
 
 .fontBigTitle {
-    font-size: 48px;
-    font-weight: bold;
-    font-style: normal;
-    text-align: center;
+    font: 650 36px normal sans;
 }
 
 .fontLargeTilte {
-    font: 650 72px normal sans;
+    font: 650 100px normal sans;
 }
 
 .fontNormal {
@@ -190,6 +183,14 @@
 }
 .purple {
     color: #FF00D6;
+}
+
+.white {
+    color: white;
+}
+
+.gray {
+    color: #aaaaaa;
 }
 
 .buttons {

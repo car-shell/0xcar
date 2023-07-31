@@ -4,6 +4,7 @@ import Ranking from "./Ranking"
 import { useTokenContract } from "../../data/token";
 import { formatAmount } from "../utils";
 import useToast from '../Toast'
+import Image from 'next/image'
 
 const MainPage = () => {
     const [questionIndex, setQuestionIndex] = useState(0)
@@ -11,7 +12,7 @@ const MainPage = () => {
     const {ToastUI, showToast} = useToast();
     return <>
         <ToastUI />
-        <div className={`${styles.container} ${styles.flex_column}`} >
+        <div className={`${styles.container} ${styles.flex_row}`} style={{columnGap: '68px'}} >
             {/* <div className={styles.header + ' ' + styles.flex_row}>
                 <img src='cardinal.png' className={styles.img} />
                 
@@ -23,20 +24,20 @@ const MainPage = () => {
             </div> */}
 
             <div className={`${styles.flex_column} ${styles.stress}`} style={{alignItems: "flex-start"}}>
-                <div className={styles.fontLargeTilte + ' ' + styles.bigStress }>
+                <div className={styles.fontLargeTilte }>
                     <span style={{color: "#D9001B"}}>0x</span>Cardinal
                 </div>
-                <div className={styles.fontTitle + ' ' + styles.purple }>
-                    A betting platform
+                <div className={styles.fontBigTitle + ' ' + styles.yellow + ' ' + styles.midlleStress }>
+                    Binance Smart Chain Betting Platform.
                 </div> 
-                <div className={styles.fontTitle + ' ' + styles.yellow }>
-                    Built on the Binance Smart Chain
+                <div className={styles.fontTitle + ' ' + styles.white + ' ' + styles.midlleStress}>
+                    The world's first coin-centric betting platform.
                 </div> 
-                <div className={styles.fontTitle + ' ' + styles.colorGreen }>
+                <div className={styles.fontTitle + ' ' + styles.gray}>
                     Open-source, decentralized，and Community-governed
                 </div> 
                 
-                <div className={styles.fontBigTitle + ' ' + styles.bigStress }>
+                {/* <div className={styles.fontBigTitle + ' ' + styles.bigStress }>
                     <span style={{color: "#D9001B"}}>0x</span>Cardinal <span style={{color: "#027DB4"}}>devnet</span> about to go live...
                 </div> 
 
@@ -53,8 +54,10 @@ const MainPage = () => {
                     <div className={styles.button} onClick={()=>{showToast("Coming soon")}}>
                             FAQ
                     </div>
-                </div>
+                </div> */}
             </div> 
+
+            <Image width='270' height='270' alt='logo image' src='/cardinal.png' />
             {/* <div className={`${styles.fontBigTitle} ${styles.bigStress}`}>
                    Burned: <span style={{color: '#D9001B'}}>-{formatAmount(deadBalance)} {token?.symbol}</span> <span style={{color: '#02A7F0'}}>({(deadBalance/(token?.totalSupply.value/1e18)*100).toFixed(6)}%)</span>
             </div> */}
