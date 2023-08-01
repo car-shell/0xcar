@@ -4,6 +4,7 @@
 
     margin-top: auto;
     display: block;
+    z-index: 99;
 }
 
 .bottom {
