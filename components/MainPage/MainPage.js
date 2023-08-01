@@ -12,7 +12,7 @@ const MainPage = () => {
     const {ToastUI, showToast} = useToast();
     return <>
         <ToastUI />
-        <div className={`${styles.container} ${styles.flex_row}`} style={{columnGap: '68px'}} >
+        <div className={`${styles.container} ${styles.flex_row}`} style={{columnGap: '8px'}} >
             {/* <div className={styles.header + ' ' + styles.flex_row}>
                 <img src='cardinal.png' className={styles.img} />
                 
@@ -57,7 +57,7 @@ const MainPage = () => {
                 </div> */}
             </div> 
 
-            <Image width='340' height='340' alt='0xcardinal image' src='/cardinal.png' />
+            <Image width='500' height='500' alt='0xcardinal image' src='/cardinal02.png' />
             {/* <div className={`${styles.fontBigTitle} ${styles.bigStress}`}>
                    Burned: <span style={{color: '#D9001B'}}>-{formatAmount(deadBalance)} {token?.symbol}</span> <span style={{color: '#02A7F0'}}>({(deadBalance/(token?.totalSupply.value/1e18)*100).toFixed(6)}%)</span>
             </div> */}
