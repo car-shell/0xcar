@@ -28,10 +28,10 @@ const MainPage = () => {
                     <span style={{color: "#D9001B"}}>0x</span>Cardinal
                 </div>
                 <div className={styles.fontBigTitle + ' ' + styles.yellow + ' ' + styles.midlleStress }>
-                    Binance Smart Chain Betting Platform.
+                    Binance Smart Chain Betting DEX.
                 </div> 
                 <div className={styles.fontTitle + ' ' + styles.white + ' ' + styles.midlleStress}>
-                    The world&apos;s first coin-centric betting platform.
+                    The world&apos;s first coin-centric betting DEX.
                 </div> 
                 <div className={styles.fontTitle + ' ' + styles.gray}>
                     Open-source, decentralized，and Community-governed

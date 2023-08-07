@@ -183,7 +183,7 @@ export default function Ranking({width = '920px'}) {
         borderTop: '1px solid #06FC99',
         boxShadow: '5px 5px 5px rgba(85, 85, 85, 0.34901960784313724)',
       }}>
-        <StickyHeadTable columns={winColumns} data={winRows}/>
+        <StickyHeadTable columns={winColumns} data={winRows} maxHeight={null}/>
       </Box>
       <Box hidden={value!==1} sx={{
         width: width,
@@ -192,7 +192,7 @@ export default function Ranking({width = '920px'}) {
         borderTop: '1px solid #06FC99',
         boxShadow: '5px 5px 5px rgba(85, 85, 85, 0.34901960784313724)'
       }}>
-        <StickyHeadTable columns={betColumns} data={betRows}/>
+        <StickyHeadTable columns={betColumns} data={betRows} maxHeight={null}/>
       </Box>
     </React.Fragment>
   );

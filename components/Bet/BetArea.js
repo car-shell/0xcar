@@ -102,8 +102,10 @@ const BetArea = () => {
           } else if (betLogs[index].status === BetStatus.withdrawed &&  tipInfo.status === BetStatus.win) {
             
           } else {
+            tipInfo.time = betLogs[index].time
             betLogs[index] = tipInfo
           }
+
           dispatch({
             type: SET_LOG_CHANGE, 
             payload: [...betLogs]
@@ -111,12 +113,18 @@ const BetArea = () => {
           return
         }
       }
+      if (tipInfo.time === undefined || tipInfo.time === null) {
+        tipInfo.time = Date.parse(new Date())
+      }
       //new
       dispatch({
         type: SET_LOG_CHANGE, 
         payload: [tipInfo, ...betLogs]
       })
     } else { 
+      if (tipInfo.time === undefined || tipInfo.time === null) {
+        tipInfo.time = Date.parse(new Date())
+      }
       dispatch({ 
         type: SET_LOG_CHANGE,
         payload: [tipInfo]
@@ -368,7 +376,7 @@ const BetArea = () => {
       console.log(`entry betSuccess`);
       setTipInfo((pre)=>{
         queryResult(pre.id)
-        return {...pre, transaction: r.transactionHash, status: BetStatus.submitted}
+        return {...pre, transactionHash: r.transactionHash, status: BetStatus.submitted}
       })
     }, [amount, numbers, title, isLoading, tipInfo])
 
@@ -416,7 +424,7 @@ const BetArea = () => {
     }
 
     const poolRemainBalance = poolDetails?poolDetails[1].div(ethers.BigNumber.from('1000000000000000000')).toNumber():10e8
-    if ( parseFloat(amount)>poolRemainBalance*title.odds || parseFloat(amount) > parseFloat(balance) ) {
+    if ( parseFloat(amount)>poolRemainBalance*title.odds ) {
       showToast('amount too large!', 'error' )
       return
     }
@@ -427,9 +435,9 @@ const BetArea = () => {
       return;
     }
 
-    const id = Date.parse(new Date)
+    const id = Date.parse(new Date).toString()
     setTipInfo(()=>{
-      return {id: id,  type: title.value, number: formatNumber(numbers), amount: amount, odds: title.odds, status: BetStatus.started, random: '-'}
+      return {id: id, time: Date.parse(new Date),  type: title.value, number: formatNumber(numbers), amount: amount, odds: title.odds, status: BetStatus.started, random: '-'}
     })
 
     setIsLoading(true)

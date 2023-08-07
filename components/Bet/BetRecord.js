@@ -18,7 +18,7 @@ const BetRecord = () => {
         () => [
             {
                 Header: "Tx Time",
-                accessor: "id", // accessor is the "key" in the data
+                accessor: "time", // accessor is the "key" in the data
                 align: "center",
             },
             {

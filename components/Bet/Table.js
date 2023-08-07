@@ -14,7 +14,7 @@ import { store, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import { BetStatus } from '..//constant'
 
-function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) { 
+function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight="478px"}) { 
     
     const [rows, setRows] = useState(data);
     const { isShown, toggle } = useModal();
@@ -88,11 +88,11 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
         window.open("https://testnet.bscscan.com/block/"+item.height, '_bank')
     }
     const clickTime = (item) => {
-        if (!item.transaction) {
+        if (!item.transactionHash) {
             return
         }
         console.log(item);
-        window.open("https://testnet.bscscan.com/tx/"+item.transaction, '_bank')
+        window.open("https://testnet.bscscan.com/tx/"+item.transactionHash, '_bank')
     }
 
 
@@ -179,7 +179,7 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
     return (
         <>
         <Paper sx={{ backgroundColor: '#000', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: '478px' }}>
+            <TableContainer sx={maxHeight!=null && { maxHeight: maxHeight }}>
                 <Table stickyHeader size="small">
                     <TableHead sx={{ height: '48px'}}>
                         <TableRow >
@@ -241,7 +241,7 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
                                                     :
                                                 column.accessor==='time'?
                                                      <TableCell sx={{color: "#02A7F0",  borderColor:'#000'}} key={column.accessor} align={column.align} >
-                                                        <a style={{cursor: 'pointer'}} onClick={e=>clickBetTime(row)}> {value} </a>
+                                                        <a style={{cursor: 'pointer'}} onClick={e=>clickBetTime(row)}> {typeof value == "string"? value : formatTime(value)} </a>
                                                     </TableCell>
                                                     :
                                                 column.accessor==='random'?
@@ -274,7 +274,7 @@ function StickyHeadTable({columns, data, pageChanged,handleItemCheck}) {
                             })}
                     </TableBody>
                 </Table>
-                {rows.length == 0 && <div style={{zIndex: 1000, lineHeight: 'calc(478px - 48px)', alignItems: 'center', textAlign:"center", position: 'relative', top: '50%', color: "#06FC99"}}>
+                {rows.length == 0 && <div style={{zIndex: 88, lineHeight: 'calc(478px - 48px)', alignItems: 'center', textAlign:"center", position: 'relative', top: '50%', color: "#06FC99"}}>
                     Loading, please wait...
                 </div>}
             </TableContainer>
