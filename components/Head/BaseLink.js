@@ -11,7 +11,7 @@ const BaseLink = ({href, as, ...rest}) => {
     // when displayed in url bar
     if (baseURI_as.startsWith('/')) {
       //  for static html compilation
-      baseURI_as = '.' + href + '.html'
+      baseURI_as = '.' + href
       // <IPFSLink href="/about"> => <a class="jsx-2055897931" href="./about">About</a>
   
       // on the client
