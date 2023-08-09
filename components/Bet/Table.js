@@ -23,7 +23,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
     const [loadingMsg, setLoadingMsg] = useState("Loading, please wait...")
     useEffect(()=>{setTimeout(() => {
         setLoadingMsg("No record")
-    }, 5000)}, [])
+    }, 15000)}, [])
 
     useEffect(()=>{
         setRows(data)
