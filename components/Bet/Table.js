@@ -20,6 +20,10 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
     const { isShown, toggle } = useModal();
     const [modelMsg, setModelMsg] = useState('');
     const [modelHeader, setModelHeader] = useState('');
+    const [loadingMsg, setLoadingMsg] = useState("Loading, please wait...")
+    useEffect(()=>{setTimeout(() => {
+        setLoadingMsg("No record")
+    }, 5000)}, [])
 
     useEffect(()=>{
         setRows(data)
@@ -275,7 +279,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                     </TableBody>
                 </Table>
                 {rows.length == 0 && <div style={{zIndex: 88, lineHeight: 'calc(478px - 48px)', alignItems: 'center', textAlign:"center", position: 'relative', top: '50%', color: "#06FC99"}}>
-                    Loading, please wait...
+                    {loadingMsg}
                 </div>}
             </TableContainer>
         </Paper>
