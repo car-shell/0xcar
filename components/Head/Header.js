@@ -145,7 +145,7 @@ const Header = ({showMenu=true}) => {
           </div> */}
         </div>}
         <div className={styles.wallet + ' ' + styles.walletFont } onClick={walletButton}>
-          { curRouter=='/'? "Launch App >" : !isConnected ? "Connect Wallet" : address.slice(0, 5) + '...' + address.slice(38) }
+          { !isConnected ? "Connect Wallet" : address.slice(0, 5) + '...' + address.slice(38) }
           { address && curRouter!='/' && <img className={styles.icon } style= {showWalletInfo?{transform: 'rotate(-180deg)'}:{}} src="down.png" />}
         </div>
       </header>
