@@ -2,7 +2,7 @@ import { useCallback, useState, useRef, useEffect, useContext } from "react";
 import { useTokenContract } from "../../data/token";
 import { useGameContract } from "../../data/game";
 import {ethers} from "ethers"
-import styles from "../../styles/Bet.module.css";
+import styles from "../../styles/BetCell.module.css";
 import Fireworks from "../animPaper";
 import ReactLoading from 'react-loading';
 import { store, SET_LOG_CHANGE, SET_ACTION} from '../../store/store'
@@ -20,7 +20,7 @@ import StepLabel from '@mui/material/StepLabel';
 import CustomizedSteppers from './Progress'
 import axios from "axios";
 
-const BetAreaCell = () => {
+const BetArea = () => {
   const rules = [{key: 0, value: '1-Star (5x)', number: 5, select: 1, odds: 5}, {key: 1, value: '1-Star (10x)', number: 10, select: 1, odds: 10}, {key: 2, value: '2-Star (100x)', number: 10, select: 2, odds: 100}]
   const [stepNodes, setStepNodes] = useState({ bet: [{name: 'Comfirm in Wallet', cost: 0}, {name: 'Bet completed', cost: 0}, {name: 'Result fetched', cost: 0}], 
                approve: [{name: 'Approve submited',cost: 0}, {name: 'Approve completed', cost: 0}], 
@@ -533,17 +533,17 @@ const BetAreaCell = () => {
         </div>
       </div>}
 
-      <div>
+      <div className={styles.play_area}>
+           <div className={styles.rule_tab}>
        { rules.map(r => {
           return <div className={styles.rule_button} key={r.key} onClick={ruleClick(r) } style={{
             backgroundColor: r.value===title.value?"#142d23":"", 
-            borderTopLeftRadius: r.key===0?"5px":"",
-            borderRight: r.value===title.value?"2px solid #06FC99":"none"}}>{r.value}</div>
+            borderRight: r.key!==2?"solid 1px #333":"",
+            borderBottom: r.value===title.value?"2px solid #06FC99":"none"}}>{r.value}</div>
          })
         }
       </div>
 
-      <div className={styles.play_area}>
         <div className={styles.pool_title}>
           <div className={styles.line_title}>
             {title.value}
@@ -619,4 +619,4 @@ const BetAreaCell = () => {
 }
 
 
-export default BetAreaCell
+export default BetArea

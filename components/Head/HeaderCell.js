@@ -2,7 +2,7 @@
 // import { Link } from 'react-router-i18n'
 import { useCallback, useState, useEffect, useContext} from "react";
 import { ethers } from "ethers";
-import styles from "../../styles/Header.module.css";
+import styles from "../../styles/HeaderCell.module.css";
 import { store, SET_SELECTED_ADDR, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import useTokenContract from "../../data/token";
@@ -24,7 +24,7 @@ import {
 } from '@rainbow-me/rainbowkit';
 
 
-const Header = ({showMenu=true}) => {
+const HeaderCell = ({showMenu=true}) => {
   const {balance, token} = useTokenContract()
   const [curRouter, setCurRouter] = useState('')
   const [showWalletInfo, setShowWalletInfo] = useState(false)
@@ -117,33 +117,6 @@ const Header = ({showMenu=true}) => {
             </div>
           </div>
         </Link>
-      
-        { showMenu && <div className={styles.menu}>
-          <div className={styles.menuItem} style={curRouter=='/'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
-              <BaseLink href="/" >App</BaseLink>
-              {/* {curRouter=='/app' && <div className={styles.underline} style={{width: }}></div>} */}
-          </div>
-          {/* <div className={styles.menuItem} style={curRouter=='/ido'?{color: '#06FC99'}:{}}>
-              <BaseLink href="/ido" >IDO</BaseLink>
-              {curRouter=='/ido' && <div className={styles.underline}></div>}
-          </div>
-          <div className={styles.menuItem} style={curRouter=='/swap'?{color: '#06FC99'}:{}}>
-              <BaseLink href="/swap" >Swap</BaseLink>
-              {curRouter=='/swap' && <div className={styles.underline}></div>}
-          </div>*/}
-          <div className={styles.menuItem} style={curRouter=='/ranking'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
-              <BaseLink href="/ranking" >Ranking</BaseLink>
-          </div> 
-          {/* <div className={styles.menuItem} style={curRouter=='/faucet'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
-              <BaseLink href="/faucet" >Faucet</BaseLink>
-          </div> */}
-          {/* <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
-              <BaseLink href="/nft" >NFT</BaseLink>
-          </div>
-           <div className={styles.menuItem} style={curRouter=='/airdrop'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
-              <BaseLink href="/airdrop" >AirpDrop</BaseLink>
-          </div> */}
-        </div>}
         <div className={styles.wallet + ' ' + styles.walletFont } onClick={walletButton}>
           { !isConnected ? "Connect Wallet" : address.slice(0, 5) + '...' + address.slice(38) }
           { address && curRouter!='/' && <img className={styles.icon } style= {showWalletInfo?{transform: 'rotate(-180deg)'}:{}} src="down.png" />}
@@ -177,4 +150,4 @@ const Header = ({showMenu=true}) => {
   )
 }
 
-export default Header
+export default HeaderCell
