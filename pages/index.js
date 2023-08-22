@@ -13,21 +13,3 @@ export default function Home() {
 }
 
 
-export async function getServerSideProps(ctx) {
-  const isMobileDevice = isMobile({ ua: ctx.req, tablet: false });
-  const isTabletDevice =
-    !isMobileDevice && isMobile({ ua: ctx.req, tablet: true });
-  let route = "/";
-  if (isMobileDevice) {
-    route = "/mobile";
-  } else {
-    return {props: {}}
-  }
-  return {
-    props: {},
-    redirect: {
-      destination: route,
-      permanent: true,
-    },
-  };
-}
