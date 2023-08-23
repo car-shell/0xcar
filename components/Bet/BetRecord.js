@@ -72,7 +72,7 @@ const BetRecord = () => {
                     } else if ( row.status==BetStatus.started ) {
                         
                     } else {
-                        window.open("https://testnet.bscscan.com/tx/"+row.transaction, '_bank')
+                        window.open("https://testnet.bscscan.com/tx/"+row.transactionHash, '_bank')
                     }
                 }
             },

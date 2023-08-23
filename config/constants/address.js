@@ -25,14 +25,14 @@ export const ADDRESSES = {
     //     sponsor: "0x662B1AA48b798D929b52aAC20E2ab991684A0B0C"
     // },
     [ChainId.BSC_TESTNET]: {
-        token: "0xC89b11ba4C36a43e389dc359eDbC9DfFfE13481d",
-        nft: "0x7aa86926A71c7eEC95Ad6A109Db31c1B5991e15A",
-        game: "0x54B37600E3fD51b8697385698c7Ce71A129Cd650",
+        token: "0x1827A1e68D7b6B3F6F3c1F827Ec355d1b787376E",
+        nft: "0xb4521875a75dacbe44dfda09713d59c1fbe1003a",
+        game: "0x841d9d2ec3908f0b73a910435fc8c1d88b642584",
         faucet: "0x6D70B8d77B12211915aEf7D93E58352B4d003efC",
        
         topic_bet: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
         topic_win: "0x9f8ce2e31646e98e72e097e8abe5539ff064932fc90b722b121b9c83f9351b40",
         topic_got_result: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
-        sponsor: "0x838E1EEa13250Bf6C04cE7b0Baf9d2e0aF99C1E0",
+        sponsor: "0x58ae9bcfa7be29825bfb921847af8ed0bf45dd1f",
     }
 };

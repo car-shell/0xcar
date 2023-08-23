@@ -20,7 +20,7 @@ import StepLabel from '@mui/material/StepLabel';
 import CustomizedSteppers from './Progress'
 import axios from "axios";
 
-const BetAreaCell = () => {
+const BetArea = () => {
   const rules = [{key: 0, value: '1-Star (5x)', number: 5, select: 1, odds: 5}, {key: 1, value: '1-Star (10x)', number: 10, select: 1, odds: 10}, {key: 2, value: '2-Star (100x)', number: 10, select: 2, odds: 100}]
   const [stepNodes, setStepNodes] = useState({ bet: [{name: 'Comfirm in Wallet', cost: 0}, {name: 'Bet completed', cost: 0}, {name: 'Result fetched', cost: 0}], 
                approve: [{name: 'Approve submited',cost: 0}, {name: 'Approve completed', cost: 0}], 
@@ -619,4 +619,4 @@ const BetAreaCell = () => {
 }
 
 
-export default BetAreaCell
+export default BetArea
