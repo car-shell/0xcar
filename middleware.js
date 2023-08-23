@@ -6,8 +6,8 @@ export function middleware(request) {
   const url = request.nextUrl.clone();
   const ua = request.headers.get("user-agent") || "";
   const isMobileDevice = isMobile({ ua, tablet: false });
-  const isTabletDevice = !isMobileDevice && isMobile({ ua, tablet: true });
-  console.log(isMobileDevice);
+//   const isTabletDevice = !isMobileDevice && isMobile({ ua, tablet: true });
+  console.log("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
   if (isMobileDevice && !url.pathname.startsWith("/mobile")) {
       url.pathname = "/mobile";
     return NextResponse.redirect(url);
