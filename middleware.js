@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import isMobile from "is-mobile";
 
-export function middleware(request) {
+export default function middleware(request) {
   const response = NextResponse.next();
   const url = request.nextUrl.clone();
   const ua = request.headers.get("user-agent") || "";
