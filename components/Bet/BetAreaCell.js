@@ -538,7 +538,7 @@ const BetArea = () => {
        { rules.map(r => {
           return <div className={styles.rule_button} key={r.key} onClick={ruleClick(r) } style={{
             backgroundColor: r.value===title.value?"#142d23":"", 
-            borderRight: r.key!==2?"solid 1px #333":"",
+            // borderRight: r.key!==2?"solid 1px #333":"",
             borderBottom: r.value===title.value?"2px solid #06FC99":"none"}}>{r.value}</div>
          })
         }

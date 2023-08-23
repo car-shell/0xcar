@@ -69,10 +69,12 @@
   justify-content: space-between;
   align-items: center;
 }
+
 .rule_tab {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
+  align-items: center;
 }
 .livebetting {
   display: flex;
