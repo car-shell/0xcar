@@ -103,6 +103,7 @@ const BetAreaCell = () => {
             
           } else {
             tipInfo.time = betLogs[index].time
+            tipInfo.transactionHash = betLogs[index].transactionHash
             betLogs[index] = tipInfo
           }
 
