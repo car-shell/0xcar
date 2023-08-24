@@ -130,7 +130,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
         if (onlyTime) {
             return `${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
         }
-        return `${padStart(d.getMonth())}-${padStart(d.getDate())} ${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
+        return `${padStart(d.getMonth()+1)}-${padStart(d.getDate())} ${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
     }
 
     // const hashContent= (h, i, bet)=>{
