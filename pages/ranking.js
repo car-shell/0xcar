@@ -1,16 +1,13 @@
 import Ranking from '../components/MainPage/Ranking'
 import Layout from '../components/Layout/Layout'
-import styles from '../styles/MainPage.module.css'
-import t from '../styles/Bet.module.css'
+import Stack from '@mui/material/Stack';
 
 export default function Home() {
   return (
     <Layout showMenu={true} showFooter={false}>
-        <div className={t.container} style={{height: 'calc(100vh - 72px'}}>
-          <div className={`${styles.container} ${styles.flex_column}`} >
+          <Stack direction="column" justifyContent="center" alignItems="center" sx={{marginTop: '32px'}} >
               <Ranking width='70%'/>
-          </div>
-        </div>
+          </Stack>
     </Layout>
   )
 }

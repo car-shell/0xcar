@@ -134,9 +134,9 @@ const Header = ({showMenu=true}) => {
           <div className={styles.menuItem} style={curRouter=='/ranking'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/ranking" >Ranking</BaseLink>
           </div> 
-          {/* <div className={styles.menuItem} style={curRouter=='/faucet'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+          <div className={styles.menuItem} style={curRouter=='/faucet'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/faucet" >Faucet</BaseLink>
-          </div> */}
+          </div>
           {/* <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/nft" >NFT</BaseLink>
           </div>
