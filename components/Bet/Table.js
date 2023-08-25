@@ -13,6 +13,7 @@ import Modal, { ConfirmationModal, useModal } from '../Tips';
 import { store, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import { BetStatus } from '..//constant'
+import Image from 'next/image'
 
 function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight="478px"}) { 
     
@@ -168,6 +169,11 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
         }
         return "#fff"
     }
+
+    const copyAddress = (v) => {
+        navigator.clipboard.writeText(v);
+        // showToast('Address copied')
+    }
     
     const buttonStyle = (status) => {
         
@@ -212,9 +218,14 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                                                         <div className={styles.number} style={{backgroundColor: numberColor(column, row)}}>{formatNumber(value, row.odds==100?2:1)}</div>
                                                     </TableCell>
                                                     :
-                                                column.accessor==='winner'?
-                                                    <TableCell sx={{color: "#02A7F0",  borderColor:'#000'}} key={column.accessor} align={column.align} >
-                                                        <a style={{cursor: 'pointer'}} onClick={e=>clickAddress(row)} >{column.format(value)}</a>
+                                                column.accessor==='winner' || column.accessor === 'address'?
+                                                    <TableCell sx={{color: "#fff",  borderColor:'#000'}} key={column.accessor} align={column.align} >
+                                                        <div style={{display: "flex", direction: "row", justifyContent: "center", columnGap: "2px"}}>
+                                                        {column.format(value)}
+                                                        <div onClick={()=>copyAddress(value)}>
+                                                        <Image src="/copy.png" width="16" height="16" />
+                                                        </div>
+                                                        </div>
                                                     </TableCell>
                                                     :
                                                 column.accessor==='amount' ?

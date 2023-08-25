@@ -43,7 +43,7 @@ const LiveBettingRecord = () => {
                 accessor: "winner",
                 align: "center",
                 format: (address)=>{
-                    return address.slice(0, 5) + '...' + address.slice(38)
+                    return address.slice(0, 6) + '...' + address.slice(38)
                 }
                 
             },

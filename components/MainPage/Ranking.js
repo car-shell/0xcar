@@ -80,13 +80,15 @@ export default function Ranking({width = '920px'}) {
             {
                 Header: "Ranking",
                 accessor: "ranking",
-                align: "center",
-                
+                align: "center"
             },
             {
                 Header: "Player",
                 accessor: "address",
-                align: "center"
+                align: "center",
+                format: (address)=>{
+                    return address.slice(0, 10) + '...' + address.slice(34)
+                }
             },
             {
                 Header: "Win Count",
@@ -116,7 +118,10 @@ export default function Ranking({width = '920px'}) {
             {
                 Header: "Player",
                 accessor: "address",
-                align: "center"
+                align: "center",
+                format: (address)=>{
+                    return address.slice(0, 10) + '...' + address.slice(34)
+                }
             },
             {
                 Header: "Bet Count",
