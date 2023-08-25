@@ -87,7 +87,7 @@ export default function Ranking({width = '920px'}) {
                 accessor: "address",
                 align: "center",
                 format: (address)=>{
-                    return address.slice(0, 10) + '...' + address.slice(34)
+                    return address.slice(0, 6) + '...' + address.slice(38)
                 }
             },
             {
@@ -120,7 +120,7 @@ export default function Ranking({width = '920px'}) {
                 accessor: "address",
                 align: "center",
                 format: (address)=>{
-                    return address.slice(0, 10) + '...' + address.slice(34)
+                    return address.slice(0, 6) + '...' + address.slice(38)
                 }
             },
             {

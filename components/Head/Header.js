@@ -148,14 +148,14 @@ const Header = ({showMenu=true}) => {
           </div> */}
         </div>}
         <div className={styles.wallet + ' ' + styles.walletFont } onClick={walletButton}>
-          { !isConnected ? "Connect Wallet" : address.slice(0, 5) + '...' + address.slice(38) }
+          { !isConnected ? "Connect Wallet" : address.slice(0, 6) + '...' + address.slice(38) }
           { address && curRouter!='/' && <img className={styles.icon } style= {showWalletInfo?{transform: 'rotate(-180deg)'}:{}} src="down.png" />}
         </div>
       </header>
       {showWalletInfo && <div className={styles.walletDetailContainer + ' ' + styles.walletFont}>
         <div className={styles.addressRow}>
           <div >
-            {address.slice(0, 5) + '...' + address.slice(38)}
+            {address.slice(0, 6) + '...' + address.slice(38)}
           </div>
           <div onClick={copyAddress}>
             <img className={styles.icon} src="copy.png" />
@@ -173,7 +173,7 @@ const Header = ({showMenu=true}) => {
           </div>
         </div>
         <div className={styles.separate} />
-        <button className={styles.walletButton} style={{backgroundColor: '#c00017'}}>Buy {token?.symbol}</button>
+        <button className={styles.walletButton} style={{backgroundColor: '#c00017'}} onClick={()=>window.open("https://discord.gg/6b6JFrNzsT", '_bank')}>Get {token?.symbol}</button>
         <button className={styles.walletButton} style={{backgroundColor: '#333333'}} onClick={disconnect}>Disconnect</button>
       </div>}
     </>

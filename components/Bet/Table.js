@@ -14,11 +14,13 @@ import { store, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import { BetStatus } from '..//constant'
 import Image from 'next/image'
+import useToast from '../Toast'
 
 function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight="478px"}) { 
     
     const [rows, setRows] = useState(data);
     const { isShown, toggle } = useModal();
+    const {ToastUI, showToast} = useToast()
     const [modelMsg, setModelMsg] = useState('');
     const [modelHeader, setModelHeader] = useState('');
     const [loadingMsg, setLoadingMsg] = useState("Loading, please wait...")
@@ -172,7 +174,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
 
     const copyAddress = (v) => {
         navigator.clipboard.writeText(v);
-        // showToast('Address copied')
+        showToast('Address copied')
     }
     
     const buttonStyle = (status) => {
@@ -244,7 +246,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                                                     :
                                                 column.accessor==='total'?
                                                     <TableCell sx={{color: "#fff", borderColor:'#000'}} key={column.accessor} >
-                                                        <div style={{textAlign: 'right', width: "10%", direction: 'rtl', position: 'relative', left: '65%'}} >
+                                                        <div style={{textAlign: 'right', width: "10%", direction: 'rtl', position: 'relative', left: '55%'}} >
                                                             {column.format(value, row.amount)}
                                                         </div>
                                                     </TableCell>
@@ -294,6 +296,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                 </div>}
             </TableContainer>
         </Paper>
+        <ToastUI />
         <Modal
                 isShown={isShown}
                 hide={toggle}

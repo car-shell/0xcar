@@ -143,7 +143,7 @@
   border-style: solid;
   border-radius: 5px;
   border-color: #000000;
-  background-color: #333333;
+  background-color: #272a2e;
 
   width: 300px;
   height: 210px;
@@ -182,7 +182,7 @@
   width: 80%;
   border: 1px;
   border-bottom-style: solid;
-  border-color: rgb(102, 215, 119);  
+  border-color: #aaa;  
 }
 
 .walletButton {

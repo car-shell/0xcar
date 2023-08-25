@@ -173,7 +173,7 @@ const Faucet = () => {
                     <img src='MetaMask.png' className={s.icon} style={{flex: 2, marginLeft: "8px"}}/>
                     <div style={{flex: 16}} />
                     <div onClick={openConnectModal} style={{flex: 9}}>
-                        {address.slice(0, 5) + '...' + address.slice(38)}
+                        {address.slice(0, 6) + '...' + address.slice(38)}
                     </div>
                 </div> :
                 <div onClick={()=>window.open("https://discord.com/invite/bnbchain", '_bank')}  className={s.button_red}>

@@ -118,14 +118,14 @@ const HeaderCell = ({showMenu=true}) => {
           </div>
         </Link>
         <div className={styles.wallet + ' ' + styles.walletFont } onClick={walletButton}>
-          { !isConnected ? "Connect Wallet" : address.slice(0, 5) + '...' + address.slice(38) }
+          { !isConnected ? "Connect Wallet" : address.slice(0, 6) + '...' + address.slice(38) }
           { address && curRouter!='/' && <img className={styles.icon } style= {showWalletInfo?{transform: 'rotate(-180deg)'}:{}} src="down.png" />}
         </div>
       </header>
       {showWalletInfo && <div className={styles.walletDetailContainer + ' ' + styles.walletFont}>
         <div className={styles.addressRow}>
           <div >
-            {address.slice(0, 5) + '...' + address.slice(38)}
+            {address.slice(0, 6) + '...' + address.slice(38)}
           </div>
           <div onClick={copyAddress}>
             <img className={styles.icon} src="copy.png" />

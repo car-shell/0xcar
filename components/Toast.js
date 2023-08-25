@@ -46,7 +46,7 @@ const useToast = ()=>{
     },[])
 
     const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert elevation={6} ref={ref} {...props} />;
+        return <MuiAlert elevation={5} ref={ref} {...props} />;
     });
 
     function NoTransition(props) {
