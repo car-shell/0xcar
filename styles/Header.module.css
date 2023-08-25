@@ -46,6 +46,15 @@
   cursor: initial;
 }
 
+.envLabel {
+  font: 200 12px normal sans;
+  color: #aaa;
+  padding: 1px 2px 1px 2px;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
 .menu {
   display: flex;
   flex-direction: row;
