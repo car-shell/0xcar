@@ -115,6 +115,9 @@ const HeaderCell = ({showMenu=true}) => {
             <div className={styles.logo} style={{cursor: 'pointer'}}>
               <span style={{color: "#D9001B"}}>0x</span>Cardinal
             </div>
+            <div className={styles.envLabel}>
+              devnet
+            </div>
           </div>
         </Link>
         <div className={styles.wallet + ' ' + styles.walletFont } onClick={walletButton}>
