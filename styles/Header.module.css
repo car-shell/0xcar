@@ -47,12 +47,12 @@
 }
 
 .envLabel {
-  font: 200 12px normal sans;
-  color: #aaa;
-  padding: 1px 2px 1px 2px;
-  border: 1px solid #aaa;
-  border-radius: 8px;
-  margin-bottom: 8px;
+  font: 200 8px normal sans;
+  color: white;
+  padding: 0px 8px 0px 8px;
+  border: 1px solid white;
+  border-radius: 12px;
+  margin-bottom: 12px;
 }
 
 .menu {
@@ -125,6 +125,7 @@
 .icon {
   height: 16px;
   width: 16px;
+  margin-top: 2px;
 }
 
 .rotate {
@@ -136,8 +137,8 @@
 
 .walletDetailContainer {
   position: fixed;
-  left: calc( max(100%, 960px) - 16px - 300px );
-  top: 80px;
+  left: calc( max(100%, 960px) - 16px - 280px );
+  top: 68px;
 
   border: 1px;
   border-style: solid;
@@ -145,7 +146,7 @@
   border-color: #000000;
   background-color: #272a2e;
 
-  width: 300px;
+  width: 280px;
   height: 210px;
 
   display: flex;
@@ -153,7 +154,8 @@
   justify-content: space-between;
   align-items: center;
 
-  padding: 16px 0px;
+  padding-top: 14px ;
+  padding-bottom: 16px;
 
   z-index: 999;
 }
@@ -202,3 +204,8 @@
 /* .walletButton:hover {
   background-color: #c00017;
 } */
+
+.cdnlLabel {
+  font: 200 8px normal sans;
+  color: #eee;
+}

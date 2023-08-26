@@ -222,10 +222,10 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                                                     :
                                                 column.accessor==='winner' || column.accessor === 'address'?
                                                     <TableCell sx={{color: "#fff",  borderColor:'#000'}} key={column.accessor} align={column.align} >
-                                                        <div style={{display: "flex", direction: "row", justifyContent: "center", columnGap: "2px"}}>
+                                                        <div style={{display: "flex", direction: "row", justifyContent: "center", columnGap: "4px"}}>
                                                         {column.format(value)}
                                                         <div onClick={()=>copyAddress(value)}>
-                                                        <Image src="/copy.png" width="16" height="16" />
+                                                        <Image src="/copy.png" width="16" height="16" style={{marginTop: '2px'}}/>
                                                         </div>
                                                         </div>
                                                     </TableCell>

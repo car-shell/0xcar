@@ -26,9 +26,9 @@ export const StyledModal = styled.div`
   background: #000;
   position: relative;
   margin: auto;
-  border-radius: 8px;
-  border-style: solid;
-  border-color: rgb(51, 51, 51)
+  // border-radius: 8px;
+  // border-style: solid;
+  // border-color: rgb(51, 51, 51)
 `;
 
 export const Header = styled.div`

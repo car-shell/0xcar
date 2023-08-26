@@ -10,6 +10,7 @@ import Link from "next/link";
 import BaseLink from './BaseLink';
 import { useRouter } from 'next/router';
 import useToast from '../Toast'
+import {formatAmount} from '../utils'
 
 import { InjectedConnector } from 'wagmi/connectors/injected';
 // import { signIn, signOut, useSession } from 'next-auth/react';
@@ -116,7 +117,7 @@ const Header = ({showMenu=true}) => {
               <span style={{color: "#D9001B"}}>0x</span>Cardinal
             </div>
             <div className={styles.envLabel}>
-              devnet
+              Devnet
             </div>
           </div>
         </Link>
@@ -149,7 +150,7 @@ const Header = ({showMenu=true}) => {
         </div>}
         <div className={styles.wallet + ' ' + styles.walletFont } onClick={walletButton}>
           { !isConnected ? "Connect Wallet" : address.slice(0, 6) + '...' + address.slice(38) }
-          { address && curRouter!='/' && <img className={styles.icon } style= {showWalletInfo?{transform: 'rotate(-180deg)'}:{}} src="down.png" />}
+          { address && <img className={styles.icon } style= {showWalletInfo?{transform: 'rotate(-180deg)'}:{}} src="down.png" />}
         </div>
       </header>
       {showWalletInfo && <div className={styles.walletDetailContainer + ' ' + styles.walletFont}>
@@ -160,16 +161,16 @@ const Header = ({showMenu=true}) => {
           <div onClick={copyAddress}>
             <img className={styles.icon} src="copy.png" />
           </div>
-          <div onClick={link}>
+          {/* <div onClick={link}>
             <img className={styles.icon} src="link.png" />
-          </div>
+          </div> */}
         </div>
         <div className={styles.balanceRow}>
           <div >
-            {token?.symbol} Balance
+            Balance
           </div>
           <div>
-            {balance}
+            {formatAmount(balance)} <span className={styles.cdnlLabel}> {token?.symbol} </span>
           </div>
         </div>
         <div className={styles.separate} />
