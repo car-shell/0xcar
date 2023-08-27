@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiAxios = axios.create({
-  baseURL: 'https://devnet.api.0xcardinal.io/api/v1',
+  baseURL: 'https://testnet.api.0xcardinal.io/api/v1',
   timeout: 50000,
   headers: {
     'Content-Type': 'application/json; charset=utf-8'

@@ -47,7 +47,7 @@
 }
 
 .envLabel {
-  font: 200 8px normal sans;
+  font: 200 10px normal sans;
   color: white;
   padding: 0px 8px 0px 8px;
   border: 1px solid white;
@@ -206,6 +206,6 @@
 } */
 
 .cdnlLabel {
-  font: 200 8px normal sans;
+  font: 200 10px normal sans;
   color: #eee;
 }

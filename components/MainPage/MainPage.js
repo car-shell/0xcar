@@ -38,7 +38,7 @@ const MainPage = () => {
                 </div> 
                 
                 {/* <div className={styles.fontBigTitle + ' ' + styles.bigStress }>
-                    <span style={{color: "#D9001B"}}>0x</span>Cardinal <span style={{color: "#027DB4"}}>devnet</span> about to go live...
+                    <span style={{color: "#D9001B"}}>0x</span>Cardinal <span style={{color: "#027DB4"}}>alpha</span> about to go live...
                 </div> 
 
                 <div className={`${styles.flex_row} ${styles.buttonRow} ${styles.topStress}`}>

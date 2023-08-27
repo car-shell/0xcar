@@ -117,7 +117,7 @@ const Header = ({showMenu=true}) => {
               <span style={{color: "#D9001B"}}>0x</span>Cardinal
             </div>
             <div className={styles.envLabel}>
-              Devnet
+              Alpha
             </div>
           </div>
         </Link>
