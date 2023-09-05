@@ -31,7 +31,7 @@ const StateProvider = ({ children }) => {
         console.log(`push ${action.payload}, type ${SET_WIN_LOGS}`);
         return { ...state, winLogs: action.payload }
       default:
-        throw Error()
+        throw new Error("")
     }
   }, initialState)
 

@@ -17,7 +17,7 @@ const LiveBettingRecord = () => {
             const r = logs.data.map((item, i)=>{
                 return { 
                     id: item["bet_time"] + item["player"],
-                    time: (new Date(item["bet_time"]+"Z")).toLocaleString(), 
+                    time: new Date(item["bet_time"]+"Z"), 
                     winner: item["player"], 
                     amount: item["bet_amount"], 
                     odds: item["odds"],

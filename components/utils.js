@@ -5,7 +5,7 @@ export function formatAmount(amount) {
     } else if (typeof amount === 'object') {
         amount = amount.toNumber()
     } else if (typeof amount !== 'number'){
-        throw Error()
+        throw new Error("")
     }
 
     let formattedNumber = amount.toFixed(2);

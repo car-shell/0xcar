@@ -128,12 +128,12 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
             useGrouping: false
         }).format(x)
     } 
-    const formatTime = (timestamp, onlyTime=false) => {
+    const formatTime = (timestamp, needYear=false, onlyTime=false) => {
         let d = new Date(timestamp)
         if (onlyTime) {
             return `${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
         }
-        return `${padStart(d.getMonth()+1)}-${padStart(d.getDate())} ${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
+        return `${needYear?padStart(d.getFullYear())+"-":""}${padStart(d.getMonth()+1)}-${padStart(d.getDate())} ${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
     }
 
     // const hashContent= (h, i, bet)=>{
