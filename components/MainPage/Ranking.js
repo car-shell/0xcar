@@ -45,7 +45,9 @@ export default function Ranking({width = '920px'}) {
       const logs = await getUrl("/points_ranking")
       console.log(logs);
       const r = logs.data.map((item, i)=>{
-        return {ranking: item['last_24_ranking'], address: item['player'], bet_count: item['last_24_bet_counts'], bet_amount: item["last_24_bet_amounts"], points: item['last_24'], total_points: item['total']}
+        return {ranking: item['last_24_ranking'], address: item['player'], bet_count: item['last_24_bet_counts'],
+            boost: item['last_24_ranking']<10?2:item['last_24_ranking']<20?1.5:1.2,
+            bet_amount: item["last_24_bet_amounts"], points: item['last_24'], total_points: item['total']}
       })
       
       setPointsRows(r)
