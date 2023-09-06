@@ -14,7 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import useTokenContract from "../../data/token"
 
 const Faucet = () => {
-    const {chain} = useNetwork()
+    const {chain, chains} = useNetwork()
     const {token} = useTokenContract()
     const chainId = useMemo(()=>{ return chain?.id ? chain.id : defaultChainId}, [chain])
     const faucetContractAddress = ADDRESSES[chainId]?.faucet;
@@ -30,6 +30,7 @@ const Faucet = () => {
     const {balance} = useBalance();
     const {ToastUI, showToast} = useToast()
     const { openConnectModal } = useConnectModal();
+    const { openChainModal } = useChainModal();
 
     const MINDURATION = 4*60*60*1000;
     useEffect(()=>{
@@ -128,6 +129,10 @@ const Faucet = () => {
     }
 
     const addAsset = ()=>{
+        if (chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1) {
+            openChainModal();
+            return
+        }
         window.ethereum.request({
             method: 'wallet_watchAsset',
             params: {

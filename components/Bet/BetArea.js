@@ -267,7 +267,7 @@ const BetArea = () => {
 
   const withdrawWin = (info)=>{
     setIsLoading(true)
-    setActiveStep('withdraw', 0, InfoTip(info))
+    setActiveStep('withdraw', 0, InfoTip({...info, title: 'withdraw'}))
 
     withdraw(info.id, ()=>{
       setStepInfo((pre)=>{
@@ -314,7 +314,7 @@ const BetArea = () => {
             })
 
             setStepInfo((pre)=>{
-              return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", "YOU WIN THE BET!")}
+              return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", <>YOU WIN THE BET!<div style={{font: '700 20px normal sans', textAlign: "center", paddingTop: "24px"}}>+{formatAmount(tipInfo?.amount*((tipInfo?.odds-1)*0.8+1))} {token?.symbol}</div></>)}
             })
 
             console.log('you win');
@@ -460,7 +460,7 @@ const BetArea = () => {
     return false
   }
 
-  const InfoTip = ({type, odds, number, amount, status=-3}) => {
+  const InfoTip = ({type, odds, number, amount, status=-3, title='bet'}) => {
     const formatNumber = (number, odds) => {
       if (number == 'undefined' || odds == 'undefined') {
         return '';
@@ -477,7 +477,6 @@ const BetArea = () => {
         return number
       }
     }
-
     return (<>
         <div className={styles.tipLine}>
           <div className={styles.tipTilte}>Type</div>
@@ -496,15 +495,15 @@ const BetArea = () => {
           <div className={styles.tipValue}>{formatAmount(amount?amount:'')}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{status==BetArea.win?'Payout':'Potential Payout' }</div>
+          <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Payout':'Potential Payout' }</div>
           <div className={styles.tipValue}>{formatAmount(amount*odds)}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{status==BetArea.win?'Profit':'Potential Profit'}</div>
+          <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Profit':'Potential Profit'}</div>
           <div className={styles.tipValue}>{formatAmount(amount*odds-amount)}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{status==BetArea.win?'Net Win':'Potenitial Net Win'}</div>
+          <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Net Win':'Potenitial Net Win'}</div>
           <div className={styles.tipValue}>{formatAmount(amount*((odds-1)*0.8+1))}</div>
         </div></>)
   }
@@ -517,7 +516,7 @@ const BetArea = () => {
           {!isShow?
             <ReactLoading type='spinningBubbles' color='#06FC99' height={'16%'} width={'12%'} />:
             <CustomizedSteppers steps={steps} curStep={active} />}
-          <div style={{color: '#AAAAAA', textAlign: 'left', width: '90%', font: '650 16px normal sans', paddingBottom: '8px'}}>{stepTitle?stepTitle.charAt(0).toUpperCase() + stepTitle.slice(1):''} Information</div>
+          <div style={{color: '#AAAAAA', textAlign: 'left', width: '90%', font: '650 16px normal sans', paddingBottom: '8px'}}>{stepTitle?stepTitle.charAt(0).toUpperCase() + stepTitle.slice(1):''} {(stepTitle && stepTitle=='bet' && (tipInfo.status==BetStatus.win || tipInfo.status==BetStatus.failed))?'Result': 'Information'}</div>
           <div className={styles.tipContent}>
             {stepMsg}
           </div>

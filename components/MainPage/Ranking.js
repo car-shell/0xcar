@@ -7,6 +7,8 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Image from 'next/image'
 import StickyHeadTable from "../Bet/Table";
 import {getUrl} from "../../pages/api/axios";
 import { styled } from '@mui/material/styles';
@@ -20,8 +22,6 @@ function createData(ranking, address, count,  total) {
   return { id: address, ranking: ranking, address: address, count: count, total: total };
 }
 
-
-
 function preventDefault(event) {
   event.preventDefault();
 }
@@ -31,6 +31,8 @@ export default function Ranking({width = '920px'}) {
   const [winRows, setWinRows] = React.useState([]);
   const [betRows, setBetRows] = React.useState([]);
   const [pointsRows, setPointsRows] = React.useState([]);
+  const [showPointsRules, setShowPointsRules] = React.useState(false);
+  const pointsRulesRef = React.useRef()
 
   const {chain, chains} = useNetwork()
   const chainId = React.useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
@@ -233,6 +235,7 @@ export default function Ranking({width = '920px'}) {
       // fontSize: theme.typography.pxToRem(15),
       // marginRight: '48px',
       marginBottom: '32px',
+      marginLeft: '16px',
       
       // border: '1px solid #06FC99',
       borderRadius: '75px',
@@ -241,9 +244,11 @@ export default function Ranking({width = '920px'}) {
       font: '700 normal 16px sans',
       minHeight: '40px',
       height: '40px',
+      border: '1px solid white',
 
       '&.Mui-selected': {
         backgroundColor: '#049659',
+        borderColor: '#049659',
         color: '#fff',
       },
       '&.Mui-focusVisible': {
@@ -254,21 +259,37 @@ export default function Ranking({width = '920px'}) {
 
   return (
     <React.Fragment>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', padding: '8px 0 0 0px' }} >
+      <Stack direction='row' alignItems='baseline' sx={{columnGap: '4px'}} >
+        <Image src='./fire.png' width='32' height='32' />
+        <Typography component='div' sx={{marginTop: '18px', font: '700 normal 36px Arial'}}>
+          ROLLING <span style={{color: "red"}}>24H</span> LEADERBOARD
+        </Typography>
+      </Stack>
+      <Typography component='div' sx={{marginTop: '18px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
+        Climb the leaderboard to amplify your points! The top 50 within a 24-hour window earn a bonus!
+      </Typography>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: '68px 0 0 0px' }} >
           <StyledTabs onChange={handleChange} value={value} selectionFollowsFocus={true}>
             <StyledTab disableRipple label="Points Ranking" index={0} />
             <StyledTab disableRipple label="Winning Ranking" index={1} />
-            <StyledTab label="Bet Ranking" index={2} />
+            <StyledTab disableRipple label="Bet Ranking" index={2} />
           </StyledTabs>
       </Box>
+      
       <Box hidden={value!==0} sx={{
         width: width,
-        border: '1px solid #333333',
-        borderRadius: '5px',
-        borderTop: '1px solid #06FC99',
-        boxShadow: '5px 5px 5px rgba(85, 85, 85, 0.34901960784313724)'
       }}>
+        <Typography ref={pointsRulesRef} component='div' sx={{font: '400 normal 14px Arial', textAlign: 'right', cursor:'pointer'}} color='#8080FF' onClick={()=>setShowPointsRules(!showPointsRules)}>
+          Points Rules
+        </Typography>
+        <Box sx={{
+          border: '1px solid #333333',
+          borderRadius: '5px',
+          borderTop: '1px solid #06FC99',
+          boxShadow: '5px 5px 5px rgba(85, 85, 85, 0.34901960784313724)'
+        }}>
         <StickyHeadTable columns={pointsColumns} data={pointsRows} maxHeight={null}/>
+        </Box>
       </Box>
       <Box hidden={value!==1} sx={{
         width: width,
@@ -288,6 +309,30 @@ export default function Ranking({width = '920px'}) {
       }}>
         <StickyHeadTable columns={betColumns} data={betRows} maxHeight={null}/>
       </Box>
+      {showPointsRules && <Box sx={{ position: 'absolute',
+          right: pointsRulesRef.current.getBoundingClientRect().left,
+          top: pointsRulesRef.current.getBoundingClientRect().bottom,
+          width: "360px",
+          height: "200px",
+          zIndex: '999',
+          padding: '8px 0px 0px 8px',
+          backgroundColor: "#272a2e"}}>
+          <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
+            Points Rules
+          </Typography>
+          <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
+            * Points = (Bet count * 10) + (Bet Amount / 10)
+          </Typography>
+          <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
+            * Users ranked 1-10 will get 2.0x their POINTS earned in 24H
+          </Typography>
+          <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
+            * Users ranked 11-25 will get 1.5x their POINTS earned in 24H
+          </Typography>
+          <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
+            * Users ranked 31-50 will get 1.2x their POINTS earned in 24H
+          </Typography>
+      </Box>}
     </React.Fragment>
   );
 }
