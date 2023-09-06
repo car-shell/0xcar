@@ -9,6 +9,7 @@ import { ADDRESSES } from '../../config/constants/address'
 import { defaultChainId } from "../../config/constants/chainId";
 import {
   useConnectModal,
+  useChainModal
 } from '@rainbow-me/rainbowkit';
 import CircularProgress from '@mui/material/CircularProgress';
 import useTokenContract from "../../data/token"
