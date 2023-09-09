@@ -278,6 +278,13 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                                                         {row.win!=BetStatus.started && <button onClick={column.click(row)} style={buttonStyle(row.status)}>{row.status==BetStatus.submitted?"query":row.status==BetStatus.win||row.status==BetStatus.timeout?"withdraw":"view"}</button>}
                                                     </TableCell>
                                                     :
+                                                column.accessor==='yesterday'?
+                                                    <TableCell sx={{color: "#06FC99", borderColor:'#000'}} key={column.accessor} align={column.align} >
+                                                        {column.format
+                                                            ? column.format(value)
+                                                            : value}
+                                                    </TableCell>
+                                                    :
                                                     <TableCell sx={{color: "#fff", borderColor:'#000'}} key={column.accessor} align={column.align} >
                                                         {column.format
                                                             ? column.format(value)

@@ -49,7 +49,7 @@ export default function Ranking({width = '920px'}) {
       const r = logs.data.map((item, i)=>{
         return createData(i+1, item["address"], item["win_count"], item["total_win"])
       })
-      
+
       setWinRows(r)
     } catch (error) {
       console.log(error);
@@ -65,7 +65,23 @@ export default function Ranking({width = '920px'}) {
         return { id: i+1, ranking: i+1, address: item["address"], count: item["bet_count"], total: item["total_bet"],
             total_points: item['total_point'] }; //createData(i+1, item["address"], item["bet_count"], item["total_bet"])
       })
-      setBetRows(r)
+
+      const pr = await getUrl("/points_record")
+      if (pr.data.length != 0) {
+        console.log(r);
+        const l = pr.data.map((item)=> {
+          for(let record_bet of r) {
+            if (record_bet['address'] == item['player']) {
+              return {...record_bet, yesterday: item['points']}
+            }
+          }
+        })
+        setBetRows(l)
+      } else {
+        setBetRows(r)
+      }
+    
+      
     } catch (error) {
       console.log(error);
     }
@@ -109,6 +125,14 @@ export default function Ranking({width = '920px'}) {
                 align: "center",
                 format: (x)=>{
                   return formatAmount(x)
+                }
+            },
+            {
+                Header: "Yesterday Profit",
+                accessor: "yesterday",
+                align: "center",
+                format: (i)=>{
+                    return i===undefined?0:"+"+i
                 }
             },
             {

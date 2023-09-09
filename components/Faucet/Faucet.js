@@ -130,10 +130,12 @@ const Faucet = () => {
     }
 
     const addAsset = ()=>{
-        if (chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1) {
+
+        if (!isConnected || (chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1)) {
             openChainModal();
             return
         }
+
         window.ethereum.request({
             method: 'wallet_watchAsset',
             params: {
