@@ -128,7 +128,7 @@ export default function Ranking({width = '920px'}) {
                 }
             },
             {
-                Header: "Yesterday Profit",
+                Header: "Yesterday Reward",
                 accessor: "yesterday",
                 align: "center",
                 format: (i)=>{
@@ -165,7 +165,7 @@ export default function Ranking({width = '920px'}) {
                 align: "center",
             },
             {
-                Header: "Total Netwin",
+                Header: "Total Net Win",
                 accessor: "total",
                 align: "center",
                 format: (x)=>{
