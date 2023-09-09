@@ -501,11 +501,11 @@ const BetAreaCell = () => {
           <div className={styles.tipValue}>{formatAmount(amount*odds)}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{status==BetAreaCell.win?'Profit':'Potential Profit'}</div>
+          <div className={styles.tipTilte}>{status==BetAreaCell.win?'Net Win':'Potential Net Win'}</div>
           <div className={styles.tipValue}>{formatAmount(amount*odds-amount)}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{status==BetAreaCell.win?'Net Win':'Potenitial Net Win'}</div>
+          <div className={styles.tipTilte}>{status==BetAreaCell.win?'Net Payout':'Potential Net Payout'}</div>
           <div className={styles.tipValue}>{formatAmount(amount*((odds-1)*0.8+1))}</div>
         </div></>)
   }

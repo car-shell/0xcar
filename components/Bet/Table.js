@@ -38,25 +38,25 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
     
     const onCancel = () => toggle();
 
-    const getWinNumberPos = (h, odds) => {
-        let hash = h.slice(2)
-        let i = null;
-        switch (odds) {
-            case 5:
-                i = hash.search(/[0-4]/)
-                return [i+2]
-            case 10:
-                i = hash.search(/[0-9]/)
-                return [i+2]
-            case 100:
-                i = hash.search(/[0-9]/)
-                let j = hash.slice(i+1).search(/[0-9]/)+i+1
-                console.log(i, j);
-                return [i+2, j+2]
-            default:
-                return -1
-        }
-    }
+    // const getWinNumberPos = (h, odds) => {
+    //     let hash = h.slice(2)
+    //     let i = null;
+    //     switch (odds) {
+    //         case 5:
+    //             i = hash.search(/[0-4]/)
+    //             return [i+2]
+    //         case 10:
+    //             i = hash.search(/[0-9]/)
+    //             return [i+2]
+    //         case 100:
+    //             i = hash.search(/[0-9]/)
+    //             let j = hash.slice(i+1).search(/[0-9]/)+i+1
+    //             console.log(i, j);
+    //             return [i+2, j+2]
+    //         default:
+    //             return -1
+    //     }
+    // }
     const getWinNumber = (h, odds)=>{
         let hash = h.slice(2)
         let i = null;

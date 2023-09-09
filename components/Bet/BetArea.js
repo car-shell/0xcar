@@ -310,12 +310,15 @@ const BetArea = () => {
               }, 4000);
 
             setTipInfo((preTip)=>{
+              console.log(`tipInfo amount: ${preTip.amount} `);
+              setStepInfo((pre)=>{
+                console.log(`tipInfo amount: ${preTip.amount} `);
+                return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", <>YOU WIN THE BET!<div style={{font: '700 20px normal sans', textAlign: "center", paddingTop: "24px"}}>+{formatAmount(preTip?.amount*((preTip?.odds-1)*0.87+1))} {token?.symbol}</div></>)}
+              })
               return {...preTip, status: BetStatus.win, action: null, random: preTip.number}
             })
 
-            setStepInfo((pre)=>{
-              return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", <>YOU WIN THE BET!<div style={{font: '700 20px normal sans', textAlign: "center", paddingTop: "24px"}}>+{formatAmount(tipInfo?.amount*((tipInfo?.odds-1)*0.8+1))} {token?.symbol}</div></>)}
-            })
+            
 
             console.log('you win');
           } else {
@@ -356,11 +359,12 @@ const BetArea = () => {
                 </div>
                 </>)
           } else if (e?.reason != undefined && e?.reason?.indexOf("no betting") != -1){
+            console.log(e);
             setBetResult(BetStatus.revert, '-')
             setActiveStep('bet', 3, <>
                 <span style={{font: '650 20px normal sans', color: '#F03434', textAlign: 'center', padding: '40px 0px 20px 0px'}}>NO RECORD</span>
                 <div style={{paddingBottom: '20px'}}>
-                <span style={{font: '650 18px normal sans', color: '#FFFFFF', textAlign: 'center'}}><p>No bet record found. <br />Maybe some error in local storage!</p></span>
+                <span style={{font: '650 18px normal sans', color: '#FFFFFF', textAlign: 'center'}}><p>No bet record found. <br />Maybe some problem in local storage!</p></span>
                 </div>
                 </>)
           }
@@ -499,12 +503,12 @@ const BetArea = () => {
           <div className={styles.tipValue}>{formatAmount(amount*odds)}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Profit':'Potential Profit'}</div>
+          <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Net Win':'Potential Net Win'}</div>
           <div className={styles.tipValue}>{formatAmount(amount*odds-amount)}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Net Win':'Potenitial Net Win'}</div>
-          <div className={styles.tipValue}>{formatAmount(amount*((odds-1)*0.8+1))}</div>
+          <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Net Payout':'Potential Net Payout'}</div>
+          <div className={styles.tipValue}>{formatAmount(amount*((odds-1)*0.87+1))}</div>
         </div></>)
   }
 

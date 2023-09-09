@@ -254,7 +254,10 @@ export default function Ranking({width = '920px'}) {
           ROLLING LEADERBOARD: Phase 1
         </Typography>
       </Stack>
-      <Typography component='div' sx={{marginTop: '18px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
+      <Typography component='div' sx={{marginTop: '14px', font: '400 normal 20px Arial'}}>
+        Duration: September 10 - 30, 2023
+      </Typography>
+      <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         Climb the leaderboard to boost your points!
       </Typography>
       <Typography component='div' sx={{ font: '700 normal 18px Arial'}} color='#aaaaaa'>
