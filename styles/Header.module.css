@@ -47,12 +47,12 @@
 }
 
 .envLabel {
-  font: 200 10px normal sans;
+  font: 200 12px normal sans;
   color: white;
   padding: 0px 8px 0px 8px;
-  border: 1px solid white;
+  /* border: 1px solid white; */
   border-radius: 12px;
-  margin-bottom: 12px;
+  /* margin-bottom: 3px; */
 }
 
 .menu {
