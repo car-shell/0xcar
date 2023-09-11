@@ -67,6 +67,23 @@ export default function Ranking({width = '920px'}) {
 
     return ()=>clearInterval(i)
   }, [])
+
+    const shutdown = (event)=>{
+      console.log(`${showPointsRules}`);
+     
+      setShowPointsRules((pre)=>{
+        if( pre ) {
+          return false;
+        }
+      })
+    }
+
+    React.useEffect(() => {
+      document.body.addEventListener('click', shutdown)
+      return () => {
+            document.body.removeEventListener('click', shutdown);
+        };
+    }, []);
   
   const getWinLogs = React.useCallback(async ()=>{
     try {
@@ -144,6 +161,16 @@ export default function Ranking({width = '920px'}) {
     return ()=>clearInterval(i)
   }, [])
 
+  const stopPropagation = (e) => {
+    e.nativeEvent.stopImmediatePropagation();
+  }
+  const handleShowTip = (e) => {
+    stopPropagation(e);
+    setShowPointsRules((pre)=>{
+      return !pre
+    })
+    
+  }
   const betColumns = React.useMemo(
         () => [
             {
@@ -336,7 +363,7 @@ export default function Ranking({width = '920px'}) {
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         <Stack direction='row' alignItems='baseline' sx={{columnGap: '8px'}} >
         Tally in: <span style={{font: '700 normal 28px Arial', color: 'yellow'}}>{countdown}</span>
-        <Image ref={moreRef} src="./ask.png" width='18' height='18' style={{cursor: 'pointer'}} onClick={()=>setShowPointsRules(!showPointsRules)} />
+        <Image ref={moreRef} src="./ask.png" width='18' height='18' style={{cursor: 'pointer'}} onClick={handleShowTip} />
         </Stack>
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: '68px 0 0 0px' }} >
@@ -381,18 +408,20 @@ export default function Ranking({width = '920px'}) {
         <StickyHeadTable columns={betColumns} data={betRows} maxHeight={null} type='ranking'/>
       </Box>
       {showPointsRules && <Box sx={{ position: 'absolute',
-          left: moreRef.current.getBoundingClientRect().left,
-          top: moreRef.current.getBoundingClientRect().bottom,
+          left: moreRef.current.getBoundingClientRect().right + 2,
+          top: moreRef.current.getBoundingClientRect().top,
           width: "320px",
-          height: "120px",
+          height: "150px",
           zIndex: '999',
-          padding: '8px 0px 0px 8px',
-          backgroundColor: "#272a2e"}}>
+          padding: '16px 16px 16px 16px',
+          backgroundColor: "#272a2e",
+          borderRadius: "8px"
+          }} >
           <Typography component='div' color='yellow' sx={{ font: '500 normal 16px sans'}}>
             Tips
           </Typography>
           <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
-            Points are tallied daily at 24:00 UTC+0. The top 10 users will receive additional points as rewards. Please refer to the countdown below to see the time remaining until the next tally.
+            Points are tallied daily at 24:00 UTC+0. The top 50 users will receive additional points as rewards. Please refer to the countdown below to see the time remaining until the next tally.
           </Typography>
           {/* <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
             * Users ranked 1-10 will get 2.0x their POINTS earned in 24H
