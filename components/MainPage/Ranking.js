@@ -15,7 +15,8 @@ import { styled } from '@mui/material/styles';
 import {formatAmount} from "../utils"
 import { ADDRESSES } from '../../config/constants/address' 
 import { defaultChainId } from "../../config/constants/chainId";
-import { useNetwork } from "wagmi";
+import { useNetwork, useAccount } from "wagmi";
+
 
 // Generate Order Data
 function createData(ranking, address, count,  total) {
@@ -35,69 +36,96 @@ export default function Ranking({width = '920px'}) {
   // const pointsRulesRef = React.useRef()
 
   const {chain, chains} = useNetwork()
+  const {address} = useAccount()
   const chainId = React.useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
   const addressGameContract = ADDRESSES[chainId]?.game;
 
   const handleChange = (event, newValue) => {
       setValue(newValue);
   };
+  React.useEffect(()=>{
+    setWinRows([])
+    getWinLogs()
+
+    setBetRows([])
+    getBetLogs()
+  }, [address])
 
   const getWinLogs = React.useCallback(async ()=>{
     try {
       const logs = await getUrl("/bet_ranking", {params : {type: "win"}})
       console.log(logs);
-      const r = logs.data.map((item, i)=>{
+      let r = logs.data.map((item, i)=>{
         return createData(i+1, item["address"], item["win_count"], item["total_win"])
       })
+      let my = null
+      if ( address && address != undefined) {
+        my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
+        r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
+      }
+      let t = my!=null?[my,...r]:r
+      console.log(`[[[[[[${JSON.stringify(t)}]]]]]]`);
 
-      setWinRows(r)
+      setWinRows(t)
     } catch (error) {
       console.log(error);
     }
-      
-  }, [winRows])
+  }, [address])
 
   const getBetLogs = React.useCallback(async ()=>{
     try {
       const logs = await getUrl("/bet_ranking", {params : {type: "bet"}})
       console.log(logs);
-      const r = logs.data.map((item, i)=>{
+      let r = logs.data.map((item, i)=>{
         return { id: i+1, ranking: i+1, address: item["address"], count: item["bet_count"], total: item["total_bet"],
             total_points: item['total_point'] }; //createData(i+1, item["address"], item["bet_count"], item["total_bet"])
       })
-
+      
       const pr = await getUrl("/points_record")
       if (pr.data.length != 0) {
         console.log(r);
-        const l = pr.data.map((item)=> {
+        let l = pr.data.map((item)=>{
           for(let record_bet of r) {
             if (record_bet['address'] == item['player']) {
               return {...record_bet, yesterday: item['points']}
             }
           }
         })
-        setBetRows(l)
+
+        let my = null
+        if ( address && address != undefined ) {
+          my = l.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
+          l = l.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
+        }
+
+        setBetRows(my!=null?[my, ...l]:l)
       } else {
-        setBetRows(r)
+        let my = null
+        if ( address && address != undefined ) {
+          my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
+          r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
+        }
+        setBetRows(my!=null?[my, ...r]:r)
       }
     
-      
     } catch (error) {
       console.log(error);
     }
       
-  }, [betRows])
+  }, [address])
 
   React.useEffect(()=>{
-    value==0?getBetLogs():getWinLogs()
+    getBetLogs()
+    getWinLogs()
     // getPointsLogs()
     const i = setInterval(() => {
-      value==0?getWinLogs():getBetLogs()
+      getWinLogs()
+      getBetLogs()
       // getPointsLogs()
     }, 30000);
 
     return ()=>clearInterval(i)
-  }, [value])
+  }, [])
 
   const betColumns = React.useMemo(
         () => [
@@ -165,7 +193,7 @@ export default function Ranking({width = '920px'}) {
                 align: "center",
             },
             {
-                Header: "Total Net Win",
+                Header: "Total Net Payout",
                 accessor: "total",
                 align: "center",
                 format: (x)=>{
@@ -317,7 +345,7 @@ export default function Ranking({width = '920px'}) {
         borderTop: '1px solid #06FC99',
         boxShadow: '5px 5px 5px rgba(85, 85, 85, 0.34901960784313724)',
       }}>
-        <StickyHeadTable columns={winColumns} data={winRows} maxHeight={null}/>
+        <StickyHeadTable columns={winColumns} data={winRows} maxHeight={null} type='ranking'/>
       </Box>
       <Box hidden={value!==0} sx={{
         width: width,
@@ -326,7 +354,7 @@ export default function Ranking({width = '920px'}) {
         borderTop: '1px solid #06FC99',
         boxShadow: '5px 5px 5px rgba(85, 85, 85, 0.34901960784313724)'
       }}>
-        <StickyHeadTable columns={betColumns} data={betRows} maxHeight={null}/>
+        <StickyHeadTable columns={betColumns} data={betRows} maxHeight={null} type='ranking'/>
       </Box>
       {/* {showPointsRules && <Box sx={{ position: 'absolute',
           right: pointsRulesRef.current.getBoundingClientRect().left,

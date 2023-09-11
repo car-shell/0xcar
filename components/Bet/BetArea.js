@@ -318,8 +318,6 @@ const BetArea = () => {
               return {...preTip, status: BetStatus.win, action: null, random: preTip.number}
             })
 
-            
-
             console.log('you win');
           } else {
             setTipInfo((preTip)=>{
@@ -340,13 +338,11 @@ const BetArea = () => {
          
         }, (e)=>{
           console.log(`entry result fail`);
-          // console.log(e);
+          console.log(e);
           if ( e?.reason != undefined && e?.reason?.indexOf("no result") != -1 ) {
             return
           }
           clearInterval(i)
-          // setIsLoading(false)
-          console.log(e);
 
           if ( e?.reason != undefined && e?.reason?.indexOf("timeout") != -1) {
             console.log('timeout');

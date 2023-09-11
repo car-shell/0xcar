@@ -65,7 +65,7 @@ const LiveBettingRecord = () => {
                 }
             },
             {
-                Header: "Net Win",
+                Header: "Net Payout",
                 accessor: "profit",
                 align: "center",
                 format: (i)=>{

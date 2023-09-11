@@ -15,11 +15,12 @@ import useDispatch from '../../store/useDispatch'
 import { BetStatus } from '..//constant'
 import Image from 'next/image'
 import useToast from '../Toast'
+import { useAccount } from "wagmi";
 
-function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight="478px"}) { 
-    
+function StickyHeadTable({columns, data, maxHeight="478px", type=null}) { 
+    const {address} = useAccount()
     const [rows, setRows] = useState(data);
-    const { isShown, toggle } = useModal();
+    const {isShown, toggle} = useModal();
     const {ToastUI, showToast} = useToast()
     const [modelMsg, setModelMsg] = useState('');
     const [modelHeader, setModelHeader] = useState('');
@@ -209,7 +210,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                     </TableHead>
                     
                     <TableBody>
-                        {(rows||[]).map((row) => {
+                        {(rows||[]).map((row, i) => {
                                 return (
                                     <TableRow key={row.id}>
                                         {columns.map((column) => {
@@ -221,7 +222,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                                                     </TableCell>
                                                     :
                                                 column.accessor==='winner' || column.accessor === 'address'?
-                                                    <TableCell sx={{color: "#fff",  borderColor:'#000'}} key={column.accessor} align={column.align} >
+                                                    <TableCell sx={{color: (type=='ranking' && i == 0 && row.address==address?.toLowerCase())?"yellow":"#fff",  borderColor:'#000'}} key={column.accessor} align={column.align} >
                                                         <div style={{display: "flex", direction: "row", justifyContent: "center", columnGap: "4px"}}>
                                                         {column.format(value)}
                                                         <div onClick={()=>copyAddress(value)}>
@@ -245,7 +246,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                                                     </TableCell>
                                                     :
                                                 column.accessor==='total'?
-                                                    <TableCell sx={{color: "#fff", borderColor:'#000'}} key={column.accessor} >
+                                                    <TableCell sx={{color: (type=='ranking' && i == 0 && row.address==address?.toLowerCase())?"yellow":"#fff", borderColor:'#000'}} key={column.accessor} >
                                                         <div style={{textAlign: 'right', width: "10%", direction: 'rtl', position: 'relative', left: '55%'}} >
                                                             {column.format(value, row.amount)}
                                                         </div>
@@ -279,13 +280,13 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                                                     </TableCell>
                                                     :
                                                 column.accessor==='yesterday'?
-                                                    <TableCell sx={{color: "#06FC99", borderColor:'#000'}} key={column.accessor} align={column.align} >
+                                                    <TableCell sx={{color: (type=='ranking' && i == 0 && row.address==address?.toLowerCase())?"yellow":"#06FC99", borderColor:'#000'}} key={column.accessor} align={column.align} >
                                                         {column.format
                                                             ? column.format(value)
                                                             : value}
                                                     </TableCell>
                                                     :
-                                                    <TableCell sx={{color: "#fff", borderColor:'#000'}} key={column.accessor} align={column.align} >
+                                                    <TableCell sx={{color:(type=='ranking' && i == 0 && row.address==address?.toLowerCase())?"yellow":"#fff", borderColor:'#000'}} key={column.accessor} align={column.align} >
                                                         {column.format
                                                             ? column.format(value)
                                                             : value}
@@ -298,7 +299,7 @@ function StickyHeadTable({columns, data, pageChanged, handleItemCheck, maxHeight
                             })}
                     </TableBody>
                 </Table>
-                {rows.length == 0 && <div style={{zIndex: 88, lineHeight: 'calc(478px - 48px)', alignItems: 'center', textAlign:"center", position: 'relative', top: '50%', color: "#06FC99"}}>
+                {rows?.length == 0 && <div style={{zIndex: 88, lineHeight: 'calc(478px - 48px)', alignItems: 'center', textAlign:"center", position: 'relative', top: '50%', color: "#06FC99"}}>
                     {loadingMsg}
                 </div>}
             </TableContainer>
