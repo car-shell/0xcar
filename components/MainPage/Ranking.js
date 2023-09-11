@@ -32,8 +32,10 @@ export default function Ranking({width = '920px'}) {
   const [winRows, setWinRows] = React.useState([]);
   const [betRows, setBetRows] = React.useState([]);
   const [pointsRows, setPointsRows] = React.useState([]);
+  const [countdown, setCountdown] = React.useState('--:--:--');
+  
   const [showPointsRules, setShowPointsRules] = React.useState(false);
-  // const pointsRulesRef = React.useRef()
+  const moreRef = React.useRef()
 
   const {chain, chains} = useNetwork()
   const {address} = useAccount()
@@ -51,6 +53,21 @@ export default function Ranking({width = '920px'}) {
     getBetLogs()
   }, [address])
 
+  React.useEffect(()=>{
+    const i = setInterval(() => {
+      let now = new Date()
+      let start = new Date("2023-09-12 00:00:00Z")
+      let end = new Date("2023-09-20 00:00:00Z")
+      let rm = (24*3600) - ((now/1000) % (24*3600))  
+      if (now > start && now < end) {
+        let dur = `${Math.ceil(rm/3600)-1}:${Math.ceil((rm%3600)/60)-1}:${Math.ceil(rm%60)}`
+        setCountdown(dur)
+      }
+    }, 1000);
+
+    return ()=>clearInterval(i)
+  }, [])
+  
   const getWinLogs = React.useCallback(async ()=>{
     try {
       const logs = await getUrl("/bet_ranking", {params : {type: "win"}})
@@ -303,17 +320,24 @@ export default function Ranking({width = '920px'}) {
       <Stack direction='row' alignItems='baseline' sx={{columnGap: '4px'}} >
         <Image src='./fire.png' width='32' height='32' />
         <Typography component='div' sx={{marginTop: '18px', font: '700 normal 36px Arial'}}>
-          ROLLING LEADERBOARD: Phase 1
+          Points Summit Challenge: Phase 1
         </Typography>
       </Stack>
       <Typography component='div' sx={{marginTop: '14px', font: '400 normal 20px Arial'}}>
-        Duration: September 10 - 30, 2023
+        September 12 to September 30, 2023 (UTC+0)
       </Typography>
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         Climb the leaderboard to boost your points!
       </Typography>
       <Typography component='div' sx={{ font: '700 normal 18px Arial'}} color='#aaaaaa'>
-        The top 50 during the event will receive exclusive NFTs and special role rewards
+        The top 50 during the event will receive exclusive NFTs and special role rewards.  
+        <a href="https://docs.0xcardinal.io/testnet-guides/ranking-rules" target="_blank" style={{color: '#02A7F0', cursor: "pointer"}}> More&gt;&gt;</a>
+      </Typography>
+      <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
+        <Stack direction='row' alignItems='baseline' sx={{columnGap: '8px'}} >
+        Tally in: <span style={{font: '700 normal 28px Arial', color: 'yellow'}}>{countdown}</span>
+        <Image ref={moreRef} src="./ask.png" width='18' height='18' style={{cursor: 'pointer'}} onClick={()=>setShowPointsRules(!showPointsRules)} />
+        </Stack>
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: '68px 0 0 0px' }} >
           <StyledTabs onChange={handleChange} value={value} selectionFollowsFocus={true}>
@@ -326,7 +350,7 @@ export default function Ranking({width = '920px'}) {
       {/* <Box hidden={value!==0} sx={{
         width: width,
       }}>
-        <Typography ref={pointsRulesRef} component='div' sx={{font: '400 normal 14px Arial', textAlign: 'right', cursor:'pointer'}} color='#8080FF' onClick={()=>setShowPointsRules(!showPointsRules)}>
+        <Typography ref={moreRef} component='div' sx={{font: '400 normal 14px Arial', textAlign: 'right', cursor:'pointer'}} color='#8080FF' onClick={()=>setShowPointsRules(!showPointsRules)}>
           Points Rules
         </Typography>
         <Box sx={{
@@ -356,21 +380,21 @@ export default function Ranking({width = '920px'}) {
       }}>
         <StickyHeadTable columns={betColumns} data={betRows} maxHeight={null} type='ranking'/>
       </Box>
-      {/* {showPointsRules && <Box sx={{ position: 'absolute',
-          right: pointsRulesRef.current.getBoundingClientRect().left,
-          top: pointsRulesRef.current.getBoundingClientRect().bottom,
-          width: "360px",
-          height: "200px",
+      {showPointsRules && <Box sx={{ position: 'absolute',
+          left: moreRef.current.getBoundingClientRect().left,
+          top: moreRef.current.getBoundingClientRect().bottom,
+          width: "320px",
+          height: "120px",
           zIndex: '999',
           padding: '8px 0px 0px 8px',
           backgroundColor: "#272a2e"}}>
-          <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
-            Points Rules
+          <Typography component='div' color='yellow' sx={{ font: '500 normal 16px sans'}}>
+            Tips
           </Typography>
           <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
-            * Points = (Bet count * 10) + (Bet Amount / 10)
+            Points are tallied daily at 24:00 UTC+0. The top 10 users will receive additional points as rewards. Please refer to the countdown below to see the time remaining until the next tally.
           </Typography>
-          <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
+          {/* <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
             * Users ranked 1-10 will get 2.0x their POINTS earned in 24H
           </Typography>
           <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
@@ -378,8 +402,8 @@ export default function Ranking({width = '920px'}) {
           </Typography>
           <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
             * Users ranked 31-50 will get 1.2x their POINTS earned in 24H
-          </Typography>
-      </Box>} */}
+          </Typography> */}
+      </Box>}
     </React.Fragment>
   );
 }

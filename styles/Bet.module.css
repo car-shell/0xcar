@@ -354,6 +354,8 @@
   border-radius: 100%;
   background-color: #129f66;
   border-color: #129f66;
+
+  cursor: defaut;
 }
 
 .amount {
