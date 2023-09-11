@@ -45,11 +45,11 @@ const Pool = () => {
       </div> */}
       <div className={styles.info}>
        <div className={styles.info_item}>
-        <div className={styles.title}> Initial Pool Balance</div>
+        <div className={styles.title}> Initial Pool Fund</div>
         <div className={styles.content}>{poolDetails?formatAmount(poolDetails[0].div(ethers.BigNumber.from('1000000000000000000'))):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
-         <div className={styles.title}> Remaining Pool Balance</div>
+         <div className={styles.title}> Current Pool Balance</div>
          <div className={styles.content}>{poolDetails?formatAmount(poolDetails[1].div(ethers.BigNumber.from('1000000000000000000'))):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
