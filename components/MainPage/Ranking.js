@@ -331,7 +331,7 @@ export default function Ranking({width = '920px'}) {
       </Typography>
       <Typography component='div' sx={{ font: '700 normal 18px Arial'}} color='#aaaaaa'>
         The top 50 during the event will receive exclusive NFTs and special role rewards.  
-        <a href="https://docs.0xcardinal.io/testnet-guides/ranking-rules" target="_blank" style={{color: '#02A7F0', cursor: "pointer"}}> More&gt;&gt;</a>
+        <a href="https://docs.0xcardinal.io/testnet-guides/ranking-rules" target="_blank" rel="noreferrer" style={{color: '#02A7F0', cursor: "pointer"}}> More&gt;&gt;</a>
       </Typography>
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         <Stack direction='row' alignItems='baseline' sx={{columnGap: '8px'}} >
