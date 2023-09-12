@@ -297,10 +297,11 @@ const BetArea = () => {
    
   const queryResult = (id)=>{
     setActiveStep('bet', 2)
+    let retry = 0
     let i = setInterval(() => {
         result(id, (r)=>{
           clearInterval(i)
-
+        
           console.log(`entry result success`);
           setActiveStep('bet', 3)
           if (r[1] && r[0].toNumber() == id) {
@@ -340,8 +341,14 @@ const BetArea = () => {
           console.log(`entry result fail`);
           console.log(e);
           if ( e?.reason != undefined && e?.reason?.indexOf("no result") != -1 ) {
+            retry = 0
             return
           }
+          if (e?.reason != undefined && e?.reason?.indexOf("no betting") != -1 && retry < 5) {
+            retry ++
+            return
+          }
+          retry = 0
           clearInterval(i)
 
           if ( e?.reason != undefined && e?.reason?.indexOf("timeout") != -1) {
