@@ -217,7 +217,7 @@ function StickyHeadTable({columns, data, maxHeight="478px", type=null}) {
                                             const value = row[column.accessor];
                                             return (
                                                 column.accessor==='number'?
-                                                    <TableCell sx={{borderColor:'#000', display: 'flex', cursor: "pointer", justifyContent: 'center'}} key={column.accessor} align={column.align}>
+                                                    <TableCell sx={{borderColor:'#000', display: 'flex', cursor: "default", justifyContent: 'center'}} key={column.accessor} align={column.align}>
                                                         <div className={styles.number} style={{backgroundColor: numberColor(column, row)}}>{formatNumber(value, row.odds==100?2:1)}</div>
                                                     </TableCell>
                                                     :
@@ -266,11 +266,11 @@ function StickyHeadTable({columns, data, maxHeight="478px", type=null}) {
                                                     <TableCell sx={{color: "#fff" , borderColor:'#000', display: 'flex', justifyContent: column.align}} key={column.accessor} align={column.align} >
                                                         {row.status === BetStatus.submitted || row.status === BetStatus.started ?  row.random : 
                                                             (row.status == BetStatus.win || row.status == BetStatus.withdrawed)?
-                                                                <div className={styles.number} style={{backgroundColor: '#129f66',cursor: 'pointer'}}>{formatNumber(row.random, row.odds==100?2:1)}</div>:
+                                                                <div className={styles.number} style={{backgroundColor: '#129f66',cursor: 'default'}}>{formatNumber(row.random, row.odds==100?2:1)}</div>:
                                                                 (row.status == BetStatus.timeout)?
                                                                     row.random:
                                                                     (row.status == BetStatus.failed)?
-                                                                        <div className={styles.number} style={{backgroundColor: '#f00',cursor: 'pointer'}}>{formatNumber(row.random, row.odds==100?2:1)}</div>:
+                                                                        <div className={styles.number} style={{backgroundColor: '#f00',cursor: 'default'}}>{formatNumber(row.random, row.odds==100?2:1)}</div>:
                                                                         row.random}
                                                     </TableCell>
                                                     :

@@ -60,7 +60,7 @@ export default function Ranking({width = '920px'}) {
       let end = new Date("2023-09-20 00:00:00Z")
       let rm = (24*3600) - ((now/1000) % (24*3600))  
       if (now > start && now < end) {
-        let dur = `${Math.ceil(rm/3600)-1}:${Math.ceil((rm%3600)/60)-1}:${Math.ceil(rm%60)}`
+        let dur = `${(Math.ceil(rm/3600)-1).toString().padStart(2,0)}:${(Math.ceil((rm%3600)/60)-1).toString().padStart(2,0)}:${(Math.ceil(rm%60)).toString().padStart(2,0)}`
         setCountdown(dur)
       }
     }, 1000);
@@ -410,18 +410,34 @@ export default function Ranking({width = '920px'}) {
       {showPointsRules && <Box sx={{ position: 'absolute',
           left: moreRef.current.getBoundingClientRect().right + 2,
           top: moreRef.current.getBoundingClientRect().top,
-          width: "320px",
-          height: "150px",
+          width: "360px",
+          height: "300px",
           zIndex: '999',
           padding: '16px 16px 16px 16px',
           backgroundColor: "#272a2e",
           borderRadius: "8px"
           }} >
-          <Typography component='div' color='yellow' sx={{ font: '500 normal 16px sans'}}>
+          <Typography component='div' color='yellow' sx={{ font: '500 normal 16px Arial'}}>
             Tips
           </Typography>
-          <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
-            Points are tallied daily at 24:00 UTC+0. The top 50 users will receive additional points as rewards. Please refer to the countdown below to see the time remaining until the next tally.
+          <Typography component='div' sx={{ font: '400 normal 14px Arial'}}>
+            <ul>
+            <li>
+            Points are tallied daily at 24:00 (UTC+0).
+            </li>
+            <li>
+            With the countdown timer, you can see in real-time how much time remains before the next tally, giving you the chance to improve your rank and earn additional points.
+            </li>
+             <li>
+             Users ranked 1-10 in daily accumulated points will receive an extra 150 points the following day.
+            </li>
+             <li>
+             Users ranked 11-25 in daily accumulated points will receive an extra 100 points the following day.
+            </li>
+             <li>
+             Users ranked 26-50 in daily accumulated points will receive an extra 50 points the following day.
+            </li>
+            </ul>
           </Typography>
           {/* <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
             * Users ranked 1-10 will get 2.0x their POINTS earned in 24H

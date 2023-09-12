@@ -516,7 +516,7 @@ const BetArea = () => {
           {!isShow?
             <ReactLoading type='spinningBubbles' color='#06FC99' height={'16%'} width={'12%'} />:
             <CustomizedSteppers steps={steps} curStep={active} />}
-          <div style={{color: '#AAAAAA', textAlign: 'left', width: '90%', font: '650 16px normal sans', paddingBottom: '8px'}}>{stepTitle?stepTitle.charAt(0).toUpperCase() + stepTitle.slice(1):''} {(stepTitle && stepTitle=='bet' && (tipInfo.status==BetStatus.win || tipInfo.status==BetStatus.failed))?'Result': 'Information'}</div>
+          <div style={{color: '#AAAAAA', textAlign: 'left', width: '90%', font: '650 16px normal sans', paddingBottom: '8px'}}>{stepTitle? (stepTitle=='approve'? 'Bet' : stepTitle.charAt(0).toUpperCase() + stepTitle.slice(1)):''} {(stepTitle && stepTitle=='bet' && (tipInfo.status==BetStatus.win || tipInfo.status==BetStatus.failed))?'Result': 'Information'}</div>
           <div className={styles.tipContent}>
             {stepMsg}
           </div>
