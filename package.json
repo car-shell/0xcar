@@ -35,7 +35,8 @@
     "styled-components": "^5.3.6",
     "ua-parser-js": "^1.0.35",
     "viem": "^1.10.9",
-    "wagmi": "^1.4.1"
+    "wagmi": "^1.4.1",
+    "ethers": "^5.5.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
