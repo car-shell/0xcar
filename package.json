@@ -15,11 +15,11 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.11.10",
     "@mui/styles": "^5.13.2",
-    "@rainbow-me/rainbowkit": "^0.11.0",
+    "@rainbow-me/rainbowkit": "^1.0.11",
+    "axios": "^1.5.0",
     "classnames": "^2.3.2",
     "eslint": "8.30.0",
     "eslint-config-next": "13.0.7",
-    "ethers": "^5.5.1",
     "is-mobile": "^4.0.0",
     "next": "13.3.1",
     "next-auth": "^4.19.2",
@@ -34,7 +34,8 @@
     "react-spring": "^9.7.1",
     "styled-components": "^5.3.6",
     "ua-parser-js": "^1.0.35",
-    "wagmi": "^0.11.7"
+    "viem": "^1.10.9",
+    "wagmi": "^1.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",

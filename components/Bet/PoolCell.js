@@ -35,11 +35,11 @@ const PoolCell = () => {
       <div className={styles.info}>
        <div className={styles.info_item}>
         <div className={styles.title}> Initial Amount</div>
-        <div className={styles.content}>{poolDetails?formatAmount(poolDetails[0].div(ethers.BigNumber.from('1000000000000000000'))):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
+        <div className={styles.content}>{poolDetails?formatAmount(poolDetails[0].hex/1000000000000000000:'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
          <div className={styles.title}> Remaining Amount</div>
-         <div className={styles.content}>{poolDetails?formatAmount(poolDetails[1].div(ethers.BigNumber.from('1000000000000000000'))):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
+         <div className={styles.content}>{poolDetails?formatAmount(poolDetails[1].hex/1000000000000000000:'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
         <div className={styles.title}> Total Burned</div>

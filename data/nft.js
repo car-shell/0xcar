@@ -1,4 +1,4 @@
-import { useContract, useProvider, useAccount, useContractRead, useSigner, useNetwork } from "wagmi";
+import { useContract, useAccount, useContractRead, useWalletClient, useNetwork } from "wagmi";
 import { useMemo, useCallback, useState, useEffect} from "react";
 import { readContract, writeContract, prepareWriteContract } from "@wagmi/core";
 import { ethers } from "ethers"
@@ -16,12 +16,12 @@ const useNFTContract = () => {
     const chainId = useMemo(()=>{ return chain?.id ? chain.id : defaultChainId}, [chain])
     const addressNFTContract = ADDRESSES[chainId]?.nft
     // const addressNFTContract = useMemo(()=> {return ADDRESSES[97]?.nft})
-    const { data: signer, error, isLoading } = useSigner()
-    const erc721 = useContract({
-        address: addressNFTContract,
-        abi: abi,
-        signerOrProvider: signer
-    })
+    // const { data: signer, error, isLoading } = useWalletClient()
+    // const erc721 = useContract({
+    //     address: addressNFTContract,
+    //     abi: abi,
+    //     signerOrProvider: signer
+    // })
 
     const { data: ownOfData } = useContractRead({
             address: addressNFTContract,
@@ -110,10 +110,10 @@ const useNFTContract = () => {
     }, [address, addressNFTContract])
 
     const fuse = useCallback( async (level1ID1, level1ID2, level2ID, success, fail)=>{
-        const gas = ethers.BigNumber.from('1000000000000000000000');
+        const gas = 1000000000000000000000n;
     
         await allowance(address, addressNFTContract, (amount)=>{
-            if (amount.lt(gas)) {
+            if (amount < gas) {
                 approve(addressNFTContract, gas, (r)=>{
                     merginNft(level1ID1, level1ID2, level2ID, success, fail)
                 }, (e)=>{

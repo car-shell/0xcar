@@ -424,7 +424,7 @@ const BetAreaCell = () => {
       return
     }
 
-    const poolRemainBalance = poolDetails?poolDetails[1].div(ethers.BigNumber.from('1000000000000000000')).toNumber():10e8
+    const poolRemainBalance = poolDetails?poolDetails[1].hex/1000000000000000000:10e8
     if ( parseFloat(amount)>poolRemainBalance*title.odds ) {
       showToast('amount too large!', 'error' )
       return

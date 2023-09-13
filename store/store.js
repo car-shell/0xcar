@@ -28,7 +28,7 @@ const StateProvider = ({ children }) => {
         console.log(`push ${action.payload}, type ${SET_ACTION}`);
         return { ...state, betAction: action.payload }
       case SET_WIN_LOGS:
-        console.log(`push ${action.payload}, type ${SET_WIN_LOGS}`);
+        // console.log(`push ${action.payload}, type ${SET_WIN_LOGS}`);
         return { ...state, winLogs: action.payload }
       default:
         throw new Error("")

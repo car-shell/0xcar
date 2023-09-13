@@ -2,10 +2,12 @@
 export function formatAmount(amount) {
     if (typeof amount === 'string') {
         amount = parseFloat(amount);
-    } else if (typeof amount === 'object') {
-        amount = amount.toNumber()
-    } else if (typeof amount !== 'number'){
-        throw new Error("")
+    } else if (typeof amount === 'bigint') {
+        amount = Number(amount)
+    } else if (typeof amount == 'number'){
+       
+    } else {
+        console.log(`${amount} ${typeof amount}`);
     }
 
     let formattedNumber = amount.toFixed(2);

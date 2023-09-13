@@ -4,9 +4,9 @@ import { useGameContract } from "../../data/game";
 import BetArea from "./BetArea";
 import BetRecord from "./BetRecord"
 import LiveBettingRecord from "./LiveBettingRecord"
-import {ethers} from "ethers"
 import useTokenContract from "../../data/token"
 import { formatAmount } from "../utils";
+import { BigNumber } from "wagmi"
 
 const Pool = () => {
   
@@ -29,7 +29,6 @@ const Pool = () => {
     }, 500);
     return ()=>clearInterval(i)
   }, [])
-
   return (
     <div className={styles.container}>
       {/* <div className={styles.poolTypeAndBurn}>
@@ -46,11 +45,11 @@ const Pool = () => {
       <div className={styles.info}>
        <div className={styles.info_item}>
         <div className={styles.title}> Initial Pool Fund</div>
-        <div className={styles.content}>{poolDetails?formatAmount(poolDetails[0].div(ethers.BigNumber.from('1000000000000000000'))):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
+        <div className={styles.content}>{poolDetails?formatAmount(poolDetails[0]/1000000000000000000n):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
          <div className={styles.title}> Current Pool Balance</div>
-         <div className={styles.content}>{poolDetails?formatAmount(poolDetails[1].div(ethers.BigNumber.from('1000000000000000000'))):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
+         <div className={styles.content}>{poolDetails?formatAmount(poolDetails[1]/1000000000000000000n):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
         <div className={styles.title}> Total Burned</div>

@@ -13,7 +13,6 @@ const LiveBettingRecord = () => {
     useEffect(()=>{
         let i = setInterval(async () => {
             const logs = await getUrl("/bet_record", {})
-            console.log(logs);
             const r = logs.data.map((item, i)=>{
                 return { 
                     id: item["bet_time"] + item["player"],

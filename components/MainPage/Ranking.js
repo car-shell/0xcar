@@ -345,7 +345,7 @@ export default function Ranking({width = '920px'}) {
   return (
     <React.Fragment>
       <Stack direction='row' alignItems='baseline' sx={{columnGap: '4px'}} >
-        <Image src='./fire.png' width='32' height='32' />
+        <Image  alt="" src='./fire.png' width='32' height='32' />
         <Typography component='div' sx={{marginTop: '18px', font: '700 normal 36px Arial'}}>
           Points Summit Challenge: Phase 1
         </Typography>
@@ -363,7 +363,7 @@ export default function Ranking({width = '920px'}) {
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         <Stack direction='row' alignItems='baseline' sx={{columnGap: '8px'}} >
         Tally in: <span style={{font: '700 normal 28px Arial', color: 'yellow'}}>{countdown}</span>
-        <Image ref={moreRef} src="./ask.png" width='18' height='18' style={{cursor: 'pointer'}} onClick={handleShowTip} />
+        <Image  alt=""  ref={moreRef} src="./ask.png" width='18' height='18' style={{cursor: 'pointer'}} onClick={handleShowTip} />
         </Stack>
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: '68px 0 0 0px' }} >

@@ -1,6 +1,6 @@
 import { useCallback, useState, useRef, useEffect, useContext } from "react";
 import { useTokenContract } from "../../data/token";
-import { useGameContract } from "../../data/game";
+import { useGameContract,useBet } from "../../data/game";
 import {ethers} from "ethers"
 import styles from "../../styles/Bet.module.css";
 import Fireworks from "../animPaper";
@@ -18,7 +18,7 @@ import Step from '@mui/material/Step';
 import Typography from '@mui/material/Typography';
 import StepLabel from '@mui/material/StepLabel';
 import CustomizedSteppers from './Progress'
-import axios from "axios";
+
 
 const BetArea = () => {
   const rules = [{key: 0, value: '1-Star (5x)', number: 5, select: 1, odds: 5}, {key: 1, value: '1-Star (10x)', number: 10, select: 1, odds: 10}, {key: 2, value: '2-Star (100x)', number: 10, select: 2, odds: 100}]
@@ -44,15 +44,15 @@ const BetArea = () => {
   const {ToastUI, showToast} = useToast()
 
   const {address, isConnected} = useAccount()
-  const {balance, token} = useTokenContract()
+  const {balance, token, allowance, approve} = useTokenContract()
   const {poolDetails, bet, result, withdraw, last} = useGameContract(true)
   const {chain, chains} = useNetwork()
   const {openConnectModal} = useConnectModal()
-  const { openChainModal } = useChainModal();
+  const {openChainModal} = useChainModal();
 
   useEffect(()=>{
     if (address && last && !isDictEmpty(last)) {
-      console.log(`last record: ${JSON.stringify(last)}`);
+      // console.log(`last record: ${JSON.stringify(last)}`);
       setTipInfo(last)
     }}, [])
 
@@ -87,8 +87,7 @@ const BetArea = () => {
   }, [betLogs])
 
   useEffect(()=>{
-    console.log(`useEffect tipInfo changed ${JSON.stringify(tipInfo)}`);
-    if (tipInfo === null || isDictEmpty(tipInfo)) {
+    if (tipInfo === null || tipInfo === undefined || isDictEmpty(tipInfo)) {
       return;
     }
     console.log(betLogs);
@@ -227,8 +226,8 @@ const BetArea = () => {
       numbers[l] = n
       setNumbers(numbers.slice(0))
     }
-    
   }, [numbers, setNumbers])
+
   
   const formatNumber = () => {
     if (numbers.length === 1) {
@@ -255,7 +254,7 @@ const BetArea = () => {
       setBetResult(BetStatus.withdrawed_timeout)
     }, (e)=>{
       setIsLoading(false)
-      let msg = e.reason || e.data?.message || e.message;
+      let msg = e.shortMessage || e.data?.message || e.message;
       showToast(msg, 'error')
       console.log(msg);
       //fix status
@@ -276,10 +275,10 @@ const BetArea = () => {
       setBetResult(2)
     }, (e)=>{
       setIsLoading(false)
-      showToast(e.reason || e.data?.message || e.message, 'error')
-      console.log(e.reason);
+      showToast(e.shortMessage || e.data?.message || e.message, 'error')
+      console.log(e.shortMessage);
       //fix status
-      if ( e.reason?.indexOf("no betting") != -1 ) {
+      if ( e.shortMessage?.indexOf("no betting") != -1 ) {
         setBetResult(2)
       }
     }, setActiveStep)
@@ -304,7 +303,7 @@ const BetArea = () => {
         
           console.log(`entry result success`);
           setActiveStep('bet', 3)
-          if (r[1] && r[0].toNumber() == id) {
+          if (r[1] && r[0] == id) {
               setShowFireworks(true)
               setTimeout(() => {
                 setShowFireworks(false)
@@ -338,20 +337,19 @@ const BetArea = () => {
           }
          
         }, (e)=>{
-          console.log(`entry result fail`);
-          console.log(e);
-          if ( e?.reason != undefined && e?.reason?.indexOf("no result") != -1 ) {
+          console.log(`entry result fail${e}`);
+          if ( e?.shortMessage != undefined && e?.shortMessage?.indexOf("no result") != -1 ) {
             retry = 0
             return
           }
-          if (e?.reason != undefined && e?.reason?.indexOf("no betting") != -1 && retry < 5) {
+          if (e?.shortMessage != undefined && e?.shortMessage?.indexOf("no betting") != -1 && retry < 5) {
             retry ++
             return
           }
           retry = 0
           clearInterval(i)
 
-          if ( e?.reason != undefined && e?.reason?.indexOf("timeout") != -1) {
+          if ( e?.shortMessage != undefined && e?.shortMessage?.indexOf("timeout") != -1) {
             console.log('timeout');
             // showModel(<span style={{color: '#F59A23', textAlign: 'center', fontWeight: 'bold'}}><p>Your betting is timeout,</p> <p>you can withdraw your amount!</p></span>, 'Timeout', "Withdraw");
             setBetResult(BetStatus.timeout, '-')
@@ -361,7 +359,7 @@ const BetArea = () => {
                 <span style={{font: '650 18px normal sans', color: '#FFFFFF', textAlign: 'center'}}><p>Due to network congestion, there has been a timeout. <br />Please withdraw the principal of this bet and bet again.</p></span>
                 </div>
                 </>)
-          } else if (e?.reason != undefined && e?.reason?.indexOf("no betting") != -1){
+          } else if (e?.shortMessage != undefined && e?.shortMessage?.indexOf("no betting") != -1){
             console.log(e);
             setBetResult(BetStatus.revert, '-')
             setActiveStep('bet', 3, <>
@@ -388,9 +386,9 @@ const BetArea = () => {
     }, [amount, numbers, title, isLoading, tipInfo])
 
   const betFail = useCallback((err)=>{
-      console.log(`entry betFail`);
+      console.log(`entry betFail, ${err.walk()}`);
       setIsLoading(false)
-      if (err.reason && err.reason.indexOf("you win, please withdraw") != -1) {
+      if (err.shortMessage && err.shortMessage.indexOf("you win, please withdraw") != -1) {
         setTipInfo((preTip)=>{
           return {...preTip, status: BetStatus.revert}
         })
@@ -400,7 +398,7 @@ const BetArea = () => {
         setTipInfo((preTip)=>{
           return {...preTip, status: BetStatus.revert}
         })
-        showToast(err.reason || err.data?.message || err.message || "Bet failed, please try again!", 'error')
+        showToast(err.shortMessage || err.data?.message || err.message || "Bet failed, please try again!", 'error')
       }
     }, [amount, numbers, title, isLoading, tipInfo, setTipInfo])
 
@@ -414,12 +412,14 @@ const BetArea = () => {
     })
   }
 
+  // const {write, setBetParams, betData, isBetLoading, isBetSuccess} = useBet({id:tipInfo?.id, amount:tipInfo?.amount, rule:tipInfo?.rule, number:tipInfo?.number, success:betSuccess, failed:betFail})
+
   const submitBet = ()=>{
     if (!isConnected) {
       openConnectModal()
       return
     }
-    console.log(chain);
+
     if (chains.map(c=>c.id).indexOf(chain?.id) === -1) {
       openChainModal()
       return
@@ -430,8 +430,8 @@ const BetArea = () => {
       return
     }
 
-    const poolRemainBalance = poolDetails?poolDetails[1].div(ethers.BigNumber.from('1000000000000000000')).toNumber():10e8
-    if ( parseFloat(amount)>poolRemainBalance*title.odds ) {
+    const poolRemainBalance = poolDetails?poolDetails[1]/1000000000000000000n:10e8
+    if ( parseFloat(amount)>poolRemainBalance*BigInt(title.odds) ) {
       showToast('amount too large!', 'error' )
       return
     }
@@ -444,7 +444,7 @@ const BetArea = () => {
 
     const id = Date.parse(new Date).toString()
     setTipInfo(()=>{
-      return {id: id, time: Date.parse(new Date),  type: title.value, number: formatNumber(numbers), amount: amount, odds: title.odds, status: BetStatus.started, random: '-'}
+      return {id: id, time: Date.parse(new Date), type: title.value, rule: title.key, number: formatNumber(numbers), amount: amount, odds: title.odds, status: BetStatus.started, random: '-'}
     })
 
     setIsLoading(true)
@@ -452,11 +452,12 @@ const BetArea = () => {
       stepMsg:  InfoTip({type:title.value, odds:title.odds, number:formatNumber(numbers), amount:amount, win:false})
     })
     
-    if (!bet(id, amount, title.key, formatNumber(numbers), betSuccess, betFail, setActiveStep)){
+    if (!bet(id, BigInt(amount)*1000000000000000000n, title.key, formatNumber(numbers), betSuccess, betFail, setActiveStep)){
       setIsLoading(false)
       showToast("connect wallet first!",  'error')
     }
   }
+
   const showTipButton = () => {
     if ( tipInfo.status >= BetStatus.failed ) {
       if ( stepInfo.active === 0 && stepInfo.active < 2 ) {

@@ -226,7 +226,7 @@ function StickyHeadTable({columns, data, maxHeight="478px", type=null}) {
                                                         <div style={{display: "flex", direction: "row", justifyContent: "center", columnGap: "4px"}}>
                                                         {column.format(value)}
                                                         <div onClick={()=>copyAddress(value)}>
-                                                        <Image src="/copy.png" width="16" height="16" style={{marginTop: '2px'}}/>
+                                                        <Image src="/copy.png" width="16" height="16" alt="" style={{marginTop: '2px'}}/>
                                                         </div>
                                                         </div>
                                                     </TableCell>

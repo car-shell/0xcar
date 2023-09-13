@@ -1,8 +1,8 @@
 
-import {ERC20ABI as abi} from './abi/ERC20ABI'
+import { erc20ABI as abi } from '@wagmi/core'
 import { useCallback, useState, useEffect, useMemo } from "react";
 import {ethers} from "ethers"
-import { useContract, useProvider, useAccount, useBalance, useSigner, useNetwork, useToken } from "wagmi";
+import { useContract, useAccount, useBalance, useWalletClient, useNetwork, useToken } from "wagmi";
 import { readContract, writeContract, prepareWriteContract } from "@wagmi/core";
 import { ADDRESSES } from '../config/constants/address' 
 import { defaultChainId } from "../config/constants/chainId";
@@ -14,14 +14,7 @@ export const useTokenContract = ()  => {
     const addressTokenContract = ADDRESSES[chainId].token
      // const addressTokenContract = useMemo(()=> {return ADDRESSES[97]?.token})
 
-    const provider = useProvider()
-    const { data: signer, error, isLoading } = useSigner()
-    const erc20 = useContract({
-        address: addressTokenContract,
-        abi: abi,
-        signerOrProvider: signer
-    })
-
+    const { data: signer, error, isLoading } = useWalletClient()
     const {address, isConnected} = useAccount();
     const [symbol, setSymbol] = useState("")
 
@@ -29,7 +22,7 @@ export const useTokenContract = ()  => {
     const { data: deadBalance } = useBalance({
         address: dead,
         token: addressTokenContract,
-        watch: true,
+        watch: true
     })
     
     const { data: b } = useBalance({

@@ -7,13 +7,14 @@ import {
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 
-import { configureChains, createClient } from "wagmi";
+import { configureChains, createConfig } from "wagmi";
+import { createPublicClient, http } from 'viem'
 import { mainnet, goerli, arbitrumGoerli, arbitrum, bscTestnet, bsc} from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 
-export const { chains, provider, webSocketProvider } = configureChains(
+export const { chains, publicClient, webSocketPublicClient } = configureChains(
     [bscTestnet],
     [
         jsonRpcProvider({ rpc: (chain) =>  {
@@ -37,28 +38,27 @@ export const { chains, provider, webSocketProvider } = configureChains(
     ],
 );
 
-const needsInjectedWalletFallback =
-    typeof window !== "undefined" &&
-    window.ethereum &&
-    !window.ethereum.isMetaMask &&
-    !window.ethereum.isCoinbaseWallet;
-
+// const needsInjectedWalletFallback =
+//     typeof window !== "undefined" &&
+//     window.ethereum &&
+//     !window.ethereum.isMetaMask &&
+//     !window.ethereum.isCoinbaseWallet;
 const connectors = connectorsForWallets([
     {
         groupName: "Popular",
         wallets: [
-            metaMaskWallet({ chains }),
-            trustWallet({ chains }),
-            // wallet.rainbow({ chains }),
-            walletConnectWallet({ chains }),
+            injectedWallet({chains}),
+            metaMaskWallet({ projectId: "1ecbab09b9b8ddac73ebc54d1190788c", chains }),
+            trustWallet({ projectId: "1ecbab09b9b8ddac73ebc54d1190788c", chains }),
+            walletConnectWallet({ projectId: "1ecbab09b9b8ddac73ebc54d1190788c", chains }),
             // wallet.coinbase({ appName: "Coinbase", chains }),
-            ...(needsInjectedWalletFallback ? [wallet.injected({ chains })] : []),
+            // ...(needsInjectedWalletFallback ? [wallet.injected({ chains })] : []),
         ],
     }
 ]);
 
-export const wagmiClient = createClient({
+export const wagmiClient = createConfig({
     autoConnect: true,
     connectors,
-    provider,
+    publicClient,
 });
