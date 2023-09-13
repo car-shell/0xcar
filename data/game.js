@@ -281,7 +281,7 @@ export const useGameContract = (monitor=false)  => {
         if ( lastRecordError || lastLoading ) {
             return {}
         }
-        const amount = lastRecord[1]/1000000000000000000000n
+        const amount = BigInt(lastRecord[1])/1000000000000000000000n
         let s = status(lastRecord[3], lastRecord[5], lastRecord[6])
         return {id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[3], odds: odds[lastRecord[2]], status: s, random: s!=BetStatus.timeout?lastRecord[5]:'-'}
     }
