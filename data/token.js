@@ -34,7 +34,7 @@ export const useTokenContract = ()  => {
     const { data: token } = useToken({
         address: addressTokenContract,
     })
-
+    
     const allowance = useCallback(async (owner, addr, success, fail)=>{
         console.log('allowance');
         const result = await readContract({
