@@ -6,6 +6,7 @@ import { useContract, useAccount, useBalance, useWalletClient, useNetwork, useTo
 import { readContract, writeContract, prepareWriteContract,waitForTransaction } from "@wagmi/core";
 import { ADDRESSES } from '../config/constants/address' 
 import { defaultChainId } from "../config/constants/chainId";
+import { formatAmount } from "../components/utils";
 
 export const useTokenContract = ()  => {
     const dead = "0x000000000000000000000000000000000000dead";
@@ -77,11 +78,7 @@ export const useTokenContract = ()  => {
 
     }, [addressTokenContract])
 
-    const formatBalance = useCallback((balance)=>{
-        return balance?balance.formatted.slice(0, balance.formatted.indexOf('.')+3):"--";
-    }, [b])
-
-    return { balance: formatBalance(b), deadBalance: formatBalance(deadBalance), allowance, approve, addressTokenContract, token}
+    return { balance: formatAmount(b.formatted), deadBalance: formatAmount(deadBalance.formatted), allowance, approve, addressTokenContract, token}
 }
 
 export default useTokenContract
