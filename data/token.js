@@ -78,7 +78,7 @@ export const useTokenContract = ()  => {
 
     }, [addressTokenContract])
 
-    return { balance: formatAmount(b.formatted), deadBalance: formatAmount(deadBalance.formatted), allowance, approve, addressTokenContract, token}
+    return { balance: formatAmount(b?.formatted), deadBalance: formatAmount(deadBalance?.formatted), allowance, approve, addressTokenContract, token}
 }
 
 export default useTokenContract

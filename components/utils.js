@@ -1,5 +1,8 @@
 
 export function formatAmount(amount) {
+    if (amount === undefined || amount === null) {
+        return '--'
+    }
     if (typeof amount === 'string') {
         amount = parseFloat(amount);
     } else if (typeof amount === 'bigint') {
