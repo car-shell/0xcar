@@ -191,14 +191,13 @@ export const useGameContract = (monitor=false)  => {
             al = result
             if ( al < amount ) {
                 setActiveStep('approve', 0)
-                approve(addressGameContract, a*10n, async (tr)=>{
-                    console.log(`approve TX hash: ${tr.hash}`)
-                    setActiveStep('approve', 1)
-                    tr.wait().then(async (receipt)=>{
-                        console.log("transfer receipt",receipt);
+                approve(addressGameContract, amount*10n, async (s, data)=>{
+                    if ( s == 'write') {
+                        setActiveStep('approve', 1)
+                    } else {
                         setActiveStep('bet', 0)
                         await _bet(id, amount, ruleId, selectNumber, success, fail, setActiveStep)
-                    })
+                    }
                 }, (e)=>{
                     console.log( `approve failed ${e}`);
                     fail(e)
@@ -281,7 +280,6 @@ export const useGameContract = (monitor=false)  => {
         if ( lastRecordError || lastLoading ) {
             return {}
         }
-        console.log(lastRecord);
         const amount = BigInt(lastRecord[1])/1000000000000000000000n
         let s = status(lastRecord[3], lastRecord[5], lastRecord[6])
         return {id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[3], odds: odds[lastRecord[2]], status: s, random: s!=BetStatus.timeout?lastRecord[5]:'-'}

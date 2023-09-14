@@ -58,9 +58,9 @@ export default function Ranking({width = '920px'}) {
       let now = new Date()
       let start = new Date("2023-09-12 00:00:00Z")
       let end = new Date("2023-09-20 00:00:00Z")
-      let rm = (24*3600) - ((now/1000) % (24*3600))  
+      let rm = (24*3600) - ((now/1000) % (24*3600)) - 1  
       if (now > start && now < end) {
-        let dur = `${(Math.floor(rm/3600)-1).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)-1).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
+        let dur = `${(Math.floor(rm/3600)).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
         setCountdown(dur)
       }
     }, 1000);

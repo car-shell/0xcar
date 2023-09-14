@@ -204,9 +204,9 @@ const Faucet = () => {
             </div> */}
             <div className={s.separate}>
             </div>
-            <div className={s.button_circle + ' ' + s.pointer_cursor}>
+            <div className={s.button_circle + ' ' + s.pointer_cursor} onClick={addAsset}>
                 <img src='MetaMask.png' className={s.icon}/>
-                <div onClick={addAsset}>
+                <div >
                     Add {token?.symbol} to Metamask
                 </div>
             </div>

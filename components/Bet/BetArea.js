@@ -386,7 +386,6 @@ const BetArea = () => {
     }, [amount, numbers, title, isLoading, tipInfo])
 
   const betFail = useCallback((err)=>{
-      console.log(`entry betFail, ${err.walk()}`);
       setIsLoading(false)
       if (err.shortMessage && err.shortMessage.indexOf("you win, please withdraw") != -1) {
         setTipInfo((preTip)=>{

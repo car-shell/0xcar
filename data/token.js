@@ -3,7 +3,7 @@ import { erc20ABI as abi } from '@wagmi/core'
 import { useCallback, useState, useEffect, useMemo } from "react";
 import {ethers} from "ethers"
 import { useContract, useAccount, useBalance, useWalletClient, useNetwork, useToken } from "wagmi";
-import { readContract, writeContract, prepareWriteContract } from "@wagmi/core";
+import { readContract, writeContract, prepareWriteContract,waitForTransaction } from "@wagmi/core";
 import { ADDRESSES } from '../config/constants/address' 
 import { defaultChainId } from "../config/constants/chainId";
 
@@ -61,8 +61,13 @@ export const useTokenContract = ()  => {
             functionName: 'approve',
             args: [addr, amount],
         }).then( async (config)=>{
-            const data = await writeContract(config).then((data)=>{
-                success(data)
+            const data = await writeContract(config).then(async({hash})=>{
+                await success("write", hash)
+                const receipt = await waitForTransaction({
+                    hash,
+                    onReplaced: (transaction) => console.log(transaction),
+                })
+                await success("wait", receipt)
             }).catch((e)=>{
                 fail(e)
             })
