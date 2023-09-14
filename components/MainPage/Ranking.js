@@ -112,36 +112,27 @@ export default function Ranking({width = '920px'}) {
       console.log(logs);
       let r = logs.data.map((item, i)=>{
         return { id: i+1, ranking: i+1, address: item["address"], count: item["bet_count"], total: item["total_bet"],
-            total_points: item['total_point'] }; //createData(i+1, item["address"], item["bet_count"], item["total_bet"])
+            total_points: item['total_point'], yesterday: 0 }; //createData(i+1, item["address"], item["bet_count"], item["total_bet"])
       })
       
       const pr = await getUrl("/points_record")
       if (pr.data.length != 0) {
-        console.log(r);
-        let l = pr.data.map((item)=>{
+        pr.data.map((item)=>{
           for(let record_bet of r) {
             if (record_bet['address'] == item['player']) {
-              return {...record_bet, yesterday: item['points']}
+              record_bet.yesterday = item['points']
             }
           }
         })
-
-        let my = null
-        if ( address && address != undefined ) {
-          my = l.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
-          l = l.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
-        }
-
-        setBetRows(my!=null?[my, ...l]:l)
-      } else {
-        let my = null
-        if ( address && address != undefined ) {
-          my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
-          r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
-        }
-        setBetRows(my!=null?[my, ...r]:r)
       }
-    
+
+      let my = null
+      if ( address && address != undefined ) {
+        my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
+        r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
+      }
+
+      setBetRows(my!=null?[my, ...r]:r)
     } catch (error) {
       console.log(error);
     }
