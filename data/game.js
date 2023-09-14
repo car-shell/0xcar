@@ -12,64 +12,64 @@ import { ADDRESSES } from '../config/constants/address'
 import { BetStatus } from "../components/constant";
 import { readContract, writeContract, prepareWriteContract, waitForTransaction, getWalletClient} from "@wagmi/core";
 
-export const useBet = ({id, amount, rule, number, success, failed})=>{
-    const {chain, chains} = useNetwork()
-    const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
-    const addressGameContract = ADDRESSES[chainId]?.game;
+// export const useBet = ({id, amount, rule, number, success, failed})=>{
+//     const {chain, chains} = useNetwork()
+//     const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
+//     const addressGameContract = ADDRESSES[chainId]?.game;
 
-    const [betId, setId] = useState(null)
-    const [betAmount, setAmount] = useState(null)
-    const [betRule, setRule] = useState(null)
-    const [betNumber, setNumber] = useState(null)
+//     const [betId, setId] = useState(null)
+//     const [betAmount, setAmount] = useState(null)
+//     const [betRule, setRule] = useState(null)
+//     const [betNumber, setNumber] = useState(null)
 
-    useEffect(()=>{
-        console.log(id, amount, rule, number);
-        setId(id)
-        setAmount(amount)
-        setRule(rule)
-        setNumber(number)
-    }, [id, amount, rule, number])
+//     useEffect(()=>{
+//         console.log(id, amount, rule, number);
+//         setId(id)
+//         setAmount(amount)
+//         setRule(rule)
+//         setNumber(number)
+//     }, [id, amount, rule, number])
 
-    const { config } = usePrepareContractWrite({
-        address: addressGameContract,
-        abi: abi,
-        functionName: 'bet',
-        args: [id, amount, 0, rule, number],
-        enabled: id!=null && amount!=null && rule!=null && number!=null,
-        onError( error ) {
-            console.log('error', error.msg);
-            failed(error)
-        },
-    })
+//     const { config } = usePrepareContractWrite({
+//         address: addressGameContract,
+//         abi: abi,
+//         functionName: 'bet',
+//         args: [id, amount, 0, rule, number],
+//         enabled: id!=null && amount!=null && rule!=null && number!=null,
+//         onError( error ) {
+//             console.log('error', error.msg);
+//             failed(error)
+//         },
+//     })
 
-    const { data: betData, write } = useContractWrite({
-        ...config,
-        onError(error) {
-            console.log('error', error.msg);
-            failed(error)
-        },
-    })
+//     const { data: betData, write } = useContractWrite({
+//         ...config,
+//         onError(error) {
+//             console.log('error', error.msg);
+//             failed(error)
+//         },
+//     })
 
-    useEffect(()=>{
-        console.log(write);
-        if (write) {
-            write()
-        }
-    }, [write])
+//     useEffect(()=>{
+//         console.log(write);
+//         if (write) {
+//             write()
+//         }
+//     }, [write])
 
-    const { isLoading: isBetLoading, isSuccess: isBetSuccess } = useWaitForTransaction({
-        hash: betData?.hash,
-        onSuccess(data) {
-            success(data)
-        },
-         onError(error) {
-            console.log('error', error.msg);
-            failed(error)
-        },
-    })
+//     const { isLoading: isBetLoading, isSuccess: isBetSuccess } = useWaitForTransaction({
+//         hash: betData?.hash,
+//         onSuccess(data) {
+//             success(data)
+//         },
+//          onError(error) {
+//             console.log('error', error.msg);
+//             failed(error)
+//         },
+//     })
 
-    return {write, betData, isBetLoading, isBetSuccess}
-}
+//     return {write, betData, isBetLoading, isBetSuccess}
+// }
 
 export const useGameContract = (monitor=false)  => {
     const {chain, chains} = useNetwork()
@@ -126,7 +126,7 @@ export const useGameContract = (monitor=false)  => {
         chainId: chainId,
         listener(better, id, amount, betNumber, random, odds, netWin, height) {
             //Result(address indexed better, uint amount, uint winAmount, uint blockNumber, uint timestamp, uint poolId, uint gameId, bytes32 blockHash);
-            let log = { "winner": better, 'random': random, "amount": amount/1000000000000000000000n, "profit": netWin/1000000000000000000000n, "odds": odds,  id: id.toNumber(), height: height.toNumber() }
+            let log = { "winner": better, 'random': random, "amount": amount/1000000000000000000n, "profit": netWin/1000000000000000000n, "odds": odds,  id: id.toNumber(), height: height.toNumber() }
             logs.unshift(log)
             setLogs(logs.slice(0,99))
             localStorage.setItem('WIN_LOG', JSON.stringify(logs))
@@ -138,23 +138,23 @@ export const useGameContract = (monitor=false)  => {
         },
     })
     
-    const getWinNumber = (hash, odds) => {
-        let i = 0;
-        switch (odds) {
-            case 5:
-                i = hash.search(/[0-4]/)
-                return hash[i]
-            case 10:
-                i = hash.search(/[0-9]/)
-                return hash[i]
-            case 100:
-                i = hash.search(/[0-9]/)
-                let j = hash.slice(j).search(/[0-9]/)
-                return hash[i]+hash[i+j]
-            default:
-                return -1
-        }
-    }
+    // const getWinNumber = (hash, odds) => {
+    //     let i = 0;
+    //     switch (odds) {
+    //         case 5:
+    //             i = hash.search(/[0-4]/)
+    //             return hash[i]
+    //         case 10:
+    //             i = hash.search(/[0-9]/)
+    //             return hash[i]
+    //         case 100:
+    //             i = hash.search(/[0-9]/)
+    //             let j = hash.slice(j).search(/[0-9]/)
+    //             return hash[i]+hash[i+j]
+    //         default:
+    //             return -1
+    //     }
+    // }
 
     const delay = ms => new Promise(res => setTimeout(res, ms));
     
@@ -279,8 +279,8 @@ export const useGameContract = (monitor=false)  => {
     const formatLast = ()=>{
         if ( lastRecordError || lastLoading ) {
             return {}
-        }
-        const amount = BigInt(lastRecord[1])/1000000000000000000000n
+        }                            
+        const amount = lastRecord[1]/1000000000000000000n
         let s = status(lastRecord[3], lastRecord[5], lastRecord[6])
         return {id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[3], odds: odds[lastRecord[2]], status: s, random: s!=BetStatus.timeout?lastRecord[5]:'-'}
     }

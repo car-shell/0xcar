@@ -124,6 +124,9 @@ const BetArea = () => {
           } else if (betLogs[index].status === BetStatus.withdrawed &&  tipInfo.status === BetStatus.win) {
             
           } else {
+            if (betLogs[index].transactionHash) {
+              tipInfo.transactionHash = betLogs[index].transactionHash
+            }
             tipInfo.time = betLogs[index].time
             betLogs[index] = tipInfo
           }
@@ -466,7 +469,7 @@ const BetArea = () => {
 
     const id = Date.parse(new Date).toString()
     setTipInfo(()=>{
-      return {id: id, time: Date.parse(new Date), type: title.value, rule: title.key, number: formatNumber(numbers), amount: amount, odds: title.odds, status: BetStatus.started, random: '-'}
+      return {id: id, time: Date.parse(new Date), type: title.value, number: formatNumber(numbers), amount: amount, odds: title.odds, status: BetStatus.started, random: '-'}
     })
 
     setIsLoading(true)

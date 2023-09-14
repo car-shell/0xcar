@@ -27,7 +27,7 @@ const BetRecord = () => {
                 align: "center",
             },
             {
-                Header: "Stake",
+                Header: "Bet Amount",
                 accessor: "amount",
                 align: "center",
                 format: (i)=>{
@@ -36,7 +36,7 @@ const BetRecord = () => {
             },
             
             {
-                Header: "Odds",
+                Header: "Multplier",
                 accessor: "odds",
                 align: "center",
                 format: (i)=>{

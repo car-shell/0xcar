@@ -58,24 +58,24 @@ function StickyHeadTable({columns, data, maxHeight="478px", type=null}) {
     //             return -1
     //     }
     // }
-    const getWinNumber = (h, odds)=>{
-        let hash = h.slice(2)
-        let i = null;
-        switch (odds) {
-            case 5:
-                i = hash.search(/[0-4]/)
-                return h[i+2]
-            case 10:
-                i = hash.search(/[0-9]/)
-                return h[i+2]
-            case 100:
-                i = hash.search(/[0-9]/)
-                let j = hash.slice(i+1).search(/[0-9]/)+i+1
-                return h[i+2] + h[j+2]
-            default:
-                return ''
-        }
-    }
+    // const getWinNumber = (h, odds)=>{
+    //     let hash = h.slice(2)
+    //     let i = null;
+    //     switch (odds) {
+    //         case 5:
+    //             i = hash.search(/[0-4]/)
+    //             return h[i+2]
+    //         case 10:
+    //             i = hash.search(/[0-9]/)
+    //             return h[i+2]
+    //         case 100:
+    //             i = hash.search(/[0-9]/)
+    //             let j = hash.slice(i+1).search(/[0-9]/)+i+1
+    //             return h[i+2] + h[j+2]
+    //         default:
+    //             return ''
+    //     }
+    // }
     const getTitle = (odds)=>{
     let title = { 5: '1-Star (5x)', 10: '1-Star (10x)', 100: '2-Star (100x)', '5': '1-Star (5x)', '10': '1-Star (10x)', '100': '2-Star (100x)' }
     return title[odds]
