@@ -351,7 +351,7 @@ export default function Ranking({width = '920px'}) {
         </Typography>
       </Stack>
       <Typography component='div' sx={{marginTop: '14px', font: '400 normal 20px Arial'}}>
-        September 12 to September 30, 2023 (UTC+0)
+        2023/09/15 00:00 - 2023/09/30 00:00 (UTC+0)
       </Typography>
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         Climb the leaderboard to boost your points!
