@@ -56,8 +56,8 @@ export default function Ranking({width = '920px'}) {
   React.useEffect(()=>{
     const i = setInterval(() => {
       let now = new Date()
-      let start = new Date("2023-09-12 00:00:00Z")
-      let end = new Date("2023-09-20 00:00:00Z")
+      let start = new Date("2023-09-15 00:00:00Z")
+      let end = new Date("2023-09-30 00:00:00Z")
       let rm = (24*3600) - ((now/1000) % (24*3600)) - 1  
       if (now > start && now < end) {
         let dur = `${(Math.floor(rm/3600)).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
