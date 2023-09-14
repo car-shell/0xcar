@@ -4,7 +4,7 @@ import { useGameContract,useBet } from "../../data/game";
 import {ethers} from "ethers"
 import styles from "../../styles/Bet.module.css";
 import Fireworks from "../animPaper";
-import ReactLoading from 'react-loading';
+import ReactLoading from 'react-loading'
 import { store, SET_LOG_CHANGE, SET_ACTION} from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import Modal, { ConfirmationModal, useModal } from '../Tips';
@@ -19,6 +19,27 @@ import Typography from '@mui/material/Typography';
 import StepLabel from '@mui/material/StepLabel';
 import CustomizedSteppers from './Progress'
 
+const useAudio = url => {
+  const [audio] = useState(new Audio(url));
+  const [playing, setPlaying] = useState(false);
+
+  const toggle = () => setPlaying(!playing);
+
+  useEffect(() => {
+      playing ? audio.play() : audio.pause();
+    },
+    [playing]
+  );
+
+  useEffect(() => {
+    audio.addEventListener('ended', () => setPlaying(false));
+    return () => {
+      audio.removeEventListener('ended', () => setPlaying(false));
+    };
+  }, []);
+
+  return [playing, toggle];
+};
 
 const BetArea = () => {
   const rules = [{key: 0, value: '1-Star (5x)', number: 5, select: 1, odds: 5}, {key: 1, value: '1-Star (10x)', number: 10, select: 1, odds: 10}, {key: 2, value: '2-Star (100x)', number: 10, select: 2, odds: 100}]
@@ -42,6 +63,8 @@ const BetArea = () => {
         state: { betAction, betLogs },
   } = useContext(store)
   const {ToastUI, showToast} = useToast()
+  const [playingLose, toggleLose] = useAudio("./lose.wav");
+  const [playingWin, toggleWin] = useAudio("./win.wav");
 
   const {address, isConnected} = useAccount()
   const {balance, token, allowance, approve} = useTokenContract()
@@ -308,7 +331,7 @@ const BetArea = () => {
               setTimeout(() => {
                 setShowFireworks(false)
               }, 4000);
-
+            toggleWin()
             setTipInfo((preTip)=>{
               console.log(`tipInfo amount: ${preTip.amount} `);
               setStepInfo((pre)=>{
@@ -323,7 +346,7 @@ const BetArea = () => {
             setTipInfo((preTip)=>{
               return {...preTip, status:BetStatus.failed, random: r[2],  action: null}
             })
-
+            toggleLose()
             setStepInfo((pre)=>{
               return {...pre, stepMsg: (<>
                 <span style={{font: '650 20px normal sans', color: '#F03434', textAlign: 'center', padding: '40px 0px 20px 0px'}}>YOU LOST THE BET</span>

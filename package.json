@@ -20,6 +20,7 @@
     "classnames": "^2.3.2",
     "eslint": "8.30.0",
     "eslint-config-next": "13.0.7",
+    "ethers": "^5.5.1",
     "is-mobile": "^4.0.0",
     "next": "13.3.1",
     "next-auth": "^4.19.2",
@@ -34,9 +35,9 @@
     "react-spring": "^9.7.1",
     "styled-components": "^5.3.6",
     "ua-parser-js": "^1.0.35",
+    "use-sound": "^4.0.1",
     "viem": "^1.10.9",
-    "wagmi": "^1.4.1",
-    "ethers": "^5.5.1"
+    "wagmi": "^1.4.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
