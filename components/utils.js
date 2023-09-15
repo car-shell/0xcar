@@ -4,6 +4,9 @@ export function formatAmount(amount) {
         return '--'
     }
     if (typeof amount === 'string') {
+        if (amount.indexOf(",") != -1) {
+            amount = amount.replaceAll(",", "")
+        }
         amount = parseFloat(amount);
     } else if (typeof amount === 'bigint') {
         amount = Number(amount)
@@ -15,6 +18,7 @@ export function formatAmount(amount) {
 
     let formattedNumber = amount.toFixed(2);
     const parts = formattedNumber.toString().split('.');
+    console.log(parts);
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
     return parts.join('.');
