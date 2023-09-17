@@ -141,6 +141,9 @@ const Header = ({showMenu=true}) => {
           <div className={styles.menuItem} style={curRouter=='/faucet'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/faucet" >Faucet</BaseLink>
           </div>
+          <div className={styles.menuItem}>
+              <a href="https://docs.0xcardinal.io/" target="_blank" rel="noreferrer">Docs</a>
+          </div>
           {/* <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/nft" >NFT</BaseLink>
           </div>

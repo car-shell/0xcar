@@ -228,7 +228,7 @@ export default function Ranking({width = '920px'}) {
                 align: "center",
             },
             {
-                Header: "Total Net Payout",
+                Header: "Total Net Profit",
                 accessor: "total",
                 align: "center",
                 format: (x)=>{

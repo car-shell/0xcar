@@ -536,7 +536,7 @@ const BetArea = () => {
           <div className={styles.tipValue}>{formatAmount(amount*odds-amount)}</div>
         </div>
         <div className={styles.tipLine}>
-          <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Net Payout':'Potential Net Payout'}</div>
+          <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Net Profit':'Potential Net Profit'}</div>
           <div className={styles.tipValue}>{formatAmount(amount*((odds-1)*0.87+1))}</div>
         </div></>)
   }
