@@ -455,10 +455,10 @@ const BetArea = () => {
       return
     }
 
-    if (balance<amount) {
-      showToast('Insufficient balance!', 'error')
-      return
-    }
+    // if (balance<BigInt(amount)) {
+    //   showToast('Insufficient balance!', 'error')
+    //   return
+    // }
 
     const poolRemainBalance = poolDetails?poolDetails[1]/1000000000000000000n:10e8
     if ( parseFloat(amount)>poolRemainBalance*BigInt(title.odds) ) {
