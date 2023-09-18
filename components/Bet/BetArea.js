@@ -455,6 +455,11 @@ const BetArea = () => {
       return
     }
 
+    console.log(typeof balance);
+    console.log(BigInt(balance.replace(",", "")));
+    console.log(typeof amount);
+    console.log(BigInt(amount));
+
     // if (balance<BigInt(amount)) {
     //   showToast('Insufficient balance!', 'error')
     //   return
