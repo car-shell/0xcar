@@ -87,7 +87,7 @@ export default function Ranking({width = '920px'}) {
   
   const getWinLogs = React.useCallback(async ()=>{
     try {
-      const logs = await getUrl("/bet_ranking", {params : {type: "bet", address: address}})
+      const logs = await getUrl("/bet_ranking", {params : {type: "win", address: address}})
       console.log(logs);
       let r = logs.data.map((item, i)=>{
         return createData(i+1, item["ranking"]+1, item["address"], item["win_count"], item["total_win"])
