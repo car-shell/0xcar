@@ -90,7 +90,7 @@ export default function Ranking({width = '920px'}) {
       const logs = await getUrl("/bet_ranking", {params : {type: "bet", address: address}})
       console.log(logs);
       let r = logs.data.map((item, i)=>{
-        return createData(i+1, item["ranking"], item["address"], item["win_count"], item["total_win"])
+        return createData(i+1, item["ranking"]+1, item["address"], item["win_count"], item["total_win"])
       })
       // let my = null
       // if ( address && address != undefined) {
@@ -111,7 +111,7 @@ export default function Ranking({width = '920px'}) {
       const logs = await getUrl("/bet_ranking", {params : {type: "bet", address: address}})
       console.log(logs);
       let r = logs.data.map((item, i)=>{
-        return {id: i+1, ranking: item["ranking"], address: item["address"], count: item["bet_count"], total: item["total_bet"],
+        return {id: i+1, ranking: item["ranking"]+1, address: item["address"], count: item["bet_count"], total: item["total_bet"],
             total_points: item['total_point'], yesterday: 0 }; //createData(i+1, item["address"], item["bet_count"], item["total_bet"])
       })
       
