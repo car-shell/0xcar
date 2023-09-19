@@ -19,8 +19,8 @@ import { useNetwork, useAccount } from "wagmi";
 
 
 // Generate Order Data
-function createData(ranking, address, count,  total) {
-  return { id: address, ranking: ranking, address: address, count: count, total: total };
+function createData(id, ranking, address, count,  total) {
+  return { id: id, ranking: ranking, address: address, count: count, total: total };
 }
 
 function preventDefault(event) {
@@ -87,20 +87,20 @@ export default function Ranking({width = '920px'}) {
   
   const getWinLogs = React.useCallback(async ()=>{
     try {
-      const logs = await getUrl("/bet_ranking", {params : {type: "win"}})
+      const logs = await getUrl("/bet_ranking", {params : {type: "bet", address: address}})
       console.log(logs);
       let r = logs.data.map((item, i)=>{
-        return createData(i+1, item["address"], item["win_count"], item["total_win"])
+        return createData(i+1, item["ranking"], item["address"], item["win_count"], item["total_win"])
       })
-      let my = null
-      if ( address && address != undefined) {
-        my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
-        r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
-      }
-      let t = my!=null?[my,...r]:r
-      console.log(`[[[[[[${JSON.stringify(t)}]]]]]]`);
+      // let my = null
+      // if ( address && address != undefined) {
+      //   my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
+      //   r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
+      // }
+      // let t = my!=null?[my,...r]:r
+      // console.log(`[[[[[[${JSON.stringify(t)}]]]]]]`);
 
-      setWinRows(t)
+      setWinRows(r)
     } catch (error) {
       console.log(error);
     }
@@ -108,10 +108,10 @@ export default function Ranking({width = '920px'}) {
 
   const getBetLogs = React.useCallback(async ()=>{
     try {
-      const logs = await getUrl("/bet_ranking", {params : {type: "bet"}})
+      const logs = await getUrl("/bet_ranking", {params : {type: "bet", address: address}})
       console.log(logs);
       let r = logs.data.map((item, i)=>{
-        return { id: i+1, ranking: i+1, address: item["address"], count: item["bet_count"], total: item["total_bet"],
+        return {id: i+1, ranking: item["ranking"], address: item["address"], count: item["bet_count"], total: item["total_bet"],
             total_points: item['total_point'], yesterday: 0 }; //createData(i+1, item["address"], item["bet_count"], item["total_bet"])
       })
       
@@ -126,13 +126,14 @@ export default function Ranking({width = '920px'}) {
         })
       }
 
-      let my = null
-      if ( address && address != undefined ) {
-        my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
-        r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
-      }
+      // let my = null
+      // if ( address && address != undefined ) {
+      //   my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
+      //   r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
+      // }
 
-      setBetRows(my!=null?[my, ...r]:r)
+      // setBetRows(my!=null?[my, ...r]:r)
+      setBetRows(r)
     } catch (error) {
       console.log(error);
     }
