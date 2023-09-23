@@ -33,6 +33,7 @@ export default function Ranking({width = '920px'}) {
   const [betRows, setBetRows] = React.useState([]);
   const [pointsRows, setPointsRows] = React.useState([]);
   const [countdown, setCountdown] = React.useState('--:--:--');
+  const [over, setOver] = React.useState("--:--:--")
   
   const [showPointsRules, setShowPointsRules] = React.useState(false);
   const moreRef = React.useRef()
@@ -63,6 +64,14 @@ export default function Ranking({width = '920px'}) {
         let dur = `${(Math.floor(rm/3600)).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
         setCountdown(dur)
       }
+      
+      let te = (end - now)/1000
+      if (te > 0) {
+        let d = Math.floor(te/(24*3600))
+        console.log(d);
+        let dur = (d>0?`${d.toString().padStart(2,0)}D `:'')+`${(Math.floor(rm/3600)).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
+        setOver(dur)
+      }
     }, 1000);
 
     return ()=>clearInterval(i)
@@ -92,13 +101,6 @@ export default function Ranking({width = '920px'}) {
       let r = logs.data.map((item, i)=>{
         return createData(i+1, item["ranking"]+1, item["address"], item["win_count"], item["total_win"])
       })
-      // let my = null
-      // if ( address && address != undefined) {
-      //   my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
-      //   r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
-      // }
-      // let t = my!=null?[my,...r]:r
-      // console.log(`[[[[[[${JSON.stringify(t)}]]]]]]`);
 
       setWinRows(r)
     } catch (error) {
@@ -126,28 +128,18 @@ export default function Ranking({width = '920px'}) {
         })
       }
 
-      // let my = null
-      // if ( address && address != undefined ) {
-      //   my = r.find((el)=> el["address"].toLowerCase()==address.toLowerCase())
-      //   r = r.filter((el)=> el["address"].toLowerCase()!=address.toLowerCase())
-      // }
-
-      // setBetRows(my!=null?[my, ...r]:r)
       setBetRows(r)
     } catch (error) {
       console.log(error);
     }
-      
   }, [address])
 
   React.useEffect(()=>{
     getBetLogs()
     getWinLogs()
-    // getPointsLogs()
     const i = setInterval(() => {
       getWinLogs()
       getBetLogs()
-      // getPointsLogs()
     }, 30000);
 
     return ()=>clearInterval(i)
@@ -354,7 +346,7 @@ export default function Ranking({width = '920px'}) {
       </Typography>
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         <Stack direction='row' alignItems='baseline' sx={{columnGap: '8px'}} >
-        Tally in: <span style={{font: '700 normal 28px Arial', color: 'yellow'}}>{countdown}</span>
+        Ends in: <span style={{font: '700 normal 28px Arial', color: 'yellow'}}>{over}</span>
         <Image  alt=""  ref={moreRef} src="./ask.png" width='18' height='18' style={{cursor: 'pointer'}} onClick={handleShowTip} />
         </Stack>
       </Typography>
@@ -365,7 +357,9 @@ export default function Ranking({width = '920px'}) {
             <StyledTab disableRipple label="Winning Ranking" index={1} />
           </StyledTabs>
       </Box>
-      
+      <Typography component='div' sx={{ font: '700 normal 16px Arial', width: '70%'}} color='#aaaaaa'>
+        Update in: <span style={{font: '700 normal 18px Arial', color: 'yellow'}}>{countdown}</span>
+      </Typography>
       {/* <Box hidden={value!==0} sx={{
         width: width,
       }}>
