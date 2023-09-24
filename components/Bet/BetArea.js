@@ -628,7 +628,7 @@ const BetArea = () => {
         </div>
         <div className={styles.amount}>
           <input className={styles.input} style={{width: '80%'}} type='numbmic' placeholder='Input amount' value={amount} onChange={handleChange}/>
-          <button className={styles.input} style={{cursor: 'pointer'}} onClick={()=>setAmount(parseInt(balance))} > MAX </button>
+          <button className={styles.input} style={{cursor: 'pointer'}} onClick={()=>setAmount(parseInt(balance.replaceAll(",","")))} > MAX </button>
         </div>
         <button className={styles.submit} onClick={submitBet} style={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) ?{}:{font: 'bold 16px sans'}} disabled={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) }>
           { isConnected ? chains.map(c=>c.id).indexOf(chain?.id) != -1 ?  (numbers.length != title.select || numbers[0]===undefined) ? `Please choose ${title.select==2?"two numbers":"a number"}` : amount === '' ? "Please input amount" : "Bet" : `Switch to ${chains[0].name}` : "Connect Wallet" }

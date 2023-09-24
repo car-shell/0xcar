@@ -357,9 +357,9 @@ export default function Ranking({width = '920px'}) {
             <StyledTab disableRipple label="Winning Ranking" index={1} />
           </StyledTabs>
       </Box>
-      <Typography component='div' sx={{ font: '700 normal 16px Arial', width: '70%'}} color='#aaaaaa'>
+      {/* <Typography component='div' sx={{ font: '700 normal 16px Arial', width: '70%'}} color='#aaaaaa'>
         Update in: <span style={{font: '700 normal 18px Arial', color: 'yellow'}}>{countdown}</span>
-      </Typography>
+      </Typography> */}
       {/* <Box hidden={value!==0} sx={{
         width: width,
       }}>
