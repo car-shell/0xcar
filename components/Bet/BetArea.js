@@ -7,7 +7,6 @@ import Fireworks from "../animPaper";
 import ReactLoading from 'react-loading'
 import { store, SET_LOG_CHANGE, SET_ACTION} from '../../store/store'
 import useDispatch from '../../store/useDispatch'
-import Modal, { ConfirmationModal, useModal } from '../Tips';
 import { useAccount, useNetwork} from 'wagmi';
 import useToast from '../Toast'
 import { useConnectModal, useChainModal } from '@rainbow-me/rainbowkit';
@@ -635,24 +634,6 @@ const BetArea = () => {
         </button>
       </div>
       <ToastUI />
-      {/* <Modal
-        isShown={isShown}
-        hide={toggle}
-        headerText={modelHeader}
-        closeIcon={'x'}
-        modalContent={
-          <ConfirmationModal
-              isShown={isShown}
-              onConfirm={onConfirm}
-              message={modelMsg}
-              sureText={sureText}
-              sureColor='red'
-              sureHoverColor='#f0f'
-              cancelColor='lightgrey'
-              cancelHoverColor='grey'
-          />
-        }
-      /> */}
       {showFireworks && <div className={styles.umask} style={{background: 'rgba(32, 33, 34, 0)'}}>
         <Fireworks />
       </div>}

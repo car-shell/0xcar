@@ -22,6 +22,7 @@ export const Backdrop = styled.div`
 //background: rgb(74, 74, 75);
 
 export const StyledModal = styled.div`
+  min-width: 300px;
   z-index: 100;
   background: #000;
   position: relative;

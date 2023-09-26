@@ -30,8 +30,7 @@ const Airdrop = () => {
         sureText: ''
     });
     const {ToastUI, showToast} = useToast()
-    let canLevel = typeof canClaim?.level === 'number'? canClaim?.level:canClaim?.level?.toNumber()
-    let _reason = typeof canClaim?.reason === 'number'? canClaim?.reason:canClaim?.reason?.toNumber()
+    let _reason = canClaim?.reason
     const {address} = useAccount()
     const { openConnectModal } = useConnectModal();
 
@@ -46,7 +45,7 @@ const Airdrop = () => {
                 toggle(true)
             }, 4000); 
         }
-    }, [canClaim, toggle])
+    }, [canClaim])
     // const NFTAirdropCard = ({title, level}) => {
     //     return <>
     //         <Card variant="outlined" sx={{ display: 'flex', flexDirection: 'column', padding: '8px 8px 12px 12px', height: '340px', width: '260px',
@@ -126,7 +125,7 @@ const Airdrop = () => {
             <div style={{marginTop: 'auto', display: 'block',  width: '100%'}}>
                 <div style={{height: '1px', marginTop: '42px', width: '100%', borderTopStyle: 'solid', borderWidth:'1px', borderColor: '#333'}}> </div>
                 <div style={{position: 'relative', width: '100%'}}>
-                <Button variant="contained" color="error" disabled={address && canLevel==0} sx={{"&:disabled": {
+                <Button variant="contained" color="error" disabled={address && canClaim?.level==0} sx={{"&:disabled": {
                         backgroundColor: '#666'
                         }, position: 'absolute', left: 'calc(50% - 150px)', marginTop: '12px', height: '50px', width: '300px' }}
                     onClick={async ()=>{
@@ -173,8 +172,8 @@ const Airdrop = () => {
                         sureText={modal.sureText}
                         sureColor='red'
                         sureHoverColor='#f0f'
-                        cancelColor='lightgrey'
-                        cancelHoverColor='grey'
+                        cancelColor='grey'
+                        cancelHoverColor='lightgrey'
                     />
                 }
             />

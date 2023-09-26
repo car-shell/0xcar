@@ -1,6 +1,5 @@
 import styles from "../../styles/Log.module.css";
 import {useCallback, useMemo, useState, useContext, useEffect, useRef} from "react";
-import Modal, { ConfirmationModal, useModal } from '../Tips';
 import { store, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import StickyHeadTable from "./Table";

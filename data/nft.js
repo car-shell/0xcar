@@ -33,7 +33,7 @@ const useNFTContract = () => {
             cache: 20_000,
             // structuralSharing: (prev, next) => (prev === next ? prev : next),
             onSuccess:(data)=>{
-                // console.log('****');
+                console.log(data);
             }
         }
     )
@@ -44,12 +44,14 @@ const useNFTContract = () => {
             functionName: 'isEligible',
             chainId: chainId,
             args: [address],
-            watch: true
+            watch: true,
+            onSuccess:(data)=>{
+                console.log(data);
+            }
         }
     )
 
     useEffect(()=>{
-        console.log(ownOfData);
         if (ownOfData===undefined) {
             return
         }

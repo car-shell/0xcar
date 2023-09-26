@@ -114,11 +114,11 @@ export const ConfirmationModal= (props) => {
       <Message>{message}</Message>
       <Separate />
       <ConfirmationButtons>
-        <NoButton 
+        {cancelText&&<NoButton 
         onClick={onCancel}
         cancelColor={cancelColor}
         cancelHoverColor={cancelHoverColor}
-        >{cancelText}</NoButton>
+        >{cancelText}</NoButton>}
         <YesButton onClick={onConfirm} 
          sureColor={sureColor}
          sureHoverColor={ sureHoverColor}

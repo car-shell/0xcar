@@ -24,8 +24,8 @@ const NFTCard = ({index, nft, selected, click}) => {
     if (nft===undefined) {
         return <></>
     }
-    const level = nft[3].toNumber()
-    const id = nft[0].toNumber()
+    const level = nft[3]
+    const id = nft[0]
     return <>
         {nft&&<Card variant="outlined"  sx={{ display: 'flex', flexDirection: 'row', height: '96px', width: '380px', marginTop: '18px', borderColor: nftConstInfo[level].color}}>
             <CardActionArea onClick={click(index)} sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start',
@@ -55,9 +55,9 @@ const NFTDetail = ({nft}) => {
         return <><div style={{textAlign:'center', lineHeight: '600px'}}>No data</div></>
     }
 
-    const level = nft[3]?.toNumber()
-    const id = nft[0]?.toNumber()
-    const ts = nft[2]?.toNumber()*1000
+    const level = nft[3]
+    const id = nft[0]
+    const ts = nft[2]*1000n
     return <>
         {nft && <Box variant="outlined" sx={{ display: 'flex', flexDirection: 'row', padding: '8px 8px 12px 0px', height: '96px', width: '300px'}}>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: '28px'}}>
@@ -77,7 +77,7 @@ const NFTDetail = ({nft}) => {
                     Rank：{ (level===3? (nft[4]?'Genesis ':'Fused ') : '') + nftConstInfo[level]?.name}
                 </Typography>
                 <Typography component='div' variant='body2' sx={{color: nftConstInfo[level].color}}>
-                    Mint：{new Date(ts).toString()}
+                    Mint：{new Date(Number(ts)).toString()}
                 </Typography>
                 <Typography component='div' variant='h6' sx={{margin: '40px 0 20px 0'}}>
                 Functionality
@@ -146,17 +146,17 @@ const Fuse = ({index, nftIDs, value, nfts}) => {
             {visibility && <div className={s.fuseNFTList} ref={refList} >
                 <div className={s.nftlist}>
                     {nftIDs && nfts.map((element, i) => {
-                        if (buttonSelected===0 && element[3].toNumber()!=2) {
+                        if (buttonSelected===0 && element[3]!=2) {
                             return
                         }
-                        if (buttonSelected>0 && element[3].toNumber()!=1) {
+                        if (buttonSelected>0 && element[3]!=1) {
                             return
                         }
 
                         return <NFTCard key={i} index={i} nft={element} selected={selected} click={(i)=>()=>{
                             let selectNft = nfts[i]
-                            let id = selectNft[0].toNumber()
-                            let level = selectNft[3].toNumber()
+                            let id = selectNft[0]
+                            let level = selectNft[3]
                             if (nftSelected.indexOf(id) != -1) {
                                 showToast('already selected', 'error')
                                 return;
