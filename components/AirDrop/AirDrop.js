@@ -7,7 +7,7 @@ import Image from 'next/image'
 import s from '../../styles/NFT.module.css'
 import useNFTContract from '../../data/nft'
 import Modal, { ConfirmationModal, useModal } from '../Tips';
-import Fireworks from "../anim";
+import Fireworks from "../animPaper";
 import useToast from '../Toast'
 import {
   useConnectModal,
@@ -80,7 +80,7 @@ const Airdrop = () => {
                 <Typography component='div' sx={{ fontSize: '14px', flex: 4, textAlign: 'center',  padding: '8px 8px 0px 0px', textAlign: 'left'}}>
                     Rank：<span style={{color: nftConstInfo[level].color}}>{data.rankName}</span>
                 </Typography>
-                <Checkbox disabled checked={_reason==reason}  color="secondary" sx={{ fontSize: '14px', flex: 1, textAlign: 'center',  padding: '8px 8px 0px 0px', textAlign: 'left', '& .MuiSvgIcon-root': { color: '#333' }}}>
+                <Checkbox disabled checked={_reason==reason}  color="secondary" sx={{ fontSize: '14px', flex: 1, textAlign: 'center',  padding: '8px 8px 0px 0px', textAlign: 'left', '& .MuiSvgIcon-root': { color: _reason==reason?'green':'#333' }}}>
                 </Checkbox>
                 {/* <Button variant="outlined" disabled={level!==canLevel?true:false} sx={{marginTop: '12px' }} onClick={async ()=>{
                     await claim((r)=>{
