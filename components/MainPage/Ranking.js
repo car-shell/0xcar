@@ -34,6 +34,7 @@ export default function Ranking({width = '920px'}) {
   const [pointsRows, setPointsRows] = React.useState([]);
   const [countdown, setCountdown] = React.useState('--:--:--');
   const [over, setOver] = React.useState("--:--:--")
+  const [ended, setEnded] = React.useState(false)
   
   const [showPointsRules, setShowPointsRules] = React.useState(false);
   const moreRef = React.useRef()
@@ -64,7 +65,9 @@ export default function Ranking({width = '920px'}) {
         let dur = `${(Math.floor(rm/3600)).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
         setCountdown(dur)
       }
-      
+      if (now > end) {
+        setEnded(()=>true)
+      }
       let te = (end - now)/1000
       if (te > 0) {
         let d = Math.floor(te/(24*3600))
@@ -346,7 +349,10 @@ export default function Ranking({width = '920px'}) {
       </Typography>
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         <Stack direction='row' alignItems='baseline' sx={{columnGap: '8px'}} >
-        Ends in: <span style={{font: '700 normal 28px Arial', color: 'yellow'}}>{over}</span>
+        {
+          ended  ? (<span style={{font: '700 normal 28px Arial', color: 'yellow'}}>Event Ended</span>):
+          (<>Ends in: <span style={{font: '700 normal 28px Arial', color: 'yellow'}}>{over}</span></>) 
+        }
         <Image  alt=""  ref={moreRef} src="./ask.png" width='18' height='18' style={{cursor: 'pointer'}} onClick={handleShowTip} />
         </Stack>
       </Typography>
@@ -397,7 +403,7 @@ export default function Ranking({width = '920px'}) {
           left: moreRef.current.getBoundingClientRect().right + 2,
           top: moreRef.current.getBoundingClientRect().top,
           width: "360px",
-          height: "270px",
+          height: ended?"100px":"270px",
           zIndex: '999',
           backgroundColor: "#272a2e",
           borderRadius: "8px"
@@ -406,6 +412,7 @@ export default function Ranking({width = '920px'}) {
             Tips
           </Typography>
           <Typography component='div' sx={{ font: '400 normal 14px Arial'}}>
+            { !ended ? (
             <ul style={{padding: '0px 8px 0px 20px'}}>
             <li style={{margin: "8px"}}>
             Points are tallied daily at 24:00 (UTC+0).
@@ -422,7 +429,7 @@ export default function Ranking({width = '920px'}) {
              <li style={{margin: "8px"}}>
              Users ranked 26-50 in daily accumulated points will receive an extra 50 points the following day.
             </li>
-            </ul>
+            </ul>) : (<div style={{padding: '0px 8px 0px 20px'}}>Thank you for your attention and participation! For users ranked in the top 50, the reward claim portal will be provided within a week. Please stay tuned.</div>)}
           </Typography>
           {/* <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
             * Users ranked 1-10 will get 2.0x their POINTS earned in 24H
