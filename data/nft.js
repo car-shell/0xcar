@@ -8,12 +8,12 @@ import { useTokenContract } from "./token";
 import { defaultChainId } from "../config/constants/chainId";
 
 const useNFTContract = () => {
-    const {chain} = useNetwork()
     const {address} = useAccount()
     const {allowance, approve} = useTokenContract()
     const [ownList, setOwnList] = useState([])
     const [canClaimLevel, setCanClaimLevel] = useState({level:0, reason: 0})
-    const chainId = useMemo(()=>{ return chain?.id ? chain.id : defaultChainId}, [chain])
+    const {chain, chains} = useNetwork()
+    const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
     const addressNFTContract = ADDRESSES[chainId]?.nft
     // const addressNFTContract = useMemo(()=> {return ADDRESSES[97]?.nft})
     // const { data: signer, error, isLoading } = useWalletClient()
