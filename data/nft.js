@@ -1,6 +1,6 @@
 import { useContract, useAccount, useContractRead, useWalletClient, useNetwork } from "wagmi";
 import { useMemo, useCallback, useState, useEffect} from "react";
-import { readContract, writeContract, prepareWriteContract } from "@wagmi/core";
+import { readContract, writeContract, prepareWriteContract, waitForTransaction } from "@wagmi/core";
 import { ethers } from "ethers"
 import { ADDRESSES } from '../config/constants/address' 
 import { ERC721ABI as abi } from './abi/ERC721ABI'
@@ -135,17 +135,24 @@ const useNFTContract = () => {
             address: addressNFTContract,
             abi: abi,
             functionName: 'awardItem',
+        }).then(async (config)=>{
+            const data = await writeContract(config).then(async ({hash})=>{
+                const receipt = await waitForTransaction({
+                    hash,
+                    onReplaced: (transaction) => console.log(transaction),
+                })
+                success(receipt)
+            }).catch((e)=>{
+                console.log(e);
+                fail(e)
+            })
         }).catch((e)=>{
+            console.log(e);
             fail(e)
             return
         })
 
-        const data = await writeContract(config).then((data)=>{
-            success(data)
-        }).catch((e)=>{
-            console.log(e);
-            fail(e)
-        })
+       
     }, [])
 
    
