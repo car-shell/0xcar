@@ -95,12 +95,12 @@ const Airdrop = () => {
         </>
     }
     const reasons = {
-            1: { title: 'Top 1-3 IDO Investors', rank: 1, rankName: 'GENESIS GOLD'} ,
-            2: { title: 'Top 4-10 IDO Investors', rank: 2, rankName: 'SILVER'},
-            3: { title: 'Top 11-20 IDO Investors', rank: 3, rankName: 'BRONZE'},
-            4: { title: 'Top 1-3 Betting Players for the xx Period', rank: 1, rankName: 'GENESIS GOLD'} ,
-            5: { title: 'Top 4-10 Betting Players for the xx Period', rank: 2, rankName: 'SILVER'} ,
-            6: { title: 'Top 11-20 Betting Players for the xx Period', rank: 3, rankName: 'BRONZE'} 
+            // 1: { title: 'Top 1-3 IDO Investors', rank: 1, rankName: 'GENESIS GOLD'} ,
+            // 2: { title: 'Top 4-10 IDO Investors', rank: 2, rankName: 'SILVER'},
+            // 3: { title: 'Top 11-20 IDO Investors', rank: 3, rankName: 'BRONZE'},
+            1: { title: 'Top 1-10 Betting Players for the 1st Period', rank: 1, rankName: 'GENESIS GOLD'} ,
+            2: { title: 'Top 11-25 Betting Players for the 1st Period', rank: 2, rankName: 'SILVER'} ,
+            3: { title: 'Top 26-50 Betting Players for the 1st Period', rank: 3, rankName: 'BRONZE'} 
         }
     
     return <>
@@ -110,9 +110,9 @@ const Airdrop = () => {
                 NFTs Airdrop
             </Typography>
             <Typography component='div' style={{fontSize: '14px'}}>
-                <span style={{color: '#c280ff'}}>Claimable Period：</span> 2023/02/27 00:00 - 2023/03/17 00:00 GMT+08:00
+                <span style={{color: '#c280ff'}}>Claimable Period：</span> 2023/10/06 12:00 - 2023/10/16 00:00 (UTC+0)
             </Typography>
-            <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
+            <div style={{display: 'flex', flexDirection: 'column', gap: '16px', minHeight: "480px"}}>
                 {
                     Object.keys(reasons).map((k)=>{
                         return <NFTAirdropListItem data={reasons[k]} reason={k} key={k}/>
@@ -135,8 +135,12 @@ const Airdrop = () => {
                         await claim((r)=>{
                             showToast('claim success', 'success');
                         }, (e)=>{
-                            // showToast(e.reason || e.message || e.data?.message , 'error')
-                            showToast('timeout!!!' , 'error')
+                            // 
+                            if ( e.message.indexOf("expired") != -1 ) {
+                                showToast('Past the claim period!!!' , 'error')
+                            } else {
+                                showToast(e.shortMessage || e.message || e.data?.message , 'error')
+                            }
                         })
                     }
                 }}>

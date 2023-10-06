@@ -24,7 +24,7 @@
     overflow: auto;
     z-index: 88;
     background-color: #000;
-    border-right: 1px solid #aaa;
+    border-right: 1px solid #333;
 }
 
 .fee {
@@ -39,7 +39,7 @@
     width: 1px;
     height: 100%;
     min-height: calc(100vh - 200px);
-    border-left: 1px solid #aaa  
+    border-left: 1px solid #333  
 }
 
 .nftdetail {

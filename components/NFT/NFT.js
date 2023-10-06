@@ -1,5 +1,5 @@
 
-import {Tabs, Tab, Box, Card, Typography, Button, IconButton, CardActionArea, Checkbox} from '@mui/material'
+import {Tabs, Tab, Box, Card, Typography, Button, IconButton, CardActionArea, Checkbox, Link} from '@mui/material'
 import {useState, useEffect, useCallback, useRef} from 'react'
 import { useAccount } from 'wagmi'
 import { useTokenContract } from "../../data/token";
@@ -15,9 +15,9 @@ import {
 } from '@rainbow-me/rainbowkit';
 
 const nftConstInfo = {
-        3: {name: 'Gold',   dividend: 1.2,  fee: '4%', color: '#ffd700'}, 
-        2: {name: 'Silver', dividend: 1,    fee: '2%', color: '#d7d7d7'}, 
-        1: {name: 'Bronze', dividend: 0,    fee: '1%', color: '#00c0c0'}
+        3: {name: 'Gold',   dividend: 1.2,  fee: '6%', color: '#ffd700'}, 
+        2: {name: 'Silver', dividend: 1,    fee: '4%', color: '#d7d7d7'}, 
+        1: {name: 'Bronze', dividend: 0,    fee: '2%', color: '#00c0c0'}
     }
 
 const NFTCard = ({index, nft, selected, click}) => {
@@ -54,15 +54,17 @@ const NFTDetail = ({nft}) => {
     if (nft === undefined) {
         return <><div style={{textAlign:'center', lineHeight: '600px'}}>No data</div></>
     }
-
+    console.log(nft);
+    const {ToastUI, showToast} = useToast()
     const level = nft[3]
-    const id = nft[0]
+    const id = Number(nft[0])
     const ts = nft[2]*1000n
     return <>
+        <ToastUI />
         {nft && <Box variant="outlined" sx={{ display: 'flex', flexDirection: 'row', padding: '8px 8px 12px 0px', height: '96px', width: '300px'}}>
             <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: '28px'}}>
                 <Image width='300' height='340' alt='nft image' src='/cardinal.png' />
-                <Button variant="outlined" sx={{marginTop: '60px', height: '40px', width: '200px', borderRadius: '50px', color: nftConstInfo[level].color, borderColor: nftConstInfo[level].color}}>
+                <Button onClick={()=>showToast("Sales will be supported only after the mainnet is launched.","error")} variant="outlined" sx={{marginTop: '60px', height: '40px', width: '200px', borderRadius: '50px', color: nftConstInfo[level].color, borderColor: nftConstInfo[level].color}}>
                     Sale
                 </Button>
             </Box>
@@ -91,9 +93,9 @@ const NFTDetail = ({nft}) => {
                 <Typography component='div' variant='body2' sx={{color: nftConstInfo[level].color}}>
                     Dividend Weighting：{nftConstInfo[level]?.dividend}
                 </Typography>
-                <Typography component='div' sx={{margin: '60px 0 20px 0', fontSize: '18px', fontWeight: '400', fontStyle: 'normal', cursor: 'pointer', '&:hover': {color: 'blue'}}} >
+                <Link href="https://docs.0xcardinal.io/tokenomics/nfts" target="_blank" rel="noreferrer" underline="hover" sx={{margin: '60px 0 20px 0', fontSize: '18px', fontWeight: '400', fontStyle: 'normal', cursor: 'pointer', '&:hover': {color: 'blue'}}} >
                     What are the rules for NFTs?
-                </Typography>
+                </Link>
             </Box>
         </Box>}
     </>
@@ -289,7 +291,7 @@ const NFT = ()=>{
             <Box sx={{ borderBottom: 1, borderColor: 'divider', padding: '36px 0 0 0px' }}>
                 <Tabs onChange={handleChange} value={value}>
                     <Tab sx={{color:'#fff'}} label="My NFT" index={0} />
-                    <Tab sx={{color:'#fff'}} label="Fuse" index={1} />
+                    {/* <Tab sx={{color:'#fff'}} label="Fuse" index={1} /> */}
                 </Tabs>
             </Box>
             <MyNFT index={0} nftIDs={ownList} value={value} nfts={nfts}></MyNFT>

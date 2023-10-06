@@ -256,7 +256,7 @@ const BetAreaCell = () => {
       setBetResult(BetStatus.withdrawed_timeout)
     }, (e)=>{
       setIsLoading(false)
-      let msg = e.reason || e.data?.message || e.message;
+      let msg = e.shortMessage || e.reason || e.data?.message || e.message;
       showToast(msg, 'error')
       console.log(msg);
       //fix status
@@ -277,7 +277,7 @@ const BetAreaCell = () => {
       setBetResult(2)
     }, (e)=>{
       setIsLoading(false)
-      showToast(e.reason || e.data?.message || e.message, 'error')
+      showToast(e.shortMessage || e.reason || e.data?.message || e.message, 'error')
       console.log(e.reason);
       //fix status
       if ( e.reason?.indexOf("no betting") != -1 ) {

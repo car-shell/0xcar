@@ -16,6 +16,7 @@ import {formatAmount} from "../utils"
 import { ADDRESSES } from '../../config/constants/address' 
 import { defaultChainId } from "../../config/constants/chainId";
 import { useNetwork, useAccount } from "wagmi";
+import { useRouter } from 'next/router';
 
 
 // Generate Order Data
@@ -35,12 +36,14 @@ export default function Ranking({width = '920px'}) {
   const [countdown, setCountdown] = React.useState('--:--:--');
   const [over, setOver] = React.useState("--:--:--")
   const [ended, setEnded] = React.useState(false)
+  const [started, setStarted] = React.useState(true)
   
   const [showPointsRules, setShowPointsRules] = React.useState(false);
   const moreRef = React.useRef()
 
   const {chain, chains} = useNetwork()
   const {address} = useAccount()
+  const router = useRouter()
   const chainId = React.useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
   const addressGameContract = ADDRESSES[chainId]?.game;
 
@@ -58,20 +61,26 @@ export default function Ranking({width = '920px'}) {
   React.useEffect(()=>{
     const i = setInterval(() => {
       let now = new Date()
-      let start = new Date("2023-09-15 00:00:00Z")
-      let end = new Date("2023-09-30 00:00:00Z")
+      //2023/10/10 00:00 - 2023/10/31 00:00 (UTC+0)
+      let start = new Date("2023-10-10 00:00:00Z")
+      let end = new Date("2023-11-01 00:00:00Z")
       let rm = (24*3600) - ((now/1000) % (24*3600)) - 1  
       if (now > start && now < end) {
         let dur = `${(Math.floor(rm/3600)).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
         setCountdown(dur)
       }
+      if (now < start) {
+        setStarted(()=>false)
+      }
       if (now > end) {
         setEnded(()=>true)
       }
       let te = (end - now)/1000
+      if (now < start) {
+        te = (start - now)/1000
+      }
       if (te > 0) {
         let d = Math.floor(te/(24*3600))
-        console.log(d);
         let dur = (d>0?`${d.toString().padStart(2,0)}D `:'')+`${(Math.floor(rm/3600)).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
         setOver(dur)
       }
@@ -100,7 +109,6 @@ export default function Ranking({width = '920px'}) {
   const getWinLogs = React.useCallback(async ()=>{
     try {
       const logs = await getUrl("/bet_ranking", {params : {type: "win", address: address}})
-      console.log(logs);
       let r = logs.data.map((item, i)=>{
         return createData(i+1, item["ranking"]+1, item["address"], item["win_count"], item["total_win"])
       })
@@ -114,7 +122,6 @@ export default function Ranking({width = '920px'}) {
   const getBetLogs = React.useCallback(async ()=>{
     try {
       const logs = await getUrl("/bet_ranking", {params : {type: "bet", address: address}})
-      console.log(logs);
       let r = logs.data.map((item, i)=>{
         return {id: i+1, ranking: item["ranking"]+1, address: item["address"], count: item["bet_count"], total: item["total_bet"],
             total_points: item['total_point'], yesterday: 0 }; //createData(i+1, item["address"], item["bet_count"], item["total_bet"])
@@ -334,26 +341,26 @@ export default function Ranking({width = '920px'}) {
       <Stack direction='row' alignItems='baseline' sx={{columnGap: '4px'}} >
         <Image  alt="" src='./fire.png' width='32' height='32' />
         <Typography component='div' sx={{marginTop: '18px', font: '700 normal 36px Arial'}}>
-          Points Summit Challenge: Phase 1
+          Betting Summit Challenge: Phase 2
         </Typography>
       </Stack>
       <Typography component='div' sx={{marginTop: '14px', font: '400 normal 20px Arial'}}>
-        2023/09/15 00:00 - 2023/09/30 00:00 (UTC+0)
+        2023/10/10 00:00 - 2023/10/31 00:00 (UTC+0)
       </Typography>
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         Climb the leaderboard to boost your points!
       </Typography>
       <Typography component='div' sx={{ font: '700 normal 18px Arial'}} color='#aaaaaa'>
         The top 50 during the event will receive exclusive NFTs and special role rewards.  
-        <a href="https://docs.0xcardinal.io/testnet-guides/ranking-rules" target="_blank" rel="noreferrer" style={{color: '#02A7F0', cursor: "pointer"}}> More&gt;&gt;</a>
+        <a href="https://docs.0xcardinal.io/testnet-guides/ranking-rules/summit-challenge-phase-2" target="_blank" rel="noreferrer" style={{color: '#02A7F0', cursor: "pointer"}}> More&gt;&gt;</a>
       </Typography>
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         <Stack direction='row' alignItems='baseline' sx={{columnGap: '8px'}} >
-        {
-          ended  ? (<span style={{font: '700 normal 28px Arial', color: 'yellow'}}>Event Ended</span>):
+        { !started ? (<>Starts in: <span style={{font: '700 normal 28px Arial', color: 'yellow'}}>{over}</span></>):
+          ended ? (<span style={{font: '700 normal 28px Arial', color: 'yellow'}}>Event Ended</span>):
           (<>Ends in: <span style={{font: '700 normal 28px Arial', color: 'yellow'}}>{over}</span></>) 
         }
-        <Image  alt=""  ref={moreRef} src="./ask.png" width='18' height='18' style={{cursor: 'pointer'}} onClick={handleShowTip} />
+        <Image alt=""  ref={moreRef} src="./ask.png" width='18' height='18' style={{cursor: 'pointer'}} onClick={handleShowTip} />
         </Stack>
       </Typography>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: '68px 0 0 0px' }} >
@@ -399,6 +406,16 @@ export default function Ranking({width = '920px'}) {
       }}>
         <StickyHeadTable columns={betColumns} data={betRows} maxHeight={null} type='ranking'/>
       </Box>
+
+      <Box sx={{width: '70%', margin: '16px 0px 8px 0px'}}>
+        <Typography sx={{ font: '700 normal 16px Arial'}}>
+          Previous Campaigns
+        </Typography>
+        <Link href="https://docs.0xcardinal.io/testnet-guides/nft-airdrop/phase-1-top50-airdrop" target="_blank" rel="noreferrer" sx={{color: '#06FC99', font: '700 normal 14px Arial'}}>
+          Betting Summit Challenge: Phase 1
+        </Link>
+      </Box>
+      
       {showPointsRules && <Box sx={{ position: 'absolute',
           left: moreRef.current.getBoundingClientRect().right + 2,
           top: moreRef.current.getBoundingClientRect().top,

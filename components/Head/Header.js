@@ -135,21 +135,23 @@ const Header = ({showMenu=true}) => {
               <BaseLink href="/swap" >Swap</BaseLink>
               {curRouter=='/swap' && <div className={styles.underline}></div>}
           </div>*/}
+          
           <div className={styles.menuItem} style={curRouter=='/ranking'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/ranking" >Ranking</BaseLink>
           </div> 
+           
+           <div className={styles.menuItem} style={curRouter=='/airdrop'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+              <BaseLink href="/airdrop" >AirpDrop</BaseLink>
+          </div>
+          <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+              <BaseLink href="/nft" >NFT</BaseLink>
+          </div>
           <div className={styles.menuItem} style={curRouter=='/faucet'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/faucet" >Faucet</BaseLink>
           </div>
           <div className={styles.menuItem}>
               <a href="https://docs.0xcardinal.io/" target="_blank" rel="noreferrer">Docs</a>
           </div>
-          {/* <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
-              <BaseLink href="/nft" >NFT</BaseLink>
-          </div>
-           <div className={styles.menuItem} style={curRouter=='/airdrop'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
-              <BaseLink href="/airdrop" >AirpDrop</BaseLink>
-          </div> */}
         </div>}
         <div className={styles.wallet + ' ' + styles.walletFont } onClick={walletButton}>
           { !isConnected ? "Connect Wallet" : address.slice(0, 6) + '...' + address.slice(38) }
