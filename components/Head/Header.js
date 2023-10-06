@@ -140,12 +140,12 @@ const Header = ({showMenu=true}) => {
               <BaseLink href="/ranking" >Ranking</BaseLink>
           </div> 
            
-           <div className={styles.menuItem} style={curRouter=='/airdrop'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+           {/* <div className={styles.menuItem} style={curRouter=='/airdrop'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/airdrop" >AirpDrop</BaseLink>
-          </div>
-          <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+          </div> */}
+          {/* <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/nft" >NFT</BaseLink>
-          </div>
+          </div> */}
           <div className={styles.menuItem} style={curRouter=='/faucet'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/faucet" >Faucet</BaseLink>
           </div>
