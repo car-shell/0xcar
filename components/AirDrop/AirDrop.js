@@ -30,7 +30,7 @@ const Airdrop = () => {
         sureText: ''
     });
     const {ToastUI, showToast} = useToast()
-    let _reason = canClaim?.reason
+    let _rank = canClaim?.level
     const {address} = useAccount()
     const { openConnectModal } = useConnectModal();
 
@@ -69,7 +69,7 @@ const Airdrop = () => {
     //     </>
     // }
 
-    const NFTAirdropListItem = ({data, reason}) => {
+    const NFTAirdropListItem = ({data, ranking}) => {
         const level = data.rank
         return <>
             <Card variant="outlined" sx={{ display: 'flex', flexDirection: 'row', padding: '8px 8px 12px 12px', height: '54px', width: '618px', backgroundColor: '#000',
@@ -80,7 +80,7 @@ const Airdrop = () => {
                 <Typography component='div' sx={{ fontSize: '14px', flex: 4, textAlign: 'center',  padding: '8px 8px 0px 0px', textAlign: 'left'}}>
                     Rank：<span style={{color: nftConstInfo[level].color}}>{data.rankName}</span>
                 </Typography>
-                <Checkbox disabled checked={_reason==reason}  color="secondary" sx={{ fontSize: '14px', flex: 1, textAlign: 'center',  padding: '8px 8px 0px 0px', textAlign: 'left', '& .MuiSvgIcon-root': { color: _reason==reason?'green':'#333' }}}>
+                <Checkbox disabled checked={_rank==ranking}  color="secondary" sx={{ fontSize: '14px', flex: 1, textAlign: 'center',  padding: '8px 8px 0px 0px', textAlign: 'left', '& .MuiSvgIcon-root': { color: _rank==ranking?'green':'#333' }}}>
                 </Checkbox>
                 {/* <Button variant="outlined" disabled={level!==canLevel?true:false} sx={{marginTop: '12px' }} onClick={async ()=>{
                     await claim((r)=>{
@@ -98,9 +98,9 @@ const Airdrop = () => {
             // 1: { title: 'Top 1-3 IDO Investors', rank: 1, rankName: 'GENESIS GOLD'} ,
             // 2: { title: 'Top 4-10 IDO Investors', rank: 2, rankName: 'SILVER'},
             // 3: { title: 'Top 11-20 IDO Investors', rank: 3, rankName: 'BRONZE'},
-            1: { title: 'Top 1-10 Betting Players for the 1st Period', rank: 3, rankName: 'GENESIS GOLD'} ,
+            3: { title: 'Top 1-10 Betting Players for the 1st Period', rank: 3, rankName: 'GENESIS GOLD'} ,
             2: { title: 'Top 11-25 Betting Players for the 1st Period', rank: 2, rankName: 'SILVER'} ,
-            3: { title: 'Top 26-50 Betting Players for the 1st Period', rank: 1, rankName: 'BRONZE'} 
+            1: { title: 'Top 26-50 Betting Players for the 1st Period', rank: 1, rankName: 'BRONZE'} 
         }
     
     return <>
@@ -118,7 +118,7 @@ const Airdrop = () => {
             <div style={{display: 'flex', flexDirection: 'column', gap: '16px', minHeight: "480px"}}>
                 {
                     Object.keys(reasons).map((k)=>{
-                        return <NFTAirdropListItem data={reasons[k]} reason={k} key={k}/>
+                        return <NFTAirdropListItem data={reasons[k]} ranking={k} key={k}/>
                     })
                 }                         
                 {/* <NFTAirdropCard title="BRONZE" level={1}/>

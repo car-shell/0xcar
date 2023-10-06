@@ -71,7 +71,7 @@ const useNFTContract = () => {
         if (!whitelist[0]) {
             setCanClaimLevel({level:0, reason:-1})
         } else {
-            setCanClaimLevel({level:whitelist[1], reason:whitelist[2]})
+            setCanClaimLevel({level:Number(whitelist[1]), reason:Number(whitelist[2])})
         }
         
     },[whitelist])
