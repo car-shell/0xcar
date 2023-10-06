@@ -141,7 +141,7 @@ const Header = ({showMenu=true}) => {
           </div> 
            
            <div className={styles.menuItem} style={curRouter=='/airdrop'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
-              <BaseLink href="/airdrop" >AirpDrop</BaseLink>
+              <BaseLink href="/airdrop" >Airdrop</BaseLink>
           </div>
           {/* <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/nft" >NFT</BaseLink>
