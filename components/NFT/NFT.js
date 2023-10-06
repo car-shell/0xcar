@@ -15,8 +15,8 @@ import {
 } from '@rainbow-me/rainbowkit';
 
 const nftConstInfo = {
-        3: {name: 'Gold',   dividend: 1.2,  fee: '6%', color: '#ffd700'}, 
-        2: {name: 'Silver', dividend: 1,    fee: '4%', color: '#d7d7d7'}, 
+        3: {name: 'Gold',   dividend: 1,  fee: '6%', color: '#ffd700'}, 
+        2: {name: 'Silver', dividend: 0,    fee: '4%', color: '#d7d7d7'}, 
         1: {name: 'Bronze', dividend: 0,    fee: '2%', color: '#00c0c0'}
     }
 
@@ -267,6 +267,7 @@ const NFT = ()=>{
     const [value, setValue] = useState(0);
     const {ownList, getNFT, fuse, claim} = useNFTContract()
     const [nfts, setNfts] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(()=>{
         if (!ownList) {
@@ -280,6 +281,11 @@ const NFT = ()=>{
         setNfts(a)
     }, [ownList]) 
 
+    useEffect(()=>{
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 6000);
+    }, [])
    
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -297,7 +303,8 @@ const NFT = ()=>{
             <MyNFT index={0} nftIDs={ownList} value={value} nfts={nfts}></MyNFT>
             <Fuse index={1} nftIDs={ownList} value={value} nfts={nfts}></Fuse>
         </>
-        :
+        : isLoading ?
+        <div style={{textAlign:'center', lineHeight: '600px'}}>Loading, please wait...</div> :
         <div style={{textAlign:'center', lineHeight: '600px'}}>No data</div>
         }
     </div>;

@@ -140,9 +140,9 @@ const Header = ({showMenu=true}) => {
               <BaseLink href="/ranking" >Ranking</BaseLink>
           </div> 
            
-           {/* <div className={styles.menuItem} style={curRouter=='/airdrop'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+           <div className={styles.menuItem} style={curRouter=='/airdrop'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/airdrop" >AirpDrop</BaseLink>
-          </div> */}
+          </div>
           {/* <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/nft" >NFT</BaseLink>
           </div> */}
@@ -179,7 +179,8 @@ const Header = ({showMenu=true}) => {
           </div>
         </div>
         <div className={styles.separate} />
-        <button className={styles.walletButton} style={{backgroundColor: '#c00017'}} onClick={()=>window.open("https://discord.gg/6b6JFrNzsT", '_bank')}>Get {token?.symbol}</button>
+        {/* <button className={styles.walletButton} style={{backgroundColor: '#c00017'}} onClick={()=>window.open("https://discord.gg/6b6JFrNzsT", '_bank')}>Get {token?.symbol}</button> */}
+        <a className={styles.walletButton} style={{backgroundColor: '#c00017', paddingTop: '8px'}} href="/nft">My NFT</a>
         <button className={styles.walletButton} style={{backgroundColor: '#333333'}} onClick={disconnect}>Disconnect</button>
       </div>}
     </>
