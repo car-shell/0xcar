@@ -51,11 +51,11 @@ const NFTCard = ({index, nft, selected, click}) => {
 }
 
 const NFTDetail = ({nft}) => {
+    const {ToastUI, showToast} = useToast()
+    
     if (nft === undefined) {
         return <><div style={{textAlign:'center', lineHeight: '600px'}}>No data</div></>
     }
-    console.log(nft);
-    const {ToastUI, showToast} = useToast()
     const level = nft[3]
     const id = Number(nft[0])
     const ts = nft[2]*1000n
