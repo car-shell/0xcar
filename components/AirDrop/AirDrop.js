@@ -98,9 +98,9 @@ const Airdrop = () => {
             // 1: { title: 'Top 1-3 IDO Investors', rank: 1, rankName: 'GENESIS GOLD'} ,
             // 2: { title: 'Top 4-10 IDO Investors', rank: 2, rankName: 'SILVER'},
             // 3: { title: 'Top 11-20 IDO Investors', rank: 3, rankName: 'BRONZE'},
-            1: { title: 'Top 1-10 Betting Players for the 1st Period', rank: 1, rankName: 'GENESIS GOLD'} ,
+            1: { title: 'Top 1-10 Betting Players for the 1st Period', rank: 3, rankName: 'GENESIS GOLD'} ,
             2: { title: 'Top 11-25 Betting Players for the 1st Period', rank: 2, rankName: 'SILVER'} ,
-            3: { title: 'Top 26-50 Betting Players for the 1st Period', rank: 3, rankName: 'BRONZE'} 
+            3: { title: 'Top 26-50 Betting Players for the 1st Period', rank: 1, rankName: 'BRONZE'} 
         }
     
     return <>
