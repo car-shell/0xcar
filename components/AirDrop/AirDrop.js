@@ -29,6 +29,7 @@ const Airdrop = () => {
         msg: '',
         sureText: ''
     });
+    const [isLoading, setIsLoading] = useState(false)
     const {ToastUI, showToast} = useToast()
     let _rank = canClaim?.level
     const {address} = useAccount()
@@ -128,17 +129,19 @@ const Airdrop = () => {
             <div style={{marginTop: 'auto', display: 'block',  width: '100%'}}>
                 <div style={{height: '1px', marginTop: '42px', width: '100%', borderTopStyle: 'solid', borderWidth:'1px', borderColor: '#333'}}> </div>
                 <div style={{position: 'relative', width: '100%'}}>
-                <Button variant="contained" color="error" disabled={address && canClaim?.level==0} sx={{"&:disabled": {
+                <Button variant="contained" color="error" disabled={address && canClaim?.level==0 && !isLoading} sx={{"&:disabled": {
                         backgroundColor: '#666'
                         }, position: 'absolute', left: 'calc(50% - 150px)', marginTop: '12px', height: '50px', width: '300px' }}
                     onClick={async ()=>{
                     if (!address) {
                         openConnectModal()
                     } else {
+                        setIsLoading(()=>true)
                         await claim((r)=>{
                             showToast('claim success', 'success');
+                            setIsLoading(()=>false)
                         }, (e)=>{
-                            // 
+                            setIsLoading(()=>false)
                             if ( e.message.indexOf("expired") != -1 ) {
                                 showToast('Past the claim period!!!' , 'error')
                             } else {
@@ -147,7 +150,7 @@ const Airdrop = () => {
                         })
                     }
                 }}>
-                    {!address? 'Connect Wallet': 'Claim'}
+                    {!address? 'Connect Wallet': canClaim?.level==0? "You Are Not Eligible" : isLoading? ' Processing' : 'Claim'}
                 </Button>
                     <Typography component='div' sx={{position: 'absolute', left: 'calc(100% - 200px)', top: 'calc(50% + 25px)'}} onClick={()=>{router.push('/nft')}}>
                         MY NFTs &gt;
