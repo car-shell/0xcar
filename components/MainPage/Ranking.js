@@ -120,6 +120,12 @@ export default function Ranking({width = '920px'}) {
   }, [address])
 
   const getBetLogs = React.useCallback(async ()=>{
+    let start = new Date("2023-10-10 00:00:00Z")
+    let end = new Date("2023-11-01 00:00:00Z")
+    let now = new Date()
+    if (now < start) {
+      return
+    }
     try {
       const logs = await getUrl("/bet_ranking", {params : {type: "bet", address: address}})
       let r = logs.data.map((item, i)=>{
