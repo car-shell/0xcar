@@ -109,6 +109,9 @@ const Airdrop = () => {
             <Typography component='div' variant='h5'>
                 NFTs Airdrop
             </Typography>
+            <Typography component='div' variant='h6'>
+               Points Summit Challenge Phase 1: Top 50
+            </Typography>
             <Typography component='div' style={{fontSize: '14px'}}>
                 <span style={{color: '#c280ff'}}>Claimable Period：</span> 2023/10/06 12:00 - 2023/10/16 00:00 (UTC+0)
             </Typography>
