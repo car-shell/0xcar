@@ -39,10 +39,10 @@ const Airdrop = () => {
             setShowFireworks(true);
             setTimeout(() => {
                 setShowFireworks(false);
-                setModal({ header: 'Congratunations',
-                    msg: 'You are eligible!!!',
-                    sureText: 'Got it'});
-                toggle(true)
+                // setModal({ header: 'Congratunations',
+                //     msg: 'You are eligible!!!',
+                //     sureText: 'Got it'});
+                // toggle(true)
             }, 4000); 
         }
     }, [canClaim])
