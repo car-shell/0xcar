@@ -357,7 +357,7 @@ export default function Ranking({width = '920px'}) {
         Climb the leaderboard to boost your points!
       </Typography>
       <Typography component='div' sx={{ font: '700 normal 18px Arial'}} color='#aaaaaa'>
-        The top 30 during the event will receive exclusive NFTs and special role rewards.  
+        Top 30 in the event get exclusive NFTs. Top rewards: Gold NFTs at $500 floor price.
         <a href="https://docs.0xcardinal.io/testnet-guides/ranking-rules/summit-challenge-phase-2" target="_blank" rel="noreferrer" style={{color: '#02A7F0', cursor: "pointer"}}> More&gt;&gt;</a>
       </Typography>
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
@@ -438,7 +438,7 @@ export default function Ranking({width = '920px'}) {
             { !ended ? (
             <ul style={{padding: '0px 8px 0px 20px'}}>
             <li style={{margin: "8px"}}>
-            The top 30 participants will receive rare NFT rewards and role promotions.
+            The top 30 participants will receive rare NFT rewards.
             </li>
             <li style={{margin: "8px"}}>
             Rankings are based on total accumulated points, with higher points leading to a higher rank.
