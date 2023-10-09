@@ -63,7 +63,7 @@ export default function Ranking({width = '920px'}) {
       let now = new Date()
       //2023/10/10 00:00 - 2023/10/31 00:00 (UTC+0)
       let start = new Date("2023-10-10 00:00:00Z")
-      let end = new Date("2023-11-01 00:00:00Z")
+      let end = new Date("2023-10-31 00:00:00Z")
       let rm = (24*3600) - ((now/1000) % (24*3600)) - 1  
       if (now > start && now < end) {
         let dur = `${(Math.floor(rm/3600)).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
@@ -121,7 +121,7 @@ export default function Ranking({width = '920px'}) {
 
   const getBetLogs = React.useCallback(async ()=>{
     let start = new Date("2023-10-10 00:00:00Z")
-    let end = new Date("2023-11-01 00:00:00Z")
+    let end = new Date("2023-10-31 00:00:00Z")
     let now = new Date()
     if (now < start) {
       return
