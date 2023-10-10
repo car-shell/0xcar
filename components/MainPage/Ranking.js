@@ -209,6 +209,11 @@ export default function Ranking({width = '920px'}) {
                 }
             },
             {
+                Header: "Base Points",
+                accessor: "base_points",
+                align: "center"
+            },
+             {
                 Header: "Total Points",
                 accessor: "total_points",
                 align: "center"
