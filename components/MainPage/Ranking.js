@@ -131,7 +131,7 @@ export default function Ranking({width = '920px'}) {
       const logs = await getUrl("/bet_ranking_cur_phase", {params : {type: "bet", address: address}})
       let r = logs.data.map((item, i)=>{
         return {id: i+1, ranking: item["ranking"]+1, address: item["address"], count: item["bet_count"], total: item["total_bet"],
-            total_points: item['total_point'], yesterday: 0 }; //createData(i+1, item["address"], item["bet_count"], item["total_bet"])
+            total_points: item['total_point'], base_points: item['base_point'], yesterday: 0 }; //createData(i+1, item["address"], item["bet_count"], item["total_bet"])
       })
       
       const pr = await getUrl("/points_record")
@@ -289,6 +289,14 @@ export default function Ranking({width = '920px'}) {
             {
                 Header: "Boost(24H)",
                 accessor: "boost",
+                align: "center",
+                // format: (x)=>{
+                //   return formatAmount(x)
+                // }
+            },
+            {
+                Header: "Base Points",
+                accessor: "base_points",
                 align: "center",
                 // format: (x)=>{
                 //   return formatAmount(x)
