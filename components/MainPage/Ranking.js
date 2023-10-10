@@ -120,7 +120,7 @@ export default function Ranking({width = '920px'}) {
   }, [address])
 
   const getBetLogs = React.useCallback(async ()=>{
-    let start = new Date("2023-10-10 00:00:00Z")
+    let start = new Date("2023-10-09 00:00:00Z")
     let end = new Date("2023-10-31 00:00:00Z")
     let now = new Date()
     if (now < start) {
@@ -454,10 +454,10 @@ export default function Ranking({width = '920px'}) {
              Users ranked 1-5 in daily accumulated points will receive an extra 150 points the following day.
             </li>
              <li style={{margin: "8px"}}>
-             Users ranked 5-15 in daily accumulated points will receive an extra 100 points the following day.
+             Users ranked 6-15 in daily accumulated points will receive an extra 100 points the following day.
             </li>
             <li style={{margin: "8px"}}>
-             Users ranked 15-30 in daily accumulated points will receive an extra 50 points the following day.
+             Users ranked 16-30 in daily accumulated points will receive an extra 50 points the following day.
             </li>
             <li style={{margin: "8px"}}>
             BasePoints=(BetCount∗20)+(BetAmount/10)
