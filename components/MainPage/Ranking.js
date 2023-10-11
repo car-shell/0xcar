@@ -476,7 +476,7 @@ export default function Ranking({width = '920px'}) {
             BasePoints=(BetCount∗20)+(BetAmount/10)
             </li>
             <li style={{margin: "8px"}}>
-            TotalPoints=((BetCount∗20)+(BetAmount/10))+RewardPoints
+            TotalPoints=BasePoints+RewardPoints
             </li>
             
             </ul>) : (<div style={{padding: '0px 8px 0px 20px'}}>Thank you for your attention and participation! For users ranked in the top 50, the reward claim portal will be provided within a week. Please stay tuned.</div>)}
