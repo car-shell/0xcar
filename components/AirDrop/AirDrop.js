@@ -71,7 +71,23 @@ const Airdrop = () => {
     // }
 
     const [nfts, setNfts] = useState([])
-        
+    
+    const phase2Claimed = () => {
+        if (nfts.length == 0 ) {
+            return -1;
+        }
+
+        for (let i=0; i<nfts.length; i++) {
+            let item = nfts[i];
+            let mintTime = new Date(Number(item[2]*1000n));
+            console.log(item[3]);
+            if (mintTime > new Date("2023-11-02 00:00:00Z")) {
+                return Number(item[3]);
+            } 
+        }
+        return -1;
+    }
+
     useEffect(()=>{
         if (!ownList) {
             return;
@@ -83,7 +99,7 @@ const Airdrop = () => {
         });
         setNfts(()=>a)
         
-    }, [ownList]) 
+    }, [ownList])
 
     const NFTAirdropListItem = ({data, ranking, nfts}) => {
         console.log(nfts);
@@ -97,7 +113,7 @@ const Airdrop = () => {
                 <Typography component='div' sx={{ fontSize: '14px', flex: 4, textAlign: 'center',  padding: '8px 8px 0px 0px', textAlign: 'left'}}>
                     Rank：<span style={{color: nftConstInfo[level].color}}>{data.rankName}</span>
                 </Typography>
-                <Checkbox disabled checked={_rank==ranking || ( nfts.length > 0 && Number(nfts[0][3]) == ranking)}  color="secondary" sx={{ fontSize: '14px', flex: 1, textAlign: 'center',  padding: '8px 8px 0px 0px', textAlign: 'left', '& .MuiSvgIcon-root': { color: _rank==ranking?'green':'#333' }}}>
+                <Checkbox disabled checked={_rank==ranking || phase2Claimed() == ranking}  color="secondary" sx={{ fontSize: '14px', flex: 1, textAlign: 'center',  padding: '8px 8px 0px 0px', textAlign: 'left', '& .MuiSvgIcon-root': { color: _rank==ranking?'green':'#333' }}}>
                 </Checkbox>
                 {/* <Button variant="outlined" disabled={level!==canLevel?true:false} sx={{marginTop: '12px' }} onClick={async ()=>{
                     await claim((r)=>{
@@ -164,7 +180,7 @@ const Airdrop = () => {
                     })
                 }
             }}>
-                {!address? 'Connect Wallet': nfts.length > 0 ? "You Have Claimed" : canClaim?.level==0? "You Are Not Eligible" : isLoading? 'Processing...' : 'Claim'}
+                {!address? 'Connect Wallet': (nfts.length > 0 && phase2Claimed() != -1) ? "You Have Claimed" : canClaim?.level==0? "You Are Not Eligible" : isLoading? 'Processing...' : 'Claim'}
             </Button>
                 <Typography component='div' sx={{position: 'absolute', left: 'calc(100% - 200px)', top: 'calc(50% + 25px)'}} onClick={()=>{router.push('/nft')}}>
                     MY NFTs &gt;
