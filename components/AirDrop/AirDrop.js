@@ -115,9 +115,9 @@ const Airdrop = () => {
             // 1: { title: 'Top 1-3 IDO Investors', rank: 1, rankName: 'GENESIS GOLD'} ,
             // 2: { title: 'Top 4-10 IDO Investors', rank: 2, rankName: 'SILVER'},
             // 3: { title: 'Top 11-20 IDO Investors', rank: 3, rankName: 'BRONZE'},
-            1: { title: 'Top 26-50 Betting Players for the 1st Period', rank: 1, rankName: 'BRONZE'},
-            2: { title: 'Top 11-25 Betting Players for the 1st Period', rank: 2, rankName: 'SILVER'} ,
-            3: { title: 'Top 1-10 Betting Players for the 1st Period', rank: 3, rankName: 'GENESIS GOLD'} 
+            1: { title: 'Top 15-30 Betting Players for the 1st Period', rank: 1, rankName: 'BRONZE'},
+            2: { title: 'Top 6-15 Betting Players for the 1st Period', rank: 2, rankName: 'SILVER'} ,
+            3: { title: 'Top 1-5 Betting Players for the 1st Period', rank: 3, rankName: 'GENESIS GOLD'} 
         }
     
     return <>
@@ -127,10 +127,10 @@ const Airdrop = () => {
                 NFTs Airdrop
             </Typography>
             <Typography component='div' variant='h6'>
-               Points Summit Challenge Phase 1: Top 50
+               Points Summit Challenge Phase 2: Top 30
             </Typography>
             <Typography component='div' style={{fontSize: '14px'}}>
-                <span style={{color: '#c280ff'}}>Claimable Period：</span> 2023/10/06 12:00 - 2023/10/16 00:00 (UTC+0)
+                <span style={{color: '#c280ff'}}>Claimable Period：</span> 2023/11/2 12:00 - 2023/11/12 00:00 (UTC+0)
             </Typography>
             <div style={{display: 'flex', flexDirection: 'column-reverse', gap: '16px'}}>
                 {
