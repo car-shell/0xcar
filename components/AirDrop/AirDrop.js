@@ -180,7 +180,7 @@ const Airdrop = () => {
                     })
                 }
             }}>
-                {!address? 'Connect Wallet': (nfts.length > 0 && phase2Claimed() != -1) ? "You Have Claimed" : canClaim?.level==0? "You Are Not Eligible" : isLoading? 'Processing...' : 'Claim'}
+                {!address? 'Connect Wallet': (nfts.length > 0 && phase2Claimed() != -1 && canClaim?.level==0 ) ? "You Have Claimed" : canClaim?.level==0? "You Are Not Eligible" : isLoading? 'Processing...' : 'Claim'}
             </Button>
                 <Typography component='div' sx={{position: 'absolute', left: 'calc(100% - 200px)', top: 'calc(50% + 25px)'}} onClick={()=>{router.push('/nft')}}>
                     MY NFTs &gt;
