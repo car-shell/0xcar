@@ -62,8 +62,8 @@ export default function Ranking({width = '920px'}) {
     const i = setInterval(() => {
       let now = new Date()
       //2023/10/10 00:00 - 2023/10/31 00:00 (UTC+0)
-      let start = new Date("2023-10-10 00:00:00Z")
-      let end = new Date("2023-10-31 00:00:00Z")
+      let start = new Date("2023-11-10 00:00:00Z")
+      let end = new Date("2023-12-10 00:00:00Z")
       let rm = (24*3600) - ((now/1000) % (24*3600)) - 1  
       if (now > start && now < end) {
         let dur = `${(Math.floor(rm/3600)).toString().padStart(2,0)}:${(Math.floor((rm%3600)/60)).toString().padStart(2,0)}:${(Math.floor(rm%60)).toString().padStart(2,0)}`
@@ -120,8 +120,8 @@ export default function Ranking({width = '920px'}) {
   }, [address])
 
   const getBetLogs = React.useCallback(async ()=>{
-    let start = new Date("2023-10-09 00:00:00Z")
-    let end = new Date("2023-10-31 00:00:00Z")
+    let start = new Date("2023-11-10 00:00:00Z")
+    let end = new Date("2023-12-10 00:00:00Z")
     let now = new Date()
     if (now < start) {
       return
@@ -200,24 +200,24 @@ export default function Ranking({width = '920px'}) {
                   return formatAmount(x)
                 }
             },
+            // {
+            //     Header: "Yesterday Reward",
+            //     accessor: "yesterday",
+            //     align: "center",
+            //     format: (i)=>{
+            //         return i===undefined?0:"+"+i
+            //     }
+            // },
             {
-                Header: "Yesterday Reward",
-                accessor: "yesterday",
-                align: "center",
-                format: (i)=>{
-                    return i===undefined?0:"+"+i
-                }
-            },
-            {
-                Header: "Base Points",
+                Header: "Total Points",
                 accessor: "base_points",
                 align: "center"
             },
-             {
-                Header: "Total Points",
-                accessor: "total_points",
-                align: "center"
-            }
+            //  {
+            //     Header: "Total Points",
+            //     accessor: "total_points",
+            //     align: "center"
+            // }
         ],
         []
     )
@@ -361,7 +361,7 @@ export default function Ranking({width = '920px'}) {
       <Stack direction='row' alignItems='baseline' sx={{columnGap: '4px'}} >
         <Image  alt="" src='./fire.png' width='32' height='32' />
         <Typography component='div' sx={{marginTop: '18px', font: '700 normal 36px Arial'}}>
-          Betting Summit Challenge: Phase 2
+          Betting Summit Challenge: Phase 3
         </Typography>
       </Stack>
       <Typography component='div' sx={{marginTop: '14px', font: '400 normal 20px Arial'}}>
@@ -372,7 +372,7 @@ export default function Ranking({width = '920px'}) {
       </Typography>
       <Typography component='div' sx={{ font: '700 normal 18px Arial'}} color='#aaaaaa'>
         Top 30 in the event get exclusive NFTs. Top rewards: Gold NFTs at $500 floor price.
-        <a href="https://docs.0xcardinal.io/testnet-guides/ranking-rules/summit-challenge-phase-2" target="_blank" rel="noreferrer" style={{color: '#02A7F0', cursor: "pointer"}}> More&gt;&gt;</a>
+        <a href="https://docs.0xcardinal.io/testnet-guides/ranking-rules/summit-challenge-phase-3" target="_blank" rel="noreferrer" style={{color: '#02A7F0', cursor: "pointer"}}> More&gt;&gt;</a>
       </Typography>
       <Typography component='div' sx={{marginTop: '14px', font: '700 normal 18px Arial'}} color='#aaaaaa'>
         <Stack direction='row' alignItems='baseline' sx={{columnGap: '8px'}} >
@@ -427,12 +427,15 @@ export default function Ranking({width = '920px'}) {
         <StickyHeadTable columns={betColumns} data={betRows} maxHeight={null} type='ranking'/>
       </Box>
 
-      <Box sx={{width: '70%', margin: '56px 0px 24px 0px'}}>
-        <Typography sx={{ font: '700 normal 20px Arial', marginBottom: '24px'}}>
+      <Box sx={{width: '70%', margin: '56px 0px 24px 0px', display:"flex", flexDirection: "column"}}>
+        <Typography sx={{ font: '700 normal 20px Arial', marginBottom: '16px'}}>
           Previous Campaigns
         </Typography>
         <Link href="https://docs.0xcardinal.io/testnet-guides/nft-airdrop/phase-1-top50-airdrop" target="_blank" rel="noreferrer" sx={{color: '#06FC99', font: '700 normal 18px Arial'}}>
           Betting Summit Challenge: Phase 1
+        </Link>
+        <Link href="https://docs.0xcardinal.io/testnet-guides/nft-airdrop/phase-2-top30-airdrop" target="_blank" rel="noreferrer" sx={{color: '#06FC99', font: '700 normal 18px Arial', maginTop: "8px"}}>
+          Betting Summit Challenge: Phase 2
         </Link>
       </Box>
       
@@ -452,7 +455,7 @@ export default function Ranking({width = '920px'}) {
             { !ended ? (
             <ul style={{padding: '0px 8px 0px 20px'}}>
             <li style={{margin: "8px"}}>
-            The top 30 participants will receive rare NFT rewards.
+            The top 30 participants will receive rare NFT rewards and role promotions.
             </li>
             <li style={{margin: "8px"}}>
             Rankings are based on total accumulated points, with higher points leading to a higher rank.
@@ -464,19 +467,7 @@ export default function Ranking({width = '920px'}) {
             If points and bet counts are the same, the user who bet earlier ranks higher.
             </li>
              <li style={{margin: "8px"}}>
-             Users ranked 1-5 in daily accumulated points will receive an extra 150 points the following day.
-            </li>
-             <li style={{margin: "8px"}}>
-             Users ranked 6-15 in daily accumulated points will receive an extra 100 points the following day.
-            </li>
-            <li style={{margin: "8px"}}>
-             Users ranked 16-30 in daily accumulated points will receive an extra 50 points the following day.
-            </li>
-            <li style={{margin: "8px"}}>
-            BasePoints=(BetCount∗20)+(BetAmount/10)
-            </li>
-            <li style={{margin: "8px"}}>
-            TotalPoints=BasePoints+RewardPoints
+             TotalPoints=(BetCount∗20)+(BetAmount/10)
             </li>
             
             </ul>) : (<div style={{padding: '0px 8px 0px 20px'}}>Thank you for your attention and participation! For users ranked in the top 50, the reward claim portal will be provided within a week. Please stay tuned.</div>)}
