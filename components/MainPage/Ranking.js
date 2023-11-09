@@ -443,7 +443,7 @@ export default function Ranking({width = '920px'}) {
           left: moreRef.current.getBoundingClientRect().right + 2,
           top: moreRef.current.getBoundingClientRect().top,
           width: "360px",
-          height: ended?"100px":"400px",
+          height: ended?"100px":"250px",
           zIndex: '999',
           backgroundColor: "#272a2e",
           borderRadius: "8px"
@@ -470,7 +470,7 @@ export default function Ranking({width = '920px'}) {
              TotalPoints=(BetCount∗20)+(BetAmount/10)
             </li>
             
-            </ul>) : (<div style={{padding: '0px 8px 0px 20px'}}>Thank you for your attention and participation! For users ranked in the top 50, the reward claim portal will be provided within a week. Please stay tuned.</div>)}
+            </ul>) : (<div style={{padding: '0px 8px 0px 20px'}}>Thank you for your attention and participation! For users ranked in the top 30, the reward claim portal will be provided within a week. Please stay tuned.</div>)}
           </Typography>
           {/* <Typography component='div' sx={{ font: '400 normal 14px sans'}}>
             * Users ranked 1-10 will get 2.0x their POINTS earned in 24H
