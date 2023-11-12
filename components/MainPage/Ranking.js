@@ -200,24 +200,24 @@ export default function Ranking({width = '920px'}) {
                   return formatAmount(x)
                 }
             },
-            // {
-            //     Header: "Yesterday Reward",
-            //     accessor: "yesterday",
-            //     align: "center",
-            //     format: (i)=>{
-            //         return i===undefined?0:"+"+i
-            //     }
-            // },
             {
-                Header: "Total Points",
+                Header: "Yesterday Reward",
+                accessor: "yesterday",
+                align: "center",
+                format: (i)=>{
+                    return i===undefined?0:"+"+i
+                }
+            },
+            {
+                Header: "Base Points",
                 accessor: "base_points",
                 align: "center"
             },
-            //  {
-            //     Header: "Total Points",
-            //     accessor: "total_points",
-            //     align: "center"
-            // }
+             {
+                Header: "Total Points",
+                accessor: "total_points",
+                align: "center"
+            }
         ],
         []
     )
@@ -434,7 +434,7 @@ export default function Ranking({width = '920px'}) {
         <Link href="https://docs.0xcardinal.io/testnet-guides/nft-airdrop/phase-1-top50-airdrop" target="_blank" rel="noreferrer" sx={{color: '#06FC99', font: '700 normal 18px Arial'}}>
           Betting Summit Challenge: Phase 1
         </Link>
-        <Link href="https://docs.0xcardinal.io/testnet-guides/nft-airdrop/phase-2-top30-airdrop" target="_blank" rel="noreferrer" sx={{color: '#06FC99', font: '700 normal 18px Arial', maginTop: "8px"}}>
+        <Link href="https://docs.0xcardinal.io/testnet-guides/nft-airdrop/betting-challenge/phase-2-top30-airdrop" target="_blank" rel="noreferrer" sx={{color: '#06FC99', font: '700 normal 18px Arial', maginTop: "8px"}}>
           Betting Summit Challenge: Phase 2
         </Link>
       </Box>
