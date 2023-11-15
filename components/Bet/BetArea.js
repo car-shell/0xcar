@@ -622,7 +622,7 @@ const BetArea = () => {
             Bet Amount
           </div>
           <div className={styles.content_text}>
-            Balance:  {balance=="--"?balance:formatAmount(balance)} {token?.symbol}
+            Balance  {balance=="--"?balance:formatAmount(balance)} {token?.symbol}
           </div>
         </div>
         <div className={styles.amount}>
