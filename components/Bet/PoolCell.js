@@ -69,7 +69,7 @@ const Pool = () => {
             <BetRecord />
         </div>
       </div>
-      <div className={styles.bottom}>
+      {/* <div className={styles.bottom}>
         <div className={styles.livebetting}>
           <div className={styles.dot} style={{backgroundColor: light?"#06FC99":"#142d23", borderColor: light?"#06FC99":"#142d23"}}/>
           <div className={styles.text}>
@@ -79,7 +79,7 @@ const Pool = () => {
         <div className={styles.record}>
           <LiveBettingRecord />
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

@@ -20,15 +20,13 @@ function MyApp({ Component, pageProps }) {
     const uaParser = new UAParser();
     const userAgent = uaParser.getResult();
 
-    // 判断终端类型
     const isMobile = userAgent.device && userAgent.device.type === 'mobile';
 
-    // 根据终端类型跳转页面
-    // if (isMobile) {
-    //   Router.push('/mobile');
-    // } else {
-    //   Router.push('/');
-    // }
+    if (isMobile) {
+      Router.push('/mobile');
+    } else {
+      Router.push('/');
+    }
 
   }, [])
 
