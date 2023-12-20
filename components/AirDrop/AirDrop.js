@@ -146,7 +146,7 @@ const Airdrop = () => {
                Points Summit Challenge Phase 3: Top 20
             </Typography>
             <Typography component='div' style={{fontSize: '14px'}}>
-                <span style={{color: '#c280ff'}}>Claimable Period：</span> 2023/12/20 12:00 - 2023/12/30 00:00 (UTC+0)
+                <span style={{color: '#c280ff'}}>Claimable Period：</span> 2023/12/20 12:00 - 2023/12/31 00:00 (UTC+0)
             </Typography>
             <div style={{display: 'flex', flexDirection: 'column-reverse', gap: '16px'}}>
                 {
