@@ -5,6 +5,7 @@ import { useTokenContract } from "../../data/token";
 import { formatAmount } from "../utils";
 import useToast from '../Toast'
 import Image from 'next/image'
+import PoolList from './PoolList'
 
 const MainPage = () => {
     const [questionIndex, setQuestionIndex] = useState(0)
@@ -55,6 +56,8 @@ const MainPage = () => {
                             FAQ
                     </div>
                 </div> */}
+                <PoolList />
+
             </div> 
 
             <Image width='500' height='500' alt='0xcardinal image' src='/cardinal02.png' />

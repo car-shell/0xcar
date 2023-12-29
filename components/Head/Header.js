@@ -178,10 +178,11 @@ const Header = ({showMenu=true}) => {
             {formatAmount(balance)} <span className={styles.cdnlLabel}> {token?.symbol} </span>
           </div>
         </div>
-        <div className={styles.separate} />
+        <div className={styles.separate} /> 
         {/* <button className={styles.walletButton} style={{backgroundColor: '#c00017'}} onClick={()=>window.open("https://discord.gg/6b6JFrNzsT", '_bank')}>Get {token?.symbol}</button> */}
-        <a className={styles.walletButton} style={{backgroundColor: '#c00017', paddingTop: '8px'}} href="/nft">My NFT</a>
-        <button className={styles.walletButton} style={{backgroundColor: '#333333'}} onClick={disconnect}>Disconnect</button>
+        <BaseLink className={styles.walletButton} style={{backgroundColor: '#c00017', marginTop: '16x'}} href="/nft">My NFT</BaseLink>
+        <BaseLink className={styles.walletButton} style={{backgroundColor: '#c00017', marginTop: '16x'}} href="/mypool">My Pool</BaseLink>
+        <button className={styles.walletButton} style={{backgroundColor: '#333333', marginTop: '16x'}} onClick={disconnect}>Disconnect</button>
       </div>}
     </>
   )

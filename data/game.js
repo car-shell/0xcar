@@ -79,6 +79,7 @@ export const useGameContract = (monitor=false)  => {
 
     const {allowance, approve} = useTokenContract()
     const {address, isConnected} = useAccount()
+    const [currentPoolId, setCurrentPoolId] = useState(1)
 
     const dispatch = useDispatch()
     const odds = {0: 5, 1: 10, 2: 100}
@@ -87,11 +88,11 @@ export const useGameContract = (monitor=false)  => {
             address: addressGameContract,
             abi: abi,
             functionName: 'pool',
-            args: [0],
+            args: [currentPoolId],
             chainId: chainId,
             watch: true,
             onSuccess(data){
-                // console.log('Success', data)
+                console.log('Success', data)
             } 
         }
     )
@@ -137,34 +138,34 @@ export const useGameContract = (monitor=false)  => {
             console.log( logs )
         },
     })
-    
-    // const getWinNumber = (hash, odds) => {
-    //     let i = 0;
-    //     switch (odds) {
-    //         case 5:
-    //             i = hash.search(/[0-4]/)
-    //             return hash[i]
-    //         case 10:
-    //             i = hash.search(/[0-9]/)
-    //             return hash[i]
-    //         case 100:
-    //             i = hash.search(/[0-9]/)
-    //             let j = hash.slice(j).search(/[0-9]/)
-    //             return hash[i]+hash[i+j]
-    //         default:
-    //             return -1
-    //     }
-    // }
 
+
+    const { data: pools, isError: poolsListLoadingError, isLoading: poolsListLoading } = useContractRead({
+        address: addressGameContract,
+        abi: abi,
+        functionName: 'pools',
+        chainId: chainId,
+        watch: true,
+        onSuccess(data) {
+            console.log('Success', data)
+        },
+        onError(error) {
+            console.log('Error', error)
+        },
+    })
+    
     const delay = ms => new Promise(res => setTimeout(res, ms));
-    
 
-    const _bet = useCallback( async (id, amount, ruleId, selectNumber, success, fail, setActiveStep)=>{
+    // const remove = useCallback( async (id) ) => {
+
+    // }
+    
+    const _bet = useCallback( async (id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)=>{
         const config = await prepareWriteContract({
             address: addressGameContract,
             abi: abi,
             functionName: 'bet',
-            args: [id, amount, 0, ruleId, selectNumber]
+            args: [id, amount, poolId, ruleId, selectNumber]
         }).then( async (config)=>{
             await writeContract(config).then(async ({hash})=>{
                 setActiveStep('bet', 1)
@@ -277,13 +278,16 @@ export const useGameContract = (monitor=false)  => {
     }
 
     const formatLast = ()=>{
-        if ( lastRecordError || lastLoading ) {
+        if ( lastRecordError || lastLoading || lastRecord == undefined) {
             return {}
-        }                            
+        }
+
         const amount = lastRecord[1]/1000000000000000000n
         let s = status(lastRecord[3], lastRecord[5], lastRecord[6])
         return {id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[3], odds: odds[lastRecord[2]], status: s, random: s!=BetStatus.timeout?lastRecord[5]:'-'}
     }
-
-    return { poolDetails, bet, result, withdraw, logs, last: formatLast()}
+    console.log(pools)
+    console.log(poolDetails)
+    
+    return { pools, poolDetails, bet, result, withdraw, logs, last: formatLast(), setCurrentPoolId}
 }
