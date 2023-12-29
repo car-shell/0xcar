@@ -93,7 +93,10 @@ export const useGameContract = (monitor=false)  => {
             watch: true,
             onSuccess(data){
                 console.log('Success', data)
-            } 
+            },
+            onError(error) {
+                console.log('Error', error)
+            },
         }
     )
 
@@ -286,8 +289,7 @@ export const useGameContract = (monitor=false)  => {
         let s = status(lastRecord[3], lastRecord[5], lastRecord[6])
         return {id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[3], odds: odds[lastRecord[2]], status: s, random: s!=BetStatus.timeout?lastRecord[5]:'-'}
     }
-    console.log(pools)
-    console.log(poolDetails)
+
     
     return { pools, poolDetails, bet, result, withdraw, logs, last: formatLast(), setCurrentPoolId}
 }
