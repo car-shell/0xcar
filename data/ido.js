@@ -15,58 +15,58 @@ const useIDOContract = () => {
     const addressIDOContract = ADDRESSES[chainId]?.ido
 
 
-    const { data: init } = useContractRead({
-            address: addressIDOContract,
-            abi: abi,
-            functionName: 'init_amount',
-            chainId: chainId,
-            args: [address],
-            watch: true,
-            cache: 20_000,
-            // structuralSharing: (prev, next) => (prev === next ? prev : next),
-            onSuccess:(data)=>{
-                console.log(data);
-            }
-        }
-    )
+    // const { data: init } = useContractRead({
+    //         address: addressIDOContract,
+    //         abi: abi,
+    //         functionName: 'init_amount',
+    //         chainId: chainId,
+    //         args: [address],
+    //         watch: true,
+    //         cache: 20_000,
+    //         // structuralSharing: (prev, next) => (prev === next ? prev : next),
+    //         onSuccess:(data)=>{
+    //             console.log(data);
+    //         }
+    //     }
+    // )
 
-    const { data: remain } = useContractRead({
-            address: addressIDOContract,
-            abi: abi,
-            functionName: 'remain_amount',
-            chainId: chainId,
-            args: [address],
-            watch: true,
-            cache: 20_000,
-            // structuralSharing: (prev, next) => (prev === next ? prev : next),
-            onSuccess:(data)=>{
-                console.log(data);
-            }
-        }
-    )
+    // const { data: remain } = useContractRead({
+    //         address: addressIDOContract,
+    //         abi: abi,
+    //         functionName: 'remain_amount',
+    //         chainId: chainId,
+    //         args: [address],
+    //         watch: true,
+    //         cache: 20_000,
+    //         // structuralSharing: (prev, next) => (prev === next ? prev : next),
+    //         onSuccess:(data)=>{
+    //             console.log(data);
+    //         }
+    //     }
+    // )
 
-    const createIDOPool = useCallback(async (amount, discord) => {
-        const config = await prepareWriteContract({
-            address: addressIDOContract,
-            abi: abi,
-            functionName: 'createIDOPool',
-            args: [amount, discord],
-        }).then( async (config)=>{
-            const data = await writeContract(config).then((data)=>{
-                success(data)
-            }).catch((e)=>{
-                console.log(e);
-                fail(e)
-            })
-        }).catch((e)=>{
-            console.log(e);
-            fail(e)
-            return
-        })
-    }, [address, addressIDOContract])
+    // const createIDOPool = useCallback(async (amount, discord) => {
+    //     const config = await prepareWriteContract({
+    //         address: addressIDOContract,
+    //         abi: abi,
+    //         functionName: 'createIDOPool',
+    //         args: [amount, discord],
+    //     }).then( async (config)=>{
+    //         const data = await writeContract(config).then((data)=>{
+    //             success(data)
+    //         }).catch((e)=>{
+    //             console.log(e);
+    //             fail(e)
+    //         })
+    //     }).catch((e)=>{
+    //         console.log(e);
+    //         fail(e)
+    //         return
+    //     })
+    // }, [address, addressIDOContract])
 
    
-    return { init, remain, createIDOPool}
+    // return { init, remain, createIDOPool}
 }
 
 export default useIDOContract;
