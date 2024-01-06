@@ -22,7 +22,7 @@ const Pool = ({id}) => {
   
   useEffect(()=>{
     if (id != undefined) {
-      console.log(`set pool id1 ${id}`);
+      console.log(`set pool id ${id}`);
       setCurrentPoolId(id)
       setPoolId(id)
     }
@@ -62,7 +62,7 @@ const Pool = ({id}) => {
        </div>
        <div className={styles.info_item}>
          <div className={styles.title}> Bet Count</div>
-         <div className={styles.content}>{poolDetails[6]}</div>
+         <div className={styles.content}>0</div>
        </div>
        
       </div>

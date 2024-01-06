@@ -83,7 +83,7 @@ const IDO = () => {
                     <Stack direction='row' width='40%' justifyContent="center"  alignItems="center"  sx={{ marginTop: '8px'}}>
                         <Box height='8px' width='8px' sx={{backgroundColor:"#06FC99", border: "1px solid #06FC99", borderRadius: "100%", marginRight: '8px'}}/>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px'}}>
-                            {address.slice(0, 6) + '...' + address.slice(38)}
+                            {address?.slice(0, 6) + '...' + address?.slice(38)}
                         </Typography>
                     </Stack>
                     <Stack width='60%' sx={{display: 'flex', flexDirection: 'row',  alignItems: 'right' }}>

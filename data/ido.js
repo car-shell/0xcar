@@ -15,7 +15,7 @@ export const useIDOContract = () => {
     const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
     const addressIDOContract = ADDRESSES[chainId]?.ido
 
-    const {usdt, allowance, approve} = useTokenContract(ADDRESSES[chain.id].usdt);
+    const {usdt, allowance, approve} = useTokenContract(ADDRESSES[chainId].usdt);
 
 
     const { data: init_balance } = useContractRead({
