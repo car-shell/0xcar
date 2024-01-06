@@ -13,7 +13,7 @@ const MainPage = () => {
     const {ToastUI, showToast} = useToast();
     return <>
         <ToastUI />
-        <div className={`${styles.container} ${styles.flex_row}`} style={{columnGap: '8px'}} >
+        <div className={`${styles.container} ${styles.flex_row}`} style={{columnGap: '8px', width: '80%'}} >
             {/* <div className={styles.header + ' ' + styles.flex_row}>
                 <img src='cardinal.png' className={styles.img} />
                 
@@ -23,12 +23,12 @@ const MainPage = () => {
                 <div className={styles.triangle}/>
                
             </div> */}
-
-            <div className={`${styles.flex_column} ${styles.stress}`} style={{alignItems: "flex-start"}}>
+            
+            <div className={`${styles.flex_column} ${styles.stress}`} style={{alignItems: "center",  width: '80%'}}>
                 <div className={styles.fontLargeTilte }>
                     <span style={{color: "#D9001B"}}>0x</span>Cardinal
                 </div>
-                <div className={styles.fontBigTitle + ' ' + styles.yellow + ' ' + styles.midlleStress }>
+                {/* <div className={styles.fontBigTitle + ' ' + styles.yellow + ' ' + styles.midlleStress }>
                     Binance Smart Chain Betting DEX.
                 </div> 
                 <div className={styles.fontTitle + ' ' + styles.white + ' ' + styles.midlleStress}>
@@ -37,7 +37,7 @@ const MainPage = () => {
                 <div className={styles.fontTitle + ' ' + styles.gray}>
                     Open-source, decentralized，and Community-governed
                 </div> 
-                
+                 */}
                 {/* <div className={styles.fontBigTitle + ' ' + styles.bigStress }>
                     <span style={{color: "#D9001B"}}>0x</span>Cardinal <span style={{color: "#027DB4"}}>alpha</span> about to go live...
                 </div> 
@@ -56,15 +56,15 @@ const MainPage = () => {
                             FAQ
                     </div>
                 </div> */}
-                <PoolList />
+               
+            <PoolList />
 
             </div> 
 
-            <Image width='500' height='500' alt='0xcardinal image' src='/cardinal02.png' />
+            {/* <Image width='500' height='500' alt='0xcardinal image' src='/cardinal02.png' /> */}
             {/* <div className={`${styles.fontBigTitle} ${styles.bigStress}`}>
                    Burned: <span style={{color: '#D9001B'}}>-{formatAmount(deadBalance)} {token?.symbol}</span> <span style={{color: '#02A7F0'}}>({(deadBalance/(token?.totalSupply.value/1e18)*100).toFixed(6)}%)</span>
             </div> */}
-
             
             {/* <Ranking /> */}
         </div>

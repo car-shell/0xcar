@@ -365,6 +365,7 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
 .amount:hover {
   border-color: #06FC99;
 }

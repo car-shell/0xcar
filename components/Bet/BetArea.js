@@ -10,7 +10,7 @@ import useDispatch from '../../store/useDispatch'
 import { useAccount, useNetwork} from 'wagmi';
 import useToast from '../Toast'
 import { useConnectModal, useChainModal } from '@rainbow-me/rainbowkit';
-import { formatAmount, isDictEmpty } from "../utils";
+import { formatAmount, isDictEmpty, n1e18 } from "../utils";
 import { BetStatus } from "../constant"
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -430,7 +430,7 @@ const BetArea = () => {
     if (type === 'bet' && step === 1) {
       setTipInfo((pre)=>{ return {...pre, status: BetStatus.confirmed}})
     }
-    console.log('-------' + step + '-------');
+    console.log(`-------${step}------- ${type} ${msg}`);
     setStepInfo((pre)=>{
       return {...pre, steps: stepNodes[type], active: step, stepTitle: type, isShow: true, stepMsg: msg || pre.stepMsg}
     })
@@ -464,7 +464,7 @@ const BetArea = () => {
     //   return
     // }
 
-    const poolRemainBalance = poolDetails?poolDetails[1]/1000000000000000000n:10e8
+    const poolRemainBalance = poolDetails?poolDetails[1]/n1e18:10e8
     if ( parseFloat(amount)>poolRemainBalance*BigInt(title.odds) ) {
       showToast('amount too large!', 'error' )
       return
@@ -486,7 +486,7 @@ const BetArea = () => {
       stepMsg:  InfoTip({type:title.value, odds:title.odds, number:formatNumber(numbers), amount:amount, win:false})
     })
     
-    if (!bet(id, BigInt(amount)*1000000000000000000n, title.key, formatNumber(numbers), betSuccess, betFail, setActiveStep)){
+    if (!bet(id, BigInt(amount)*n1e18, title.key, formatNumber(numbers), betSuccess, betFail, setActiveStep)){
       setIsLoading(false)
       showToast("connect wallet first!",  'error')
     }

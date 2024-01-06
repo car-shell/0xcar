@@ -23,6 +23,8 @@ export function formatAmount(amount) {
     return parts.join('.');
 }
 
+export const n1e18 = 1000000000000000000n
+
 export function isDictEmpty(obj) {
   return Object.keys(obj).length === 0;
 }

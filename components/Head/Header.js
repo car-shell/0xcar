@@ -127,11 +127,11 @@ const Header = ({showMenu=true}) => {
               <BaseLink href="/" >App</BaseLink>
               {/* {curRouter=='/app' && <div className={styles.underline} style={{width: }}></div>} */}
           </div>
-          {/* <div className={styles.menuItem} style={curRouter=='/ido'?{color: '#06FC99'}:{}}>
+          <div className={styles.menuItem} style={curRouter=='/ido'?{color: '#06FC99'}:{}}>
               <BaseLink href="/ido" >IDO</BaseLink>
               {curRouter=='/ido' && <div className={styles.underline}></div>}
           </div>
-          <div className={styles.menuItem} style={curRouter=='/swap'?{color: '#06FC99'}:{}}>
+          {/*<div className={styles.menuItem} style={curRouter=='/swap'?{color: '#06FC99'}:{}}>
               <BaseLink href="/swap" >Swap</BaseLink>
               {curRouter=='/swap' && <div className={styles.underline}></div>}
           </div>*/}

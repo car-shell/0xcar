@@ -14,7 +14,7 @@ const PoolList = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    
+    console.log(pools);
     const StyledTabs = styled(Tabs)({
     // borderBottom: '1px solid #e8e8e8',
         '& .MuiTabs-indicator': {
@@ -53,16 +53,18 @@ const PoolList = () => {
 
     return (
     <React.Fragment>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: '68px 0 0 0px' }} >
+        <Box width='80%' alignItems="center" sx={{ borderBottom: 1, borderColor: 'divider', margin: '68px 0 0 0px' }} >
             <StyledTabs onChange={handleChange} value={value} selectionFollowsFocus={true}>
                 <StyledTab disableRipple label="Sort By Balance" index={0} />
                 <StyledTab disableRipple label="Sort By Polularity" index={1} />
             </StyledTabs>
         </Box>
         
-        {pools && pools.map((item, i)=>{
-            <PoolItem poolPro={item}/>
+        <Stack width='80%' direction='column' justifyContent="flex-between" alignItems="center" gap='16px' >
+        {pools && pools.map((item)=>{
+           return <PoolItem key={item.id} poolPro={item} my={false}/>
         })}
+        </Stack>
     </React.Fragment>);
 }
 

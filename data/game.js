@@ -1,5 +1,5 @@
 import {ethers} from 'ethers'
-import { abi } from './abi/GamePoolABI'
+import { gameABI as abi } from './abi/GamePoolABI'
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useTokenContract } from "./token";
 import { store, SET_WIN_LOGS } from '../store/store'
@@ -8,7 +8,7 @@ import useDispatch from '../store/useDispatch'
 import {  useAccount, useNetwork, useContractRead, useContractEvent, usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction } from "wagmi";
-import { ADDRESSES } from '../config/constants/address' 
+import { ADDRESSES } from '../config/constants/address';
 import { BetStatus } from "../components/constant";
 import { readContract, writeContract, prepareWriteContract, waitForTransaction, getWalletClient} from "@wagmi/core";
 
@@ -81,22 +81,23 @@ export const useGameContract = (monitor=false)  => {
     const {address, isConnected} = useAccount()
     const [currentPoolId, setCurrentPoolId] = useState(1)
 
+
     const dispatch = useDispatch()
     const odds = {0: 5, 1: 10, 2: 100}
 
     const { data: poolDetails, isError, isLoading: poolLoading } = useContractRead({
             address: addressGameContract,
             abi: abi,
-            functionName: 'pool',
+            functionName: 'poolInfo',
             args: [currentPoolId],
             chainId: chainId,
             watch: true,
             onSuccess(data){
-                console.log('Success', data)
+//                console.log('Success', data)
             },
-            onError(error) {
-                console.log('Error', error)
-            },
+            // onError(error) {
+            //     //console.log('Error', error)
+            // },
         }
     )
 
@@ -150,10 +151,10 @@ export const useGameContract = (monitor=false)  => {
         chainId: chainId,
         watch: true,
         onSuccess(data) {
-            console.log('Success', data)
+//            console.log('Success', data)
         },
         onError(error) {
-            console.log('Error', error)
+  //          console.log('Error', error)
         },
     })
     
@@ -163,12 +164,12 @@ export const useGameContract = (monitor=false)  => {
 
     // }
     
-    const _bet = useCallback( async (id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)=>{
+    const _bet = useCallback( async (id, amount, ruleId, selectNumber, success, fail, setActiveStep)=>{
         const config = await prepareWriteContract({
             address: addressGameContract,
             abi: abi,
             functionName: 'bet',
-            args: [id, amount, poolId, ruleId, selectNumber]
+            args: [id, amount, currentPoolId, ruleId, selectNumber]
         }).then( async (config)=>{
             await writeContract(config).then(async ({hash})=>{
                 setActiveStep('bet', 1)
@@ -182,12 +183,12 @@ export const useGameContract = (monitor=false)  => {
     }, [])
 
     const bet = async (id, amount, ruleId, selectNumber, success, fail, setActiveStep)=>{
-        
         if (!isConnected) {
             return false;
         }
-        console.log('--------bet', id);
-        let a = amount/1000000000000000000n
+        
+        console.log(`--------bet ${id}  ${amount}` );
+        // let a = amount/1000000000000000000n
         let al = 0n
 
         if (!allowance(address, addressGameContract, async (result)=>{
@@ -286,8 +287,8 @@ export const useGameContract = (monitor=false)  => {
         }
 
         const amount = lastRecord[1]/1000000000000000000n
-        let s = status(lastRecord[3], lastRecord[5], lastRecord[6])
-        return {id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[3], odds: odds[lastRecord[2]], status: s, random: s!=BetStatus.timeout?lastRecord[5]:'-'}
+        let s = status(lastRecord[4], lastRecord[6], lastRecord[7])
+        return {id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[4], odds: odds[lastRecord[3]], status: s, random: s!=BetStatus.timeout?lastRecord[6]:'-'}
     }
 
     
