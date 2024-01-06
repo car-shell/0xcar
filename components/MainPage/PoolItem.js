@@ -22,24 +22,24 @@ const PoolItem = ({poolPro, my=false}) => {
             </Box>
             <Card variant="outlined" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: '128px', border: '1px solid orange', backgroundColor: 'transparent' , borderRadius: '10px'}}>
                 <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', paddingRight: '28px', borderRight: '1px solid orange', width:'58%'}}>
-                    <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: 'orange', width: '80%'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px', textAlign: 'left', width: '50%'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: 'orange', width: '100%'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
                             Initial Pool Fund
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
                             {formatAmount(pool?.initBalance/n1e18)} {token?.symbol}
                         </Typography>
                     </Box>
-                    <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: 'orange',width: '80%'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px', textAlign: 'left', width: '50%'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: 'orange',width: '100%'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
                             Current Pool Balance
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
                             {formatAmount(pool?.remainBalance/n1e18)} {token?.symbol}
                         </Typography>
                     </Box>
-                    <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: 'orange', width: '80%'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px', textAlign: 'left', width: '50%'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: 'orange', width: '100%'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
                             Bet count
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>

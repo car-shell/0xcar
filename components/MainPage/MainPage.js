@@ -11,7 +11,7 @@ const MainPage = () => {
     }
     return <>
         <ToastUI />
-        <div className={`${styles.container}`} style={{columnGap: '8px'}} >
+        <div className={`${styles.container}`} style={{columnGap: '8px', minWidth: '1024px'}} >
             
             {/* <div className={styles.header + ' ' + styles.flex_row}>
                 <img src='cardinal.png' className={styles.img} />
@@ -28,7 +28,7 @@ const MainPage = () => {
                         <div className={styles.fontLargeTilte }>
                             <span style={{color: "#D9001B"}}>0x</span>Cardinal
                         </div>
-                        <div className={styles.fontBigTitle + ' ' + styles.yellow + ' ' + styles.stress }>
+                        <div className={styles.fontBigTitleNormal + ' ' + styles.yellow + ' ' + styles.stress }>
                             Binance Smart Chain Betting Platform
                         </div> 
                         <div className={styles.fontTitle + ' ' + styles.white + ' ' + styles.stress}>

@@ -33,7 +33,6 @@
     align-items: center;
     color: #fff;
 
-   
   }
 
 /* .container {
@@ -149,7 +148,7 @@
 
 
 .fontTitle {
-    font: 650 italic 30px sans;
+    font: 650 normal 30px sans;
     font-family: 'Mona Sans', sans-serif;
 }
 
@@ -164,7 +163,7 @@
 }
 
 .fontLargeTilte {
-    font: 650 italic 100px sans;
+    font: 650 normal 100px sans;
     font-family: 'Montserrat', sans-serif;
 }
 
