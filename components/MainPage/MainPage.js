@@ -1,19 +1,18 @@
 import styles from '../../styles/MainPage.module.css'
 import { useState } from "react";
-import Ranking from "./Ranking"
-import { useTokenContract } from "../../data/token";
-import { formatAmount } from "../utils";
 import useToast from '../Toast'
 import Image from 'next/image'
 import PoolList from './PoolList'
 
 const MainPage = () => {
-    const [questionIndex, setQuestionIndex] = useState(0)
-    const {balance, token, deadBalance} = useTokenContract();
     const {ToastUI, showToast} = useToast();
+    const open = (url) => {
+        
+    }
     return <>
         <ToastUI />
-        <div className={`${styles.container} ${styles.flex_row}`} style={{columnGap: '8px', width: '80%'}} >
+        <div className={`${styles.container}`} style={{columnGap: '8px'}} >
+            
             {/* <div className={styles.header + ' ' + styles.flex_row}>
                 <img src='cardinal.png' className={styles.img} />
                 
@@ -23,50 +22,25 @@ const MainPage = () => {
                 <div className={styles.triangle}/>
                
             </div> */}
-            
-            <div className={`${styles.flex_column} ${styles.stress}`} style={{alignItems: "center",  width: '80%'}}>
-                <div className={styles.fontLargeTilte }>
-                    <span style={{color: "#D9001B"}}>0x</span>Cardinal
+            <div className={`${styles.flex_row}`}>
+                <div className={`${styles.umask}  ${styles.flex_row}`}>
+                    <div className={`${styles.flex_column} ${styles.stress}`}>
+                        <div className={styles.fontLargeTilte }>
+                            <span style={{color: "#D9001B"}}>0x</span>Cardinal
+                        </div>
+                        <div className={styles.fontBigTitle + ' ' + styles.yellow + ' ' + styles.stress }>
+                            Binance Smart Chain Betting Platform
+                        </div> 
+                        <div className={styles.fontTitle + ' ' + styles.white + ' ' + styles.stress}>
+                            An Innovative Token-Based Betting Platform
+                        </div> 
+                        <div className={styles.fontTitle + ' ' + styles.white}>
+                            Open-source, Decentralized，and Community-governed
+                        </div> 
+                    </div> 
                 </div>
-                {/* <div className={styles.fontBigTitle + ' ' + styles.yellow + ' ' + styles.midlleStress }>
-                    Binance Smart Chain Betting DEX.
-                </div> 
-                <div className={styles.fontTitle + ' ' + styles.white + ' ' + styles.midlleStress}>
-                    The world&apos;s first coin-centric betting DEX.
-                </div> 
-                <div className={styles.fontTitle + ' ' + styles.gray}>
-                    Open-source, decentralized，and Community-governed
-                </div> 
-                 */}
-                {/* <div className={styles.fontBigTitle + ' ' + styles.bigStress }>
-                    <span style={{color: "#D9001B"}}>0x</span>Cardinal <span style={{color: "#027DB4"}}>alpha</span> about to go live...
-                </div> 
-
-                <div className={`${styles.flex_row} ${styles.buttonRow} ${styles.topStress}`}>
-                    <div className={styles.button} onClick={()=>showToast("Coming soon")}>
-                            Why 0xCardinal?
-                    </div>
-                    <div className={styles.button} onClick={()=>showToast("Coming soon")}>
-                            Tokenomics
-                    </div>
-                    <div className={styles.button} onClick={()=>showToast("Coming soon")}>
-                            Rodmap
-                    </div>
-                    <div className={styles.button} onClick={()=>{showToast("Coming soon")}}>
-                            FAQ
-                    </div>
-                </div> */}
-               
+            </div>
             <PoolList />
-
-            </div> 
-
-            {/* <Image width='500' height='500' alt='0xcardinal image' src='/cardinal02.png' /> */}
-            {/* <div className={`${styles.fontBigTitle} ${styles.bigStress}`}>
-                   Burned: <span style={{color: '#D9001B'}}>-{formatAmount(deadBalance)} {token?.symbol}</span> <span style={{color: '#02A7F0'}}>({(deadBalance/(token?.totalSupply.value/1e18)*100).toFixed(6)}%)</span>
-            </div> */}
-            
-            {/* <Ranking /> */}
         </div>
     </>
 }

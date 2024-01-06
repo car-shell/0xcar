@@ -28,22 +28,23 @@ const PoolList = () => {
             // fontWeight: theme.typography.fontWeightRegular,
             // fontSize: theme.typography.pxToRem(15),
             // marginRight: '48px',
-            marginBottom: '32px',
-            marginLeft: '16px',
+            // marginBottom: '32px',
+            marginLeft: '30px',
             
             // border: '1px solid #06FC99',
-            borderRadius: '75px',
+            borderRadius: '150px',
             width: '180px',
             color: '#fff',
             font: '700 normal 16px sans',
             minHeight: '40px',
             height: '40px',
+            maxWidth: '180px',
             border: '1px solid white',
 
             '&.Mui-selected': {
-            backgroundColor: '#049659',
-            borderColor: '#049659',
-            color: '#fff',
+            backgroundColor: 'transparent',
+            borderColor: '#F59A23',
+            color: '#F59A23',
             },
             '&.Mui-focusVisible': {
             color:'#fff',
@@ -53,12 +54,12 @@ const PoolList = () => {
 
     return (
     <React.Fragment>
-        <Box width='80%' alignItems="center" sx={{ borderBottom: 1, borderColor: 'divider', margin: '68px 0 0 0px' }} >
-            <StyledTabs onChange={handleChange} value={value} selectionFollowsFocus={true}>
+        <Stack width='80%' display='column' justifyContent='center' alignItems="center" sx={{ borderBottom: 1, borderColor: 'divider', margin: '32px 0 0 0px'}} >
+            <StyledTabs onChange={handleChange} value={value} selectionFollowsFocus={true} >
                 <StyledTab disableRipple label="Sort By Balance" index={0} />
                 <StyledTab disableRipple label="Sort By Polularity" index={1} />
             </StyledTabs>
-        </Box>
+        </Stack>
         
         <Stack width='80%' direction='column' justifyContent="flex-between" alignItems="center" gap='16px' >
         {pools && pools.map((item)=>{
