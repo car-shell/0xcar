@@ -67,7 +67,7 @@ export const useIDOContract = () => {
             fail(e)
             return
         })
-    }, [address, addressIDOContract])
+    }, [addressIDOContract])
 
     const createIDOPool = useCallback(async (amount, discord, success, fail) => {
         if (!isConnected) {
@@ -96,7 +96,7 @@ export const useIDOContract = () => {
         }
 
         return true;
-    });
+    }, [addressIDOContract, _createIDOPool, address, allowance, approve,isConnected]);
    
-    return { init:formatAmount(init_balance/n1e18), remain:formatAmount(remain_balance/n1e18), createIDOPool }
+    return { init:init_balance?formatAmount(init_balance/n1e18):"--", remain:remain_balance?formatAmount(remain_balance/n1e18):"--", createIDOPool }
 }
