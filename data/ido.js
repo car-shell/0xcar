@@ -12,7 +12,7 @@ import { formatAmount, n1e18 } from "../components/utils";
 export const useIDOContract = () => {
     const {address, isConnected} = useAccount()
     const {chain, chains} = useNetwork()
-    const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
+    const chainId = useMemo(()=>{ return chain != undefined && chain?.id && chains.map(c=>c?.id).indexOf(chain?.id) != -1 ? chain.id : defaultChainId}, [chain, chains])
     const addressIDOContract = ADDRESSES[chainId]?.ido
 
     const {usdt, allowance, approve} = useTokenContract(ADDRESSES[chainId].usdt);
