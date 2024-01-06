@@ -53,7 +53,7 @@ const MyPool = () => {
                         The withdrawal operation is the same as the withdrawal logic for regular users, including a deduction of a handling fee.
                         </li>
                         <li style={{margin: "8px"}}>
-                        Withdrawal handling fee = 7% of the pool's profit balance.
+                        Withdrawal handling fee = 7% of the pool&aposs profit balance.
                         </li>
                         <li  style={{margin: "8px"}}>
                         The withdrawal operation is irreversible. Once completed, the wallet address previously bound to the user will automatically be bound to the official pool.
