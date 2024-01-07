@@ -17,11 +17,12 @@ import Step from '@mui/material/Step';
 import Typography from '@mui/material/Typography';
 import StepLabel from '@mui/material/StepLabel';
 import CustomizedSteppers from './Progress'
+import { useRouter } from 'next/router';
 
 const useAudio = url => {
   const [audio] = useState(new Audio(url));
   const [playing, setPlaying] = useState(false);
-
+  
   const toggle = () => setPlaying(!playing);
 
   useEffect(() => {
@@ -71,6 +72,9 @@ const BetArea = () => {
   const {chain, chains} = useNetwork()
   const {openConnectModal} = useConnectModal()
   const {openChainModal} = useChainModal();
+
+  let router =  useRouter();
+  const {id: poolId} = router.query
 
   useEffect(()=>{
     if (address && last && !isDictEmpty(last)) {
@@ -486,7 +490,7 @@ const BetArea = () => {
       stepMsg:  InfoTip({type:title.value, odds:title.odds, number:formatNumber(numbers), amount:amount, win:false})
     })
     
-    if (!bet(id, BigInt(amount)*n1e18, title.key, formatNumber(numbers), betSuccess, betFail, setActiveStep)){
+    if (!bet(id, BigInt(amount)*n1e18, poolId, title.key, formatNumber(numbers), betSuccess, betFail, setActiveStep)){
       setIsLoading(false)
       showToast("connect wallet first!",  'error')
     }

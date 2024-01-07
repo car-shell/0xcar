@@ -101,7 +101,11 @@ export const useGameContract = (monitor=false)  => {
         }
     )
 
-    monitor && useEffect(()=>{
+    // monitor && useEffect(()=>{
+    useEffect(()=>{
+        if (!monitor) {
+            return;
+        }
         let winLog = localStorage.getItem('WIN_LOG')
         if (winLog) {
             let l = JSON.parse(winLog)
@@ -111,7 +115,7 @@ export const useGameContract = (monitor=false)  => {
                 payload: l
             })
         }
-    }, [])
+    }, [dispatch, monitor])
 
     const { data:lastRecord, isError: lastRecordError, isLoading: lastLoading } = useContractRead({
         address: addressGameContract,
@@ -124,12 +128,15 @@ export const useGameContract = (monitor=false)  => {
         }
     })
     
-    monitor && useContractEvent({
+    useContractEvent({
         address: addressGameContract,
         abi: abi,
         eventName: 'ResultObtained',
         chainId: chainId,
         listener(better, id, amount, betNumber, random, odds, netWin, height) {
+            if (!monitor) {
+                return;
+            }
             //Result(address indexed better, uint amount, uint winAmount, uint blockNumber, uint timestamp, uint poolId, uint gameId, bytes32 blockHash);
             let log = { "winner": better, 'random': random, "amount": amount/1000000000000000000n, "profit": netWin/1000000000000000000n, "odds": odds,  id: id.toNumber(), height: height.toNumber() }
             logs.unshift(log)
@@ -164,13 +171,14 @@ export const useGameContract = (monitor=false)  => {
 
     // }
     
-    const _bet = useCallback( async (id, amount, ruleId, selectNumber, success, fail, setActiveStep)=>{
+    const _bet = useCallback( async (id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)=>{
         const config = await prepareWriteContract({
             address: addressGameContract,
             abi: abi,
             functionName: 'bet',
-            args: [id, amount, currentPoolId, ruleId, selectNumber]
+            args: [id, amount, poolId, ruleId, selectNumber]
         }).then( async (config)=>{
+            console.log(`bet in ${poolId} pool`);
             await writeContract(config).then(async ({hash})=>{
                 setActiveStep('bet', 1)
                 const receipt = await waitForTransaction({
@@ -180,9 +188,9 @@ export const useGameContract = (monitor=false)  => {
                 success(receipt)
             }).catch((e)=>fail(e))
         }).catch((e)=>fail(e))
-    }, [])
+    }, [addressGameContract])
 
-    const bet = async (id, amount, ruleId, selectNumber, success, fail, setActiveStep)=>{
+    const bet = async (id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)=>{
         if (!isConnected) {
             return false;
         }
@@ -201,7 +209,7 @@ export const useGameContract = (monitor=false)  => {
                         setActiveStep('approve', 1)
                     } else {
                         setActiveStep('bet', 0)
-                        await _bet(id, amount, ruleId, selectNumber, success, fail, setActiveStep)
+                        await _bet(id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)
                     }
                 }, (e)=>{
                     console.log( `approve failed ${e}`);
@@ -209,7 +217,7 @@ export const useGameContract = (monitor=false)  => {
                 })
             } else {
                 setActiveStep('bet', 0)
-                await _bet(id, amount, ruleId, selectNumber, success, fail, setActiveStep)
+                await _bet(id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)
             }
         }, (e)=>{fail(e)})){
             return false;
