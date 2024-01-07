@@ -15,7 +15,7 @@ export const useIDOContract = () => {
     const chainId = useMemo(()=>{ return chain != undefined && chain?.id && chains.map(c=>c?.id).indexOf(chain?.id) != -1 ? chain.id : defaultChainId}, [chain, chains])
     const addressIDOContract = ADDRESSES[chainId]?.ido
 
-    const {usdt, allowance, approve} = useTokenContract(ADDRESSES[chainId].usdt);
+    const {usdt, balance: usdtBalance, allowance, approve} = useTokenContract(ADDRESSES[chainId].usdt);
 
 
     const { data: init_balance } = useContractRead({
@@ -98,5 +98,5 @@ export const useIDOContract = () => {
         return true;
     }, [addressIDOContract, _createIDOPool, address, allowance, approve,isConnected]);
    
-    return { init:init_balance?formatAmount(init_balance/n1e18):"--", remain:remain_balance?formatAmount(remain_balance/n1e18):"--", createIDOPool }
+    return { init:init_balance?formatAmount(init_balance/n1e18):"--", remain:remain_balance?formatAmount(remain_balance/n1e18):"--", createIDOPool, usdtBalance}
 }

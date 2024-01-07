@@ -13,8 +13,18 @@ const PoolList = () => {
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
+
+        console.log(pools);
+        if (newValue === 1 ) {
+            pools.sort((a,b)=>{
+                return a.betCount > b.betCount;
+            })
+        } else if ( newValue === 0 ) {
+            pools.sort((a,b)=>{
+                a.remainBalance > b.remainBalance;
+            })
+        }
     };
-    console.log(pools);
     const StyledTabs = styled(Tabs)({
     // borderBottom: '1px solid #e8e8e8',
         '& .MuiTabs-indicator': {

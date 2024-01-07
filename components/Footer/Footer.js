@@ -6,7 +6,7 @@ const Footer = () => {
         <div className={styles.container}>
             <div className={styles.bottom}>
                 <div className={styles.copyright}>
-                © 2023 0xCardinal. All rights reserved
+                © 2024 0xCardinal. All rights reserved
                 </div>
                 <div className={styles.medias}>
                     <a target="_blank" rel="noreferrer noopener" href="https://twitter.com/0xCardinal_io" aria-label="Twitter" color="primary" fontSize="16px">

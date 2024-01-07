@@ -19,14 +19,14 @@ const MyPool = () => {
     <React.Fragment>
         <Stack direction='column' alignItems='center' justifyContent="center" width='100%'>
             <Stack direction='column' alignItems='center' width='60%'>
-                <Typography component='div' variant='h6'>
+                <Typography component='div' sx={{margin: '80px 0 6px 0', font: '700 normal 20px Arial'}}>
                     My Pool
                 </Typography> 
                 {pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).map((item)=>{
                     console.log(item);
                     return <>
-                        <Stack direction='row' justifyContent="flex-end" alignItems="left" width="100%" sx={{padding: '24px 0 8px 0'}}>
-                            <Button variant="contained" color="error" width="80px" sx={{borderRadius: '20px'}} >
+                        <Stack direction='row' justifyContent="flex-end" alignItems="left" width="100%" sx={{padding: '32px 0 0 0'}}>
+                            <Button variant="contained" color="error" sx={{borderRadius: '90px',  width: "150px"}} >
                                 Lock Pool
                             </Button>
                         </Stack>
@@ -35,7 +35,7 @@ const MyPool = () => {
                 })}
             </Stack>
             <Box width='60%'>
-                <Typography component='div' sx={{ padding: '16px 16px 0px 16px', font: '500 normal 16px Arial'}}>
+                <Typography component='div' sx={{ padding: '50px 16px 20px 16px', font: '700 normal 16px Arial'}}>
                     Withdrawal Pool Rules
                 </Typography>
                 <Typography component='div' sx={{ font: '400 normal 14px Arial'}}>
