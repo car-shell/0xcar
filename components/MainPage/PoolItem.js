@@ -3,7 +3,7 @@ import { useCallback, useState, useRef, useEffect, useContext} from "react";
 import {Box, Card, CardActionArea, Typography, Button} from '@mui/material'
 import { styled } from '@mui/material/styles';
 import Image from 'next/image'
-import { formatAmount, n1e18 } from "../utils";
+import { formatAmount, n1e18, formatTime } from "../utils";
 import BaseLink from "../Head/BaseLink"
 import { useGameContract } from "../../data/game";
 import { useTokenContract } from "../../data/token";
@@ -13,7 +13,7 @@ const PoolItem = ({poolPro, my=false}) => {
     const [value, setValue] = React.useState(0);
     const [pool, setPool] = React.useState(poolPro);
     const {token} = useTokenContract();
-    console.log(pool);
+    
     return <>
         {
         <Box  width='100%'>
@@ -61,7 +61,7 @@ const PoolItem = ({poolPro, my=false}) => {
                         Start Time
                     </Typography>
                     <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
-                        {/* {new Date(Number(pool['startTimestamp']))} */} 10110010101
+                        {pool?.startTimestamp?formatTime(new Date(Number(pool.startTimestamp)*1000).toString(), true):'--'}
                     </Typography>
                 </Box>}
             </Card>

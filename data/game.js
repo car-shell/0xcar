@@ -189,6 +189,7 @@ export const useGameContract = (monitor=false)  => {
             }).catch((e)=>fail(e))
         }).catch((e)=>fail(e))
     }, [addressGameContract])
+    
 
     const bet = async (id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)=>{
         if (!isConnected) {
@@ -270,6 +271,64 @@ export const useGameContract = (monitor=false)  => {
             fail(e)
         })
     }
+
+    const preRemovePool = async (id, success, fail, setStepStatus)=>{
+        const config = await prepareWriteContract({
+            address: addressGameContract,
+            abi: abi,
+            functionName: 'preRemovePool',
+            args: [id]
+        }).then( async (config)=>{
+            await writeContract(config).then(async ({hash})=>{
+                const receipt = await waitForTransaction({
+                    hash,
+                    onReplaced: (transaction) => console.log(transaction),
+                })
+                setStepStatus('preRemovePool', 2)
+                success()
+            }).catch((e)=>{
+                console.log("preRemovePool failed")
+                console.log(e.message)
+                setStepStatus('preRemovePool', 1)
+                fail(e)
+            })
+        }).catch((e)=>{
+            console.log("preRemovePool failed")
+            console.log(e.message)
+            setStepStatus('preRemovePool', 1)
+            fail(e)
+        })
+    }
+
+    const removePool = async (id, success, fail, setStepStatus)=>{
+        const config = await prepareWriteContract({
+            address: addressGameContract,
+            abi: abi,
+            functionName: 'removePool',
+            args: [id]
+        }).then( async (config)=>{
+            await writeContract(config).then(async ({hash})=>{
+                const receipt = await waitForTransaction({
+                    hash,
+                    onReplaced: (transaction) => console.log(transaction),
+                })
+                console.log("transfer receipt",receipt)
+                setStepStatus('removePool', 2)
+                success()
+            }).catch((e)=>{
+                console.log("removePool failed")
+                console.log(e.message)
+                setStepStatus('removePool', 1)
+                fail(e)
+            })
+        }).catch((e)=>{
+            console.log("removePool failed")
+            console.log(e.message)
+            setStepStatus('removePool', 1)
+            fail(e)
+        })
+    }
+
 
     //(item.amount, item.ruleId, item.guess, item.qrngRequestId, item.random, item.expired);
     //let log = {type: title.value, "height": r.blockNumber, "amount": amount, "number": formatNumber(numbers), "odds": title.odds, "win": [-1, '-'], "random":'-', "id": betLog.length}

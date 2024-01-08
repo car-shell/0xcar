@@ -80,7 +80,7 @@ const BetArea = () => {
     if (address && last && !isDictEmpty(last)) {
       // console.log(`last record: ${JSON.stringify(last)}`);
       setTipInfo(last)
-    }}, [])
+    }}, [address, last])
 
   useEffect(()=>{
     let l = JSON.parse(localStorage.getItem("LAST_STEPNODEINFO"))

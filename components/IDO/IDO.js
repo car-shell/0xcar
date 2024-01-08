@@ -10,6 +10,8 @@ import { useAccount } from "wagmi";
 import styles from "../../styles/Bet.module.css";
 import { useIDOContract } from "../../data/ido";
 import { useTokenContract } from "../../data/token";
+import { useSwapContract } from "../../data/swap";
+
 import useToast from '../Toast'
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -21,6 +23,7 @@ const IDO = () => {
     const {init, remain, total_usdt_raised, createIDOPool, usdtBalance} = useIDOContract();
     const {token} = useTokenContract();
     const {address} = useAccount()
+    const {amountsOut} = useSwapContract()
     const [value, setValue] = React.useState(5000);
     const {ToastUI, showToast} = useToast()
 
@@ -38,7 +41,11 @@ const IDO = () => {
           setValue(e.target.value)
       },
       [setValue],
-  )
+    )
+    
+    const handleMax = useCallback(()=>{
+        
+    })
 
 
     return (
@@ -100,7 +107,7 @@ const IDO = () => {
                 </Stack>
                 <Stack direction='row' justifyContent="flex-between" alignItems="center" width='90%' height='48px' sx={{border: "1px solid #333333"}} >
                     <input  style={{paddingLeft: '10px', width: '80%', height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} type='numbmic' placeholder='Input amount (5,000 USDT - 50,000 USDT)' value={value} onChange={handleInput}/>
-                    <button style={{width: '20%', cursor: 'pointer',height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} onClick={()=>{}} > MAX </button>
+                    <button style={{width: '20%', cursor: 'pointer',height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} onClick={handleMax} > MAX </button>
                 </Stack>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
@@ -113,7 +120,7 @@ const IDO = () => {
                         Current CDNL Price
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {init} {token?.symbol}
+                            {amountsOut} {token?.symbol}
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="flex-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
@@ -121,7 +128,7 @@ const IDO = () => {
                         Cost
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {remain} {token?.symbol}
+                            {value} USDT
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="flex-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', marginBottom: '16px'}}>
@@ -129,7 +136,7 @@ const IDO = () => {
                         Buyable
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {total_usdt_raised} {token?.symbol}
+                            {value*amountsOut} {token?.symbol}
                         </Typography>
                     </Stack>
                 </Stack>

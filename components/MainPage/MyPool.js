@@ -15,6 +15,10 @@ const MyPool = () => {
         setValue(newValue);
     };
 
+    const handleRemovePool = (pool) => {
+
+    }
+
     return (
     <React.Fragment>
         <Stack direction='column' alignItems='center' justifyContent="center" width='100%'>
@@ -26,8 +30,8 @@ const MyPool = () => {
                     console.log(item);
                     return <>
                         <Stack direction='row' justifyContent="flex-end" alignItems="left" width="100%" sx={{padding: '32px 0 0 0'}}>
-                            <Button variant="contained" color="error" sx={{borderRadius: '90px',  width: "150px"}} >
-                                Lock Pool
+                            <Button variant="contained" color="error" sx={{borderRadius: '90px',  width: "150px"}} onClick={handleRemovePool(item)} >
+                                {item.isLocked?"Remove Pool":"Lock Pool"}
                             </Button>
                         </Stack>
                         <PoolItem key={item.id} poolPro={item} my={true}/>
