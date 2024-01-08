@@ -30,7 +30,7 @@ const IDO = () => {
 
     const handleCreate = (event) => {
         createIDOPool(BigInt(value*1e18), [], (data)=>{
-
+            showToast("Congratulations，Create pool success", 'success')
         }, (error)=>{
             showToast(error.shortMessage, 'error')
         })
