@@ -43,7 +43,7 @@ const PoolItem = ({poolPro, my=false}) => {
                             Bet count
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
-                            {pool.betCount}
+                            {Number(pool?.betCount)}
                         </Typography>
                     </Box>
                 </Box>

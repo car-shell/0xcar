@@ -80,7 +80,7 @@ const BetArea = () => {
     if (address && last && !isDictEmpty(last)) {
       // console.log(`last record: ${JSON.stringify(last)}`);
       setTipInfo(last)
-    }}, [address, last])
+    }}, [])
 
   useEffect(()=>{
     let l = JSON.parse(localStorage.getItem("LAST_STEPNODEINFO"))
@@ -468,7 +468,7 @@ const BetArea = () => {
     //   return
     // }
 
-    const poolRemainBalance = poolDetails?poolDetails[1]/n1e18:10e8
+    const poolRemainBalance = poolDetails?poolDetails.remainBalance/n1e18:10e8
     if ( parseFloat(amount)>poolRemainBalance*BigInt(title.odds) ) {
       showToast('amount too large!', 'error' )
       return

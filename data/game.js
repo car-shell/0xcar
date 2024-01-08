@@ -93,7 +93,7 @@ export const useGameContract = (monitor=false)  => {
             chainId: chainId,
             watch: true,
             onSuccess(data){
-//                console.log('Success', data)
+               console.log('Success', data)
             },
             // onError(error) {
             //     //console.log('Error', error)
@@ -272,7 +272,7 @@ export const useGameContract = (monitor=false)  => {
         })
     }
 
-    const preRemovePool = async (id, success, fail, setStepStatus)=>{
+    const preRemovePool = async (id, success, fail)=>{
         const config = await prepareWriteContract({
             address: addressGameContract,
             abi: abi,
@@ -284,23 +284,20 @@ export const useGameContract = (monitor=false)  => {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
-                setStepStatus('preRemovePool', 2)
                 success()
             }).catch((e)=>{
                 console.log("preRemovePool failed")
                 console.log(e.message)
-                setStepStatus('preRemovePool', 1)
                 fail(e)
             })
         }).catch((e)=>{
             console.log("preRemovePool failed")
             console.log(e.message)
-            setStepStatus('preRemovePool', 1)
             fail(e)
         })
     }
 
-    const removePool = async (id, success, fail, setStepStatus)=>{
+    const removePool = async (id, success, fail)=>{
         const config = await prepareWriteContract({
             address: addressGameContract,
             abi: abi,
@@ -313,18 +310,15 @@ export const useGameContract = (monitor=false)  => {
                     onReplaced: (transaction) => console.log(transaction),
                 })
                 console.log("transfer receipt",receipt)
-                setStepStatus('removePool', 2)
                 success()
             }).catch((e)=>{
                 console.log("removePool failed")
                 console.log(e.message)
-                setStepStatus('removePool', 1)
                 fail(e)
             })
         }).catch((e)=>{
             console.log("removePool failed")
             console.log(e.message)
-            setStepStatus('removePool', 1)
             fail(e)
         })
     }
@@ -359,5 +353,5 @@ export const useGameContract = (monitor=false)  => {
     }
 
     
-    return { pools, poolDetails, bet, result, withdraw, logs, last: formatLast(), setCurrentPoolId}
+    return { pools, poolDetails, bet, result, withdraw, logs, last: formatLast(), setCurrentPoolId, preRemovePool, removePool}
 }

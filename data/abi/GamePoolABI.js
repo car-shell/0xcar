@@ -624,24 +624,76 @@ export const gameABI = [
 		"name": "poolInfo",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"components": [
+					{
+						"internalType": "bool",
+						"name": "isUsed",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint64",
+						"name": "id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint8",
+						"name": "poolType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startBlockerNumber",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startTimestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "initBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "remainBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isLocked",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "createdBlockNum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "canEndBlockNum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lockedBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "betCount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct IGame.PoolProperty",
 				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			},
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
+				"type": "tuple"
 			}
 		],
 		"stateMutability": "view",
@@ -719,7 +771,7 @@ export const gameABI = [
 						"type": "uint256"
 					}
 				],
-				"internalType": "struct Game.PoolProperty[]",
+				"internalType": "struct IGame.PoolProperty[]",
 				"name": "",
 				"type": "tuple[]"
 			}
@@ -793,6 +845,19 @@ export const gameABI = [
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "ido",
+				"type": "address"
+			}
+		],
+		"name": "setIDOContract",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "_airnode",
 				"type": "address"
 			},
@@ -834,6 +899,13 @@ export const gameABI = [
 			}
 		],
 		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdrawMiningFunding",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

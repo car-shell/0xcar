@@ -79,7 +79,7 @@ export const useIDOContract = () => {
             console.log('------', result);
             al = result
             if ( al < amount ) {
-                approve(addressIDOContract, amount*10n, async (s, data)=>{
+                approve(addressIDOContract, amount, async (s, data)=>{
                     if ( s == 'write') {
                     } else {
                         await _createIDOPool(amount, discord, success, fail)

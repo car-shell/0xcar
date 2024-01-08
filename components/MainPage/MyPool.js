@@ -4,37 +4,51 @@ import {Tabs, Tab, Box, Card, Typography, Button, Stack} from '@mui/material'
 import PoolItem from './PoolItem'
 import {useAddrees} from 'wagmi'
 import {useAccount} from "wagmi";
+import useToast from '../Toast'
 
 import { useGameContract } from "../../data/game";
 
 const MyPool = () => {
-    const {pools} = useGameContract();
+    const {pools, preRemovePool, removePool} = useGameContract();
     const {address, isConnected} = useAccount()
     const [value, setValue] = React.useState(0);
+    const {ToastUI, showToast} = useToast()
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
     const handleRemovePool = (pool) => {
-
+        if (pool.isLocked) {
+            removePool(pool.id, ()=>{
+                showToast("success", "success")
+            }, (error)=>{
+                showToast(error.shortMessage || error.message || error.reason, "error")
+            })
+        } else {
+            preRemovePool(pool.id, ()=>{
+                showToast("success", "success")
+            }, (error)=>{
+                showToast(error.shortMessage || error.messag || error.reason, "error")
+            })
+        }
     }
 
     return (
     <React.Fragment>
+        <ToastUI />
         <Stack direction='column' alignItems='center' justifyContent="center" width='100%'>
             <Stack direction='column' alignItems='center' width='60%'>
                 <Typography component='div' sx={{margin: '80px 0 6px 0', font: '700 normal 20px Arial'}}>
                     My Pool
                 </Typography> 
                 {pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).map((item)=>{
-                    console.log(item);
                     return <>
-                        <Stack direction='row' justifyContent="flex-end" alignItems="left" width="100%" sx={{padding: '32px 0 0 0'}}>
-                            <Button variant="contained" color="error" sx={{borderRadius: '90px',  width: "150px"}} onClick={handleRemovePool(item)} >
+                        <Stack key={'stack-'+item.id} direction='row' justifyContent="flex-end" alignItems="left" width="100%" sx={{padding: '32px 0 0 0'}}>
+                            <Button key={'button-'+item.id} variant="contained" color="error" sx={{borderRadius: '90px',  width: "150px"}} onClick={()=>{handleRemovePool(item)}} >
                                 {item.isLocked?"Remove Pool":"Lock Pool"}
                             </Button>
                         </Stack>
-                        <PoolItem key={item.id} poolPro={item} my={true}/>
+                        <PoolItem key={'pool-'+item.id} poolPro={item} my={true}/>
                     </>
                 })}
             </Stack>
