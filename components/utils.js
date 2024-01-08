@@ -23,6 +23,11 @@ export function formatAmount(amount) {
     return parts.join('.');
 }
 
+export function amountFromFormatedStr(str) {
+    str = str.replace(',', '')
+    return parseFloat(str)
+}
+
 export const n1e18 = 1000000000000000000n
 
 export function isDictEmpty(obj) {

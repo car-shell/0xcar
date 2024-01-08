@@ -11,6 +11,7 @@ import styles from "../../styles/Bet.module.css";
 import { useIDOContract } from "../../data/ido";
 import { useTokenContract } from "../../data/token";
 import { useSwapContract } from "../../data/swap";
+import { amountFromFormatedStr } from "../utils"
 
 import useToast from '../Toast'
 import FormGroup from '@mui/material/FormGroup';
@@ -43,9 +44,15 @@ const IDO = () => {
       [setValue],
     )
     
-    const handleMax = useCallback(()=>{
-        
-    })
+    const handleMax = (e)=>{
+        let b = amountFromFormatedStr(usdtBalance)
+        console.log( `usdt balance ${b}` );
+        if (b > 50000) {
+            setValue(50000.00);
+        } else {
+            setValue(b)
+        }
+    }
 
 
     return (
@@ -106,8 +113,8 @@ const IDO = () => {
                     </Stack>
                 </Stack>
                 <Stack direction='row' justifyContent="flex-between" alignItems="center" width='90%' height='48px' sx={{border: "1px solid #333333"}} >
-                    <input  style={{paddingLeft: '10px', width: '80%', height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} type='numbmic' placeholder='Input amount (5,000 USDT - 50,000 USDT)' value={value} onChange={handleInput}/>
-                    <button style={{width: '20%', cursor: 'pointer',height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} onClick={handleMax} > MAX </button>
+                    <input  style={{paddingLeft: '10px', width: '90%', height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} type='numbmic' placeholder='Input amount (5,000 USDT - 50,000 USDT)' value={value} onChange={handleInput}/>
+                    <button style={{width: '10%', cursor: 'pointer',height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} onClick={handleMax} > MAX </button>
                 </Stack>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
