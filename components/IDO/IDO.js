@@ -29,6 +29,10 @@ const IDO = () => {
     const {ToastUI, showToast} = useToast()
 
     const handleCreate = (event) => {
+        if (value < 5000 || value > 50000) {
+            showToast("The amount exceeds the limit. The valid range is 5000 to 50000.")
+            return
+        }
         createIDOPool(BigInt(value*1e18), [], (data)=>{
             showToast("Congratulations，Create pool success", 'success')
         }, (error)=>{
