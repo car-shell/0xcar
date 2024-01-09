@@ -147,7 +147,7 @@ const IDO = () => {
                         Buyable
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {value*amountsOut} {token?.symbol}
+                            {value*amountsOut/0.85} {token?.symbol}
                         </Typography>
                     </Stack>
                 </Stack>
