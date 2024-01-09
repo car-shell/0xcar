@@ -35,7 +35,7 @@ export const ADDRESSES = {
         game: "0x843E714Ed8d808225fBbD47182f01aDF746484eA",
         faucet: "0x6D70B8d77B12211915aEf7D93E58352B4d003efC",
         ido: "0xEAAC1fdA1dC6aB35387AfCe8d7B2EE87B24Ff8c5",
-        swap: "0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3",
+        swap: "0xD99D1c33F9fC3444f8101754aBC46c52416550D1",
        
         topic_bet: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
         topic_win: "0x9f8ce2e31646e98e72e097e8abe5539ff064932fc90b722b121b9c83f9351b40",
