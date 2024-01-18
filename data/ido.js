@@ -48,7 +48,23 @@ export const useIDOContract = () => {
         }
     )
 
-    const _createIDOPool = useCallback(async (amount, discord, success, fail) => {
+    const { data: total_usdt_raised } = useContractRead({
+            address: addressIDOContract,
+            abi: abi,
+            functionName: 'total_usdt_raised',
+            chainId: chainId,
+            args: [],
+            watch: true,
+            cache: 20_000,
+            // structuralSharing: (prev, next) => (prev === next ? prev : next),
+            onSuccess:(data)=>{
+                console.log(data);
+            }
+        }
+    )
+    
+
+    const _createIDOPool = useCallback(async (amount, discord, success, fail, onStepChange) => {
         console.log(`${amount} ${discord} ${addressIDOContract} ${abi}`);
         const config = await prepareWriteContract({
             address: addressIDOContract,
@@ -56,7 +72,8 @@ export const useIDOContract = () => {
             functionName: 'createIDOPool',
             args: [amount, discord],
         }).then( async (config)=>{
-            const data = await writeContract(config).then((data)=>{
+            const data = await writeContract(config).then((s, data)=>{
+                onStepChange(2, true, null, null, "View My Pool")
                 success(data)
             }).catch((e)=>{
                 console.log(e);
@@ -69,7 +86,7 @@ export const useIDOContract = () => {
         })
     }, [addressIDOContract])
 
-    const createIDOPool = useCallback(async (amount, discord, success, fail) => {
+    const createIDOPool = useCallback(async (amount, discord, success, fail, onStepChange) => {
         if (!isConnected) {
             return false;
         }
@@ -79,17 +96,21 @@ export const useIDOContract = () => {
             console.log('------', result);
             al = result
             if ( al < amount ) {
+                onStepChange(0, true, 'approve', "Pool Create")
                 approve(addressIDOContract, amount, async (s, data)=>{
                     if ( s == 'write') {
+                        onStepChange(1, true)
                     } else {
-                        await _createIDOPool(amount, discord, success, fail)
+                        onStepChange(0, true, 'create_pool', "Pool Create")
+                        await _createIDOPool(amount, discord, success, fail, onStepChange)
                     }
                 }, (e)=>{
                     console.log( `approve failed ${e}`);
                     fail(e)
                 })
             } else {
-                await _createIDOPool(amount, discord, success, fail)
+                onStepChange(0, true, 'create_pool', "Pool Create")
+                await _createIDOPool(amount, discord, success, fail, onStepChange)
             }
         }, (e)=>{fail(e)})){
             return false;
@@ -98,5 +119,5 @@ export const useIDOContract = () => {
         return true;
     }, [addressIDOContract, _createIDOPool, address, allowance, approve,isConnected]);
    
-    return { init:init_balance?formatAmount(init_balance/n1e18):"--", remain:remain_balance?formatAmount(remain_balance/n1e18):"--", createIDOPool, usdtBalance}
+    return { init:init_balance?formatAmount(init_balance/n1e18):"--", remain:remain_balance?formatAmount(remain_balance/n1e18):"--", createIDOPool, usdtBalance, total_usdt_raised:total_usdt_raised?formatAmount(total_usdt_raised/n1e18):"0.00"}
 }

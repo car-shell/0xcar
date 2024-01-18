@@ -21,7 +21,7 @@ const useToast = ()=>{
             return;
         }
         setInfo({...info, open: false});
-    }, []);
+    }, [info]);
 
     React.useEffect(() => {
         if (open) {
@@ -38,7 +38,7 @@ const useToast = ()=>{
                 clearInterval(timer);
             };
         }
-    }, [open]);
+    }, [info, open]);
 
     const showToast = React.useCallback((msg, severity='success')=>{
         console.log( 'show Toast');

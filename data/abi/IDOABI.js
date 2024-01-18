@@ -159,6 +159,19 @@ export const IDOABI = [
 	},
 	{
 		"inputs": [],
+		"name": "total_usdt_raised",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "owner",
 		"outputs": [
 			{
