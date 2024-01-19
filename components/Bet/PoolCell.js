@@ -45,11 +45,11 @@ const Pool = () => {
       <div className={styles.info}>
        <div className={styles.info_item}>
         <div className={styles.title}> Initial Pool Fund</div>
-        <div className={styles.content}>{poolDetails?formatAmount(poolDetails[0]/n1e18):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
+        <div className={styles.content}>{poolDetails?formatAmount(poolDetails[0]):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
          <div className={styles.title}> Current Pool Balance</div>
-         <div className={styles.content}>{poolDetails?formatAmount(poolDetails[1]/n1e18):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
+         <div className={styles.content}>{poolDetails?formatAmount(poolDetails[1]):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
         <div className={styles.title}> Total Burned</div>

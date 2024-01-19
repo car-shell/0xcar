@@ -43,12 +43,12 @@ const PoolList = () => {
             
             // border: '1px solid #06FC99',
             borderRadius: '150px',
-            width: '180px',
+            width: '200px',
             color: '#fff',
             font: '700 normal 16px sans',
             minHeight: '40px',
             height: '40px',
-            maxWidth: '180px',
+            maxWidth: '200px',
             border: '1px solid white',
 
             '&.Mui-selected': {

@@ -119,5 +119,5 @@ export const useIDOContract = () => {
         return true;
     }, [addressIDOContract, _createIDOPool, address, allowance, approve,isConnected]);
    
-    return { init:init_balance?formatAmount(init_balance/n1e18):"--", remain:remain_balance?formatAmount(remain_balance/n1e18):"--", createIDOPool, usdtBalance, total_usdt_raised:total_usdt_raised?formatAmount(total_usdt_raised/n1e18):"0.00"}
+    return { init:init_balance?formatAmount(init_balance):"--", remain:remain_balance?formatAmount(remain_balance):"--", createIDOPool, usdtBalance, total_usdt_raised:total_usdt_raised?formatAmount(total_usdt_raised):"0.00"}
 }

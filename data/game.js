@@ -11,7 +11,6 @@ import {  useAccount, useNetwork, useContractRead, useContractEvent, usePrepareC
 import { ADDRESSES } from '../config/constants/address';
 import { BetStatus } from "../components/constant";
 import { readContract, writeContract, prepareWriteContract, waitForTransaction, getWalletClient} from "@wagmi/core";
-
 // export const useBet = ({id, amount, rule, number, success, failed})=>{
 //     const {chain, chains} = useNetwork()
 //     const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
@@ -72,6 +71,8 @@ import { readContract, writeContract, prepareWriteContract, waitForTransaction, 
 // }
 
 export const useGameContract = (monitor=false)  => {
+    const n1e18 = 1000000000000000000n
+
     const {chain, chains} = useNetwork()
     const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
     const addressGameContract = ADDRESSES[chainId]?.game;
@@ -151,7 +152,7 @@ export const useGameContract = (monitor=false)  => {
             return
         }
 
-        const amount = lastRecord[1]/1000000000000000000n
+        const amount = lastRecord[1]/n1e18
         let s = status(lastRecord[4], lastRecord[6], lastRecord[7])
         setLast({id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[4], odds: odds[lastRecord[3]], status: s, random: s!=BetStatus.timeout?lastRecord[6]:'-'})
     }, [lastRecord])
@@ -166,7 +167,7 @@ export const useGameContract = (monitor=false)  => {
                 return;
             }
             //Result(address indexed better, uint amount, uint winAmount, uint blockNumber, uint timestamp, uint poolId, uint gameId, bytes32 blockHash);
-            let log = { "winner": better, 'random': random, "amount": amount/1000000000000000000n, "profit": netWin/1000000000000000000n, "odds": odds,  id: id.toNumber(), height: height.toNumber() }
+            let log = { "winner": better, 'random': random, "amount": amount/n1e18, "profit": netWin/n1e18, "odds": odds,  id: id.toNumber(), height: height.toNumber() }
             logs.unshift(log)
             setLogs(logs.slice(0,99))
             localStorage.setItem('WIN_LOG', JSON.stringify(logs))
@@ -226,7 +227,6 @@ export const useGameContract = (monitor=false)  => {
         }
         
         console.log(`--------bet ${id}  ${amount}` );
-        // let a = amount/1000000000000000000n
         let al = 0n
 
         if (!allowance(address, addressGameContract, async (result)=>{
@@ -312,12 +312,14 @@ export const useGameContract = (monitor=false)  => {
         }).then( async (config)=>{
             await writeContract(config).then(async ({hash})=>{
                 console.log("----------writeContract-----------");
-                setStepStatus('withdraw', 2)
+                setStepStatus('withdraw', 1)
 
                 const receipt = await waitForTransaction({
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
+                setStepStatus('withdraw', 2)
+
                 console.log("transfer receipt",receipt)
                 success()
             }).catch((e)=>{
@@ -339,9 +341,11 @@ export const useGameContract = (monitor=false)  => {
             address: addressGameContract,
             abi: abi,
             functionName: 'withdrawMiningFunding',
-            args: [id]
+            args: []
         }).then( async (config)=>{
             await writeContract(config).then(async ({hash})=>{
+                setStepStatus('withdraw', 1)
+
                 const receipt = await waitForTransaction({
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
