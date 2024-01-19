@@ -6,6 +6,8 @@ import styles from "../../styles/Header.module.css";
 import { store, SET_SELECTED_ADDR, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import useTokenContract from "../../data/token";
+import {useGameContract} from "../../data/game";
+
 import Link from "next/link";
 import BaseLink from './BaseLink';
 import { useRouter } from 'next/router';
@@ -41,6 +43,7 @@ const Header = ({showMenu=true}) => {
   const { openChainModal } = useChainModal();
   
   const {chain, chains} = useNetwork();
+  const {pools} = useGameContract();
 
   const disconnect = ()=>{
     dispatch({
@@ -92,20 +95,22 @@ const Header = ({showMenu=true}) => {
     e.nativeEvent.stopImmediatePropagation();
   }
 
-  const shutdown = (event)=>{
+  const shutdown = useCallback((event)=>{
       if (showWalletInfo) {
         setShowWalletInfo(false)
       }
-  }
+  }, [showWalletInfo])
 
   useEffect(() => {
     document.body.addEventListener('click', shutdown)
     return () => {
           document.body.removeEventListener('click', shutdown);
       };
-  }, [showWalletInfo]);
+  }, [showWalletInfo, shutdown]);
 
-  
+  const ownPool = () => {
+    return (pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).length != 0 )
+  }
   return (
     <>
       <ToastUI />
@@ -180,7 +185,7 @@ const Header = ({showMenu=true}) => {
         <div className={styles.separate} /> 
         {/* <button className={styles.walletButton} style={{backgroundColor: '#c00017'}} onClick={()=>window.open("https://discord.gg/6b6JFrNzsT", '_bank')}>Get {token?.symbol}</button> */}
         <BaseLink className={styles.walletButton} style={{backgroundColor: '#c00017', marginTop: '16x'}} href="/nft">My NFT</BaseLink>
-        <BaseLink className={styles.walletButton} style={{backgroundColor: '#c00017', marginTop: '16x'}} href="/mypool">My Pool</BaseLink>
+        { ownPool() && <BaseLink className={styles.walletButton} style={{backgroundColor: '#c00017', marginTop: '16x'}} href="/mypool">My Pool</BaseLink>}
         <button className={styles.walletButton} style={{backgroundColor: '#333333', marginTop: '16x'}} onClick={disconnect}>Disconnect</button>
       </div>}
     </>

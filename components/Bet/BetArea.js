@@ -18,28 +18,7 @@ import Typography from '@mui/material/Typography';
 import StepLabel from '@mui/material/StepLabel';
 import CustomizedSteppers from './Progress'
 import { useRouter } from 'next/router';
-
-const useAudio = url => {
-  const [audio] = useState(new Audio(url));
-  const [playing, setPlaying] = useState(false);
-  
-  const toggle = () => setPlaying(!playing);
-
-  useEffect(() => {
-      playing ? audio.play() : audio.pause();
-    },
-    [playing]
-  );
-
-  useEffect(() => {
-    audio.addEventListener('ended', () => setPlaying(false));
-    return () => {
-      audio.removeEventListener('ended', () => setPlaying(false));
-    };
-  }, []);
-
-  return [playing, toggle];
-};
+import useAudio from '../Audio'
 
 const BetArea = () => {
   const rules = [{key: 0, value: '1-Star (5x)', number: 5, select: 1, odds: 5}, {key: 1, value: '1-Star (10x)', number: 10, select: 1, odds: 10}, {key: 2, value: '2-Star (100x)', number: 10, select: 2, odds: 100}]
@@ -48,39 +27,49 @@ const BetArea = () => {
               withdraw: [{name: 'Withdraw submited', cost: 0},  {name: 'Withdraw completed', cost: 0}] })
 
   const [stepInfo, setStepInfo] = useState({steps: [], active: 0, isShow: false, stepTitle: '', stepMsg: ''})
-  const {steps, active, isShow, stepTitle, stepMsg, costInfo} = stepInfo
+  const {steps, active, isShow, stepTitle, stepMsg} = stepInfo
 
   const [title, setTitle] = useState(rules[0])
   const [isLoading, setIsLoading] = useState(false)
   const [amount, setAmount] = useState('')
   const [numbers, setNumbers] = useState([])
   const [showFireworks, setShowFireworks] = useState(false)
-  const [costTime, setCostTime] = useState(0)
   const [tipInfo, setTipInfo] = useState({})
 
   const dispatch = useDispatch()
   const {
         state: { betAction, betLogs },
   } = useContext(store)
+
   const {ToastUI, showToast} = useToast()
   const [playingLose, toggleLose] = useAudio("./lose.wav");
   const [playingWin, toggleWin] = useAudio("./win.wav");
 
   const {address, isConnected} = useAccount()
   const {balance, token, allowance, approve} = useTokenContract()
-  const {poolDetails, bet, result, withdraw, last} = useGameContract(true)
+  const {poolDetails, bet, result, withdraw, last, withdrawMiningFunding, miningFunding} = useGameContract(true)
   const {chain, chains} = useNetwork()
   const {openConnectModal} = useConnectModal()
   const {openChainModal} = useChainModal();
 
   let router =  useRouter();
   const {id: poolId} = router.query
+  
+  const setActiveStep = useCallback((type, step, msg=null)=>{
+    if (type === 'bet' && step === 1) {
+      setTipInfo((pre)=>{ return {...pre, status: BetStatus.confirmed}})
+    }
+    console.log(`-------${step}------- ${type} ${msg}`);
+    setStepInfo((pre)=>{
+      return {...pre, steps: stepNodes[type], active: step, stepTitle: type, isShow: true, stepMsg: msg || pre.stepMsg}
+    })
+  }, [stepNodes])
 
   useEffect(()=>{
+    console.log(last);
     if (address && last && !isDictEmpty(last)) {
-      // console.log(`last record: ${JSON.stringify(last)}`);
-      setTipInfo(last)
-    }}, [])
+      setTipInfo((pre)=>{ return {...pre, ...last}})
+    }}, [address, last])
 
   useEffect(()=>{
     let l = JSON.parse(localStorage.getItem("LAST_STEPNODEINFO"))
@@ -90,33 +79,7 @@ const BetArea = () => {
   }, [])
 
   useEffect(()=>{
-    if (address) {
-      console.log(last);
-      let l = JSON.parse(localStorage.getItem("BET_LOG_" + address))
-      if ( l == null || l == undefined || l.length==0) {
-        l = []
-        localStorage.setItem("BET_LOG_"  + address, "[]");
-      } 
-      dispatch({
-        type: SET_LOG_CHANGE,
-        payload: l
-      })
-    }
-  }, [address])
-
-  useEffect(()=>{
-    if ( address ) {
-      if ( betLogs != null && betLogs != undefined && betLogs.length > 0 ) {
-        localStorage.setItem("BET_LOG_" + address, JSON.stringify(betLogs));
-      }
-    }
-  }, [betLogs])
-
-  useEffect(()=>{
-    if (tipInfo === null || tipInfo === undefined || isDictEmpty(tipInfo)) {
-      return;
-    }
-    console.log(betLogs);
+    if (!(tipInfo === null || tipInfo === undefined || isDictEmpty(tipInfo))) {
     //update betlogs
     if ( betLogs!= null && betLogs != undefined && betLogs.length != 0 ) {
       for (let index = 0; index < betLogs.length; index++) {
@@ -158,13 +121,9 @@ const BetArea = () => {
         payload: [tipInfo]
       })
     }
+    }
   }, [tipInfo])
- 
-  const getTitle = (odds)=>{
-    let title = { 5: '1-Star (5x)', 10: '1-Star (10x)', 100: '2-Star (100x)', '5': '1-Star (5x)', '10': '1-Star (10x)', '100': '2-Star (100x)' }
-    return title[odds]
-  }
- 
+
   useEffect(()=>{
     if (address == undefined) {
       // showToast('please connect the wallet!', 'error' )
@@ -210,10 +169,8 @@ const BetArea = () => {
         payload: {}
       })
     }
-    
-  }, [betAction])
+  }, [address, betAction])
   
-  //update const time in stepper 
   useEffect(()=>{
     if ( stepInfo.active === 0 && stepTitle != '' ) {
       setStepNodes((pre)=>{
@@ -242,88 +199,8 @@ const BetArea = () => {
       })
     }
   }, [stepInfo])
-  
-  const ruleClick = useCallback((t)=>()=>{
-    setTitle(t);
-    setNumbers([])
-  }, [setTitle])
 
-  const numberSelect = useCallback((n, l)=>()=>{
-    if (title.select == 1) {
-      setNumbers([n])
-    } else {
-      numbers[l] = n
-      setNumbers(numbers.slice(0))
-    }
-  }, [numbers, setNumbers])
-
-  
-  const formatNumber = () => {
-    if (numbers.length === 1) {
-      return numbers[0]
-    }
-    return numbers[0]*10 + numbers[1]
-  }
-
-  const handleChange = useCallback(
-      (e) => {
-          e.target.value = e.target.value.replace(/[^\d]/g, "")
-          setAmount(e.target.value)
-      },
-      [setAmount],
-  )
-
-  const withdrawTimeout = (info)=>{
-    setIsLoading(true)
-    setActiveStep('withdraw', 0, InfoTip(info))
-    
-    withdraw(info.id, ()=>{
-      setIsLoading(false)
-      showToast('Withdraw Successful', 'success')
-      setBetResult(BetStatus.withdrawed_timeout)
-    }, (e)=>{
-      setIsLoading(false)
-      let msg = e.shortMessage || e.data?.message || e.message;
-      showToast(msg, 'error')
-      console.log(msg);
-      //fix status
-      if ( msg?.indexOf("no betting") != -1 ) {
-        setBetResult(BetStatus.withdrawed_timeout)
-      }
-    }, setActiveStep)
-  }
-
-  const withdrawWin = (info)=>{
-    setIsLoading(true)
-    setActiveStep('withdraw', 0, InfoTip({...info, title: 'withdraw'}))
-
-    withdraw(info.id, ()=>{
-      setStepInfo((pre)=>{
-        return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", "WITHDRAW SUCCEED!")}
-      })
-      setBetResult(2)
-    }, (e)=>{
-      setIsLoading(false)
-      showToast(e.shortMessage || e.data?.message || e.message, 'error')
-      console.log(e.shortMessage);
-      //fix status
-      if ( e.shortMessage?.indexOf("no betting") != -1 ) {
-        setBetResult(2)
-      }
-    }, setActiveStep)
-  }
-
-  const setBetResult = (result, random='-') => {
-    console.log(`entry setBetResult`);
-    setTipInfo((preTip)=>{
-      console.log(`preLog ${JSON.stringify(preTip)}`);
-      if (preTip != null && preTip != undefined) {
-        return {...preTip, status: result, action: null}
-      }
-    })
-  } 
-   
-  const queryResult = (id)=>{
+  const queryResult = useCallback((id)=>{
     setActiveStep('bet', 2)
     let retry = 0
     let i = setInterval(() => {
@@ -400,8 +277,107 @@ const BetArea = () => {
           }
         })
       }, 3000);
+  }, [result])
+
+  const withdrawWin = useCallback((info)=>{
+    setIsLoading(true)
+    setActiveStep('withdraw', 0, InfoTip({...info, title: 'withdraw'}))
+
+    withdraw(info.id, ()=>{
+      setStepInfo((pre)=>{
+        return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", "WITHDRAW SUCCEED!")}
+      })
+      setBetResult(2)
+    }, (e)=>{
+      setIsLoading(false)
+      showToast(e.shortMessage || e.data?.message || e.message, 'error')
+      console.log(e.shortMessage);
+      //fix status
+      if ( e.shortMessage?.indexOf("no betting") != -1 ) {
+        setBetResult(2)
+      }
+    }, setActiveStep)
+  }, [setActiveStep, showToast, withdraw])
+
+  const handleWithdrawMiningFunding = useCallback((info)=>{
+    setIsLoading(true)
+    setStepInfo((pre)=>{
+      return {...pre, steps: stepNodes['withdraw'], active: 0, stepTitle: 'withdraw', isShow: true, stepMsg: getStepMsg("WITHDRAW", "MINING FUNDING!")}
+    })
+
+    withdrawMiningFunding(poolId, (data)=>{
+      setStepInfo((pre)=>{
+        return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", "WITHDRAW SUCCEED!")}
+      })
+    }, (e)=>{
+      
+    }, setActiveStep)
+  }, [withdrawMiningFunding])
+
+  const withdrawTimeout = useCallback((info)=>{
+    setIsLoading(true)
+    setActiveStep('withdraw', 0, InfoTip(info))
+    
+    withdraw(info.id, ()=>{
+      setIsLoading(false)
+      showToast('Withdraw Successful', 'success')
+      setBetResult(BetStatus.withdrawed_timeout)
+    }, (e)=>{
+      setIsLoading(false)
+      let msg = e.shortMessage || e.data?.message || e.message;
+      showToast(msg, 'error')
+      console.log(msg);
+      //fix status
+      if ( msg?.indexOf("no betting") != -1 ) {
+        setBetResult(BetStatus.withdrawed_timeout)
+      }
+    }, setActiveStep)
+  }, [setActiveStep, showToast, withdraw])
+  
+  const getTitle = (odds)=>{
+    let title = { 5: '1-Star (5x)', 10: '1-Star (10x)', 100: '2-Star (100x)', '5': '1-Star (5x)', '10': '1-Star (10x)', '100': '2-Star (100x)' }
+    return title[odds]
+  }
+ 
+  const ruleClick = useCallback((t)=>()=>{
+    setTitle(t);
+    setNumbers([])
+  }, [setTitle])
+
+  const numberSelect = useCallback((n, l)=>()=>{
+    if (title.select == 1) {
+      setNumbers([n])
+    } else {
+      numbers[l] = n
+      setNumbers(numbers.slice(0))
+    }
+  }, [numbers, setNumbers])
+
+  const formatNumber = () => {
+    if (numbers.length === 1) {
+      return numbers[0]
+    }
+    return numbers[0]*10 + numbers[1]
   }
 
+  const handleChange = useCallback(
+      (e) => {
+          e.target.value = e.target.value.replace(/[^\d]/g, "")
+          setAmount(e.target.value)
+      },
+      [setAmount],
+  )
+
+  const setBetResult = (result, random='-') => {
+    console.log(`entry setBetResult`);
+    setTipInfo((preTip)=>{
+      console.log(`preLog ${JSON.stringify(preTip)}`);
+      if (preTip != null && preTip != undefined) {
+        return {...preTip, status: result, action: null}
+      }
+    })
+  } 
+   
   const getStepMsg = (title, content) => {
     return (<><div style={{color: '#8400FF', font: '700 20px normal sans', paddingBottom: '24px'}}>{title}</div><div style={{color: '#06FC99', font: '700 28px normal sans'}}>{content}</div></>)
   } 
@@ -412,7 +388,7 @@ const BetArea = () => {
         queryResult(pre.id)
         return {...pre, transactionHash: r.transactionHash, status: BetStatus.submitted}
       })
-    }, [amount, numbers, title, isLoading, tipInfo])
+    }, [queryResult])
 
   const betFail = useCallback((err)=>{
       setIsLoading(false)
@@ -428,17 +404,9 @@ const BetArea = () => {
         })
         showToast(err.shortMessage || err.data?.message || err.message || "Bet failed, please try again!", 'error')
       }
-    }, [amount, numbers, title, isLoading, tipInfo, setTipInfo])
+    }, [showToast])
 
-  const setActiveStep = (type, step, msg=null)=>{
-    if (type === 'bet' && step === 1) {
-      setTipInfo((pre)=>{ return {...pre, status: BetStatus.confirmed}})
-    }
-    console.log(`-------${step}------- ${type} ${msg}`);
-    setStepInfo((pre)=>{
-      return {...pre, steps: stepNodes[type], active: step, stepTitle: type, isShow: true, stepMsg: msg || pre.stepMsg}
-    })
-  }
+
 
   // const {write, setBetParams, betData, isBetLoading, isBetSuccess} = useBet({id:tipInfo?.id, amount:tipInfo?.amount, rule:tipInfo?.rule, number:tipInfo?.number, success:betSuccess, failed:betFail})
 
@@ -636,6 +604,14 @@ const BetArea = () => {
         <button className={styles.submit} onClick={submitBet} style={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) ?{}:{font: 'bold 16px sans'}} disabled={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) }>
           { isConnected ? chains.map(c=>c.id).indexOf(chain?.id) != -1 ?  (numbers.length != title.select || numbers[0]===undefined) ? `Please choose ${title.select==2?"two numbers":"a number"}` : amount === '' ? "Please input amount" : "Bet" : `Switch to ${chains[0].name}` : "Connect Wallet" }
         </button>
+        <div className={styles.line}>
+            <div className={styles.content_text}>
+              Mining Rewards: <span style={{color: '#06FC99'}}> {formatAmount(miningFunding/n1e18)} {token?.symbol}</span>
+            </div>
+            <div className={styles.content_text} onClick={handleWithdrawMiningFunding}>
+              Widthdraw
+            </div>
+        </div>
       </div>
       <ToastUI />
       {showFireworks && <div className={styles.umask} style={{background: 'rgba(32, 33, 34, 0)'}}>

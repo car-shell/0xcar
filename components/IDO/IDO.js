@@ -7,11 +7,11 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Image from 'next/image'
 import { useAccount } from "wagmi";
-import styles from "../../styles/Bet.module.css";
 import { useIDOContract } from "../../data/ido";
 import { useTokenContract } from "../../data/token";
 import { useSwapContract } from "../../data/swap";
 import { amountFromFormatedStr } from "../utils"
+import useStepInfo from '../StepInfo'
 
 import useToast from '../Toast'
 import FormGroup from '@mui/material/FormGroup';
@@ -27,17 +27,32 @@ const IDO = () => {
     const {amountsOut} = useSwapContract()
     const [value, setValue] = React.useState(5000);
     const {ToastUI, showToast} = useToast()
+    const {setStepInfo, setStepNodes, StepInfo} = useStepInfo()
+    
+    useEffect(()=>{
+        setStepNodes({create_pool: [{name: 'Comfirm in Wallet'}, {name: 'Pool Created'}], 
+            approve: [{name: 'Approve submited'}, {name: 'Approve completed'}]})
+    }, [setStepNodes])
+
+    const onStepChange = useCallback((step, isShow, stepName=null, stepTitle=null, buttonContent=null)=>{
+        setStepInfo((pre) => {
+            let n = { ...pre, isShow: isShow,  active: step, stepName: stepName!=null?stepName:pre.stepName, stepTitle: stepTitle!=null?stepTitle:pre.stepTitle, buttonContent: buttonContent!=null?buttonContent:pre.buttonContent, stepMsg: null}
+            console.log( n );
+            return n })
+    }, [setStepInfo])
 
     const handleCreate = (event) => {
         if (value < 5000 || value > 50000) {
             showToast("The amount exceeds the limit. The valid range is 5000 to 50000.")
             return
         }
+
         createIDOPool(BigInt(value*1e18), [], (data)=>{
-            showToast("Congratulations，Create pool success", 'success')
+            // showToast("Congratulations，Create pool success", 'success')
         }, (error)=>{
+            onStepChange(0, false, '', '')
             showToast(error.shortMessage, 'error')
-        })
+        }, onStepChange)
     };
 
     const handleInput = useCallback(
@@ -45,8 +60,7 @@ const IDO = () => {
           e.target.value = e.target.value.replace(/[^\d]/g, "")
           setValue(e.target.value)
       },
-      [setValue],
-    )
+      [setValue])
     
     const handleMax = (e)=>{
         let b = amountFromFormatedStr(usdtBalance)
@@ -62,15 +76,16 @@ const IDO = () => {
     return (
     <React.Fragment>
         <ToastUI />
-        <Stack direction='column' justifyContent="flex-between" alignItems="center" width='60%' maxWidth="600px" >
+        <StepInfo />
+        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="600px" >
             <Typography component='div' sx={{fontSize: '36px', fontWeight: '700', color: '#F59A23', marginTop: '70px'}}>
                 CDNL IDO
             </Typography>
             <Typography component='div' sx={{fontSize: '36px', fontWeight: '700'}}>
                 Become a Market Maker
             </Typography>
-            <Stack direction='column' justifyContent="flex-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}} >
-                <Stack width='100%' justifyContent="flex-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}} >
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         Total Supply
                     </Typography>
@@ -78,7 +93,7 @@ const IDO = () => {
                         {init} {token?.symbol}
                     </Typography>
                 </Stack>
-                <Stack width='100%' justifyContent="flex-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         Remaining Tokens
                     </Typography>
@@ -86,7 +101,7 @@ const IDO = () => {
                         {remain} {token?.symbol}
                     </Typography>
                 </Stack>
-                <Stack width='100%' justifyContent="flex-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         USDT Raised
                     </Typography>
@@ -96,11 +111,11 @@ const IDO = () => {
                 </Stack>
             </Stack>
 
-            <Stack direction='column' justifyContent="flex-between" alignItems="center" gap='16px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='16px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}}>
                 <Typography component='div' sx={{fontSize: '28px', fontWeight: '700', paddingTop: '32px'}}>
                     Create a Bet Pool
                 </Typography>
-                <Stack direction='row' width='90%' justifyContent="flex-between"  gap='16px' alignItems="center" sx={{ marginTop: '8px'}}>
+                <Stack direction='row' width='90%' justifyContent="space-between"  gap='16px' alignItems="center" sx={{ marginTop: '8px'}}>
                     <Stack direction='row' width='50%' justifyContent="flex-start"  alignItems="center"  sx={{ marginTop: '8px'}}>
                         <Box height='8px' width='8px' sx={{backgroundColor:"#06FC99", border: "1px solid #06FC99", borderRadius: "100%", marginRight: '8px'}}/>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px'}}>
@@ -116,17 +131,17 @@ const IDO = () => {
                         </Typography>
                     </Stack>
                 </Stack>
-                <Stack direction='row' justifyContent="flex-between" alignItems="center" width='90%' height='48px' sx={{border: "1px solid #333333"}} >
+                <Stack direction='row' justifyContent="space-between" alignItems="center" width='90%' height='48px' sx={{border: "1px solid #333333"}} >
                     <input  style={{paddingLeft: '10px', width: '90%', height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} type='numbmic' placeholder='Input amount (5,000 USDT - 50,000 USDT)' value={value} onChange={handleInput}/>
                     <button style={{width: '10%', cursor: 'pointer',height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} onClick={handleMax} > MAX </button>
                 </Stack>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
-                <Stack direction='column' width='90%' justifyContent="flex-between" alignItems="center" sx={{border: "1px solid #333333", borderRadius: '5px', backgroundColor: '#333333' , marginTop: '18px'}}>
+                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333", borderRadius: '5px', backgroundColor: '#333333' , marginTop: '18px'}}>
                     <Typography component='div' width='100%' sx={{fontSize: '16px', fontWeight: '700', paddingTop: '16px', paddingLeft: '32px', textAlign: 'left'}}>
                         Information
                     </Typography>
-                    <Stack width='100%' justifyContent="flex-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}>
+                    <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         Current CDNL Price
                         </Typography>
@@ -134,15 +149,15 @@ const IDO = () => {
                             {amountsOut} {token?.symbol}
                         </Typography>
                     </Stack>
-                    <Stack width='100%' justifyContent="flex-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
+                    <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         Cost
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {value} USDT
+                        {value} USDT
                         </Typography>
                     </Stack>
-                    <Stack width='100%' justifyContent="flex-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', marginBottom: '16px'}}>
+                    <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', marginBottom: '16px'}}>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         Buyable
                         </Typography>

@@ -374,7 +374,7 @@ export const gameABI = [
 	},
 	{
 		"inputs": [],
-		"name": "duration_locked",
+		"name": "duration_lock_forbidden",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -387,7 +387,7 @@ export const gameABI = [
 	},
 	{
 		"inputs": [],
-		"name": "duration_remove_after_submit_remove",
+		"name": "duration_remove_after_submit_lock",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -400,7 +400,33 @@ export const gameABI = [
 	},
 	{
 		"inputs": [],
-		"name": "duration_submit_remove",
+		"name": "duration_submit_lock",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "duration_withdraw",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "duration_withdraw_forbidden",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -642,11 +668,6 @@ export const gameABI = [
 					},
 					{
 						"internalType": "uint256",
-						"name": "startBlockerNumber",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
 						"name": "startTimestamp",
 						"type": "uint256"
 					},
@@ -688,6 +709,11 @@ export const gameABI = [
 					{
 						"internalType": "uint256",
 						"name": "betCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nextWidthdrawBlockNum",
 						"type": "uint256"
 					}
 				],
@@ -722,11 +748,6 @@ export const gameABI = [
 					},
 					{
 						"internalType": "uint256",
-						"name": "startBlockerNumber",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
 						"name": "startTimestamp",
 						"type": "uint256"
 					},
@@ -768,6 +789,11 @@ export const gameABI = [
 					{
 						"internalType": "uint256",
 						"name": "betCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nextWidthdrawBlockNum",
 						"type": "uint256"
 					}
 				],
@@ -908,6 +934,36 @@ export const gameABI = [
 		"name": "withdrawMiningFunding",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"name": "withdrawPool",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "better",
+				"type": "address"
+			}
+		],
+		"name": "miningFunding",
+		"outputs": [{
+			"internalType": "uint256",
+			"name": "",
+			"type": "uint256"
+		}],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

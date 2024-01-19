@@ -133,7 +133,7 @@ export default function CustomizedSteppers({steps, curStep}) {
             <StepLabel StepIconComponent={QontoStepIcon}>
               <Box>
                 <Typography sx={{color: '#D7D7D7', font: '400 12px normal sans-serif'}}>{label.name}</Typography>
-                {i!=0&& <Typography sx={{color: '#06FC99', font: '400 12px normal sans-serif'}}>{formatTime(label.cost)}</Typography>}
+                {i!=0&&label.cost&&<Typography sx={{color: '#06FC99', font: '400 12px normal sans-serif'}}>{formatTime(label.cost)}</Typography>}
               </Box>
             </StepLabel>
           </Step>

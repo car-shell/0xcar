@@ -55,7 +55,9 @@
 .umask {
     /* width: 100%; */
     height: 380px;
-    background: rgba(32, 33, 34, 0.3);
+    /* background: rgba(32, 33, 34, 0.3); */
+    background: black;
+
     /* position: fixed; */
     left: 0;
     top: 0;

@@ -31,7 +31,7 @@ export const useSwapContract = ()  => {
         }
     })
 
-    return { amountsOut: formatAmount(amountsOut?amountsOut[1]/n1e18:0)}
+    return { amountsOut: formatAmount(amountsOut?amountsOut[1]/n1e18:200)}
 }
 
 export default useSwapContract

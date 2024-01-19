@@ -385,7 +385,7 @@
 }
 
 .submit {
-  margin: 28px 16px;
+  margin: 28px 16px 0 16px;
   height: 48px;
   width: calc(100% - 32px);
   border: none;
