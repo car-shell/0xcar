@@ -112,7 +112,7 @@ const useNFTContract = () => {
     }, [address, addressNFTContract])
 
     const fuse = useCallback( async (level1ID1, level1ID2, level2ID, success, fail)=>{
-        const gas = 1000000000000000000000n;
+        const gas = 1000n*n1e18;
     
         await allowance(address, addressNFTContract, (amount)=>{
             if (amount < gas) {

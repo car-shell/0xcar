@@ -9,7 +9,7 @@ export function formatAmount(amount) {
         }
         amount = parseFloat(amount);
     } else if (typeof amount === 'bigint') {
-        amount = Number(amount)
+        amount = parseFloat(amount*100n/n1e18)/100.0
     } else if (typeof amount == 'number'){
        
     } else {

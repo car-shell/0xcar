@@ -300,6 +300,11 @@ const BetArea = () => {
   }, [setActiveStep, showToast, withdraw])
 
   const handleWithdrawMiningFunding = useCallback((info)=>{
+    if (!miningFunding || miningFunding<500n*n1e18) {
+      showToast("Not eligible for withdrawal; the minimum withdrawal amount is 500.", 'error')
+      return;
+    }
+
     setIsLoading(true)
     setStepInfo((pre)=>{
       return {...pre, steps: stepNodes['withdraw'], active: 0, stepTitle: 'withdraw', isShow: true, stepMsg: getStepMsg("WITHDRAW", "MINING FUNDING!")}
@@ -310,7 +315,8 @@ const BetArea = () => {
         return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", "WITHDRAW SUCCEED!")}
       })
     }, (e)=>{
-      
+      setIsLoading(false)
+      showToast(e.shortMessage || e.data?.message || e.message, 'error')
     }, setActiveStep)
   }, [withdrawMiningFunding])
 
@@ -436,7 +442,7 @@ const BetArea = () => {
     //   return
     // }
 
-    const poolRemainBalance = poolDetails?poolDetails.remainBalance/n1e18:10e8
+    const poolRemainBalance = poolDetails?poolDetails.remainBalance:10e8
     if ( parseFloat(amount)>poolRemainBalance*BigInt(title.odds) ) {
       showToast('amount too large!', 'error' )
       return
@@ -606,9 +612,9 @@ const BetArea = () => {
         </button>
         <div className={styles.line}>
             <div className={styles.content_text}>
-              Mining Rewards: <span style={{color: '#06FC99'}}> {formatAmount(miningFunding/n1e18)} {token?.symbol}</span>
+              Mining Rewards: <span style={{color: '#06FC99'}}> {miningFunding?formatAmount(miningFunding): '--'} {token?.symbol}</span>
             </div>
-            <div className={styles.content_text} onClick={handleWithdrawMiningFunding}>
+            <div className={styles.content_text} style={{color: 'blue', cursor: 'pointer'}} onClick={handleWithdrawMiningFunding}>
               Widthdraw
             </div>
         </div>

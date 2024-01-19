@@ -18,7 +18,7 @@ const WithdrawContent = ({token, amount})=> {
     return <>
         <Stack direction='column' alignItems='center' >
             <Typography gutterBottom sx={{font:'700 normal 36px Arial',color:'#06FC99'}}>
-                {formatAmount((amount/n1e18).toString())} {token?.symbol}
+                {formatAmount((amount).toString())} {token?.symbol}
             </Typography>
             <Typography gutterBottom  sx={{font:'400 normal 16px Arial', color:'#fff'}}>
             10% of the current balance of the Prize Pool
@@ -59,7 +59,7 @@ const ClosureRulesContent = ({time}) => {
 const ClosureStepContent = ({steps, token, stepContent, amount}) => {
     return <> <Stack direction='column' alignItems='center' width='480px'>
         <Typography gutterBottom sx={{font:'700 normal 36px Arial',color:'#06FC99'}}>
-            {formatAmount((amount/n1e18).toString())} {token?.symbol}
+            {formatAmount((amount).toString())} {token?.symbol}
         </Typography>
         <Typography gutterBottom sx={{font:'400 italic 14px Arial'}}>
         Prize Pool Balance
@@ -260,7 +260,7 @@ const PoolItem = ({poolPro, my=false}) => {
                             Initial Pool Fund
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
-                            {formatAmount(pool?.initBalance/n1e18)} {token?.symbol}
+                            {formatAmount(pool?.initBalance)} {token?.symbol}
                         </Typography>
                     </Box>
                     <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white",width: '100%'}}>
@@ -268,7 +268,7 @@ const PoolItem = ({poolPro, my=false}) => {
                             Current Pool Balance
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
-                            {formatAmount(pool?.remainBalance/n1e18)} {token?.symbol}
+                            {formatAmount(pool?.remainBalance)} {token?.symbol}
                         </Typography>
                     </Box>
                     <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
