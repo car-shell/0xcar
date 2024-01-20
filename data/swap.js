@@ -29,7 +29,6 @@ export const useSwapContract = ()  => {
             console.log(`${addressSwapContract} ${abi} ${error}`)
         }
     })
-
     return { amountsOut}
 }
 
