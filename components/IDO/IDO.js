@@ -10,11 +10,7 @@ import { useAccount } from "wagmi";
 import { useIDOContract } from "../../data/ido";
 import { useTokenContract } from "../../data/token";
 import { useSwapContract } from "../../data/swap";
-<<<<<<< HEAD
 import { amountFromFormatedStr, formatAmount,n1e18} from "../utils"
-=======
-import { amountFromFormatedStr } from "../utils"
->>>>>>> ed5125f69f00de831384c041a0368138e7e1bee9
 import useStepInfo from '../StepInfo'
 
 import useToast from '../Toast'
@@ -122,11 +118,7 @@ const IDO = () => {
                 </Stack>
             </Stack>
 
-<<<<<<< HEAD
             <Stack direction='column' justifyContent="space-between" alignItems="center" gap='16px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', paddingBottom: '16px'}}>
-=======
-            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='16px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}}>
->>>>>>> ed5125f69f00de831384c041a0368138e7e1bee9
                 <Typography component='div' sx={{fontSize: '28px', fontWeight: '700', paddingTop: '32px'}}>
                     Create a Bet Pool
                 </Typography>
