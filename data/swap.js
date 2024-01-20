@@ -6,7 +6,6 @@ import { useContractRead,  useNetwork, useToken } from "wagmi";
 import { readContract, writeContract, prepareWriteContract,waitForTransaction } from "@wagmi/core";
 import { ADDRESSES } from '../config/constants/address' 
 import { defaultChainId } from "../config/constants/chainId";
-import { formatAmount,n1e18 } from "../components/utils";
 
 export const useSwapContract = ()  => {
     const {chain, chains} = useNetwork()
@@ -31,7 +30,7 @@ export const useSwapContract = ()  => {
         }
     })
 
-    return { amountsOut: formatAmount(amountsOut?amountsOut[1]:200)}
+    return { amountsOut}
 }
 
 export default useSwapContract

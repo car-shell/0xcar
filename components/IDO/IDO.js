@@ -10,7 +10,7 @@ import { useAccount } from "wagmi";
 import { useIDOContract } from "../../data/ido";
 import { useTokenContract } from "../../data/token";
 import { useSwapContract } from "../../data/swap";
-import { amountFromFormatedStr } from "../utils"
+import { amountFromFormatedStr, formatAmount,n1e18} from "../utils"
 import useStepInfo from '../StepInfo'
 
 import useToast from '../Toast'
@@ -43,7 +43,7 @@ const IDO = () => {
 
     const handleCreate = (event) => {
         if (value < 5000 || value > 50000) {
-            showToast("The amount exceeds the limit. The valid range is 5000 to 50000.")
+            showToast("The amount exceeds the limit. The valid range is 5000 to 50000.", 'error')
             return
         }
 
@@ -54,6 +54,13 @@ const IDO = () => {
             showToast(error.shortMessage, 'error')
         }, onStepChange)
     };
+
+    const tipContent = () => {
+        if (value < 5000 || value > 50000) {
+            return "The valid range is 5000 to 50000."
+        }
+        return "Create"
+    }
 
     const handleInput = useCallback(
       (e) => {
@@ -111,7 +118,7 @@ const IDO = () => {
                 </Stack>
             </Stack>
 
-            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='16px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='16px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', paddingBottom: '16px'}}>
                 <Typography component='div' sx={{fontSize: '28px', fontWeight: '700', paddingTop: '32px'}}>
                     Create a Bet Pool
                 </Typography>
@@ -146,7 +153,7 @@ const IDO = () => {
                         Current CDNL Price
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {amountsOut} {token?.symbol}
+                            {formatAmount(amountsOut?amountsOut[1]:200n*n1e18)} {token?.symbol}
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
@@ -154,7 +161,7 @@ const IDO = () => {
                         Cost
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {value} USDT
+                        {formatAmount(value)} USDT
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', marginBottom: '16px'}}>
@@ -162,15 +169,20 @@ const IDO = () => {
                         Buyable
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {value*amountsOut/0.85} {token?.symbol}
+                            {formatAmount(value*parseFloat(amountsOut?amountsOut[1]/n1e18:200n)/0.85)} {token?.symbol}
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained" color="error" sx={{height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px'}} onClick={handleCreate}>
-                    Create
+                <Button variant="contained" disabled={value < 5000 || value > 50000} color='error' sx={{height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
+                    {tipContent()}
                 </Button>
-                <FormGroup width='100%' alignItems='left'>
-                    <FormControlLabel  height='12px' control={<Checkbox defaultChecked />} label="I understand and agree to the <IDO Rules>" />
+                <FormGroup width='100%'>
+                    <FormControlLabel  height='12px' control={<Checkbox defaultChecked  sx={{
+                        color: 'white',
+                        '&.Mui-checked': {
+                            color: 'white',
+                        },
+                    }} />} label="I understand and agree to the <IDO Rules>" />
                 </FormGroup>
             </Stack>
         </Stack>
