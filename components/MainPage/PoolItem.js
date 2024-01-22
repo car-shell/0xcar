@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback, useState, useRef, useEffect, useContext} from "react";
 import {Box, Card, CardActionArea, Typography, Button, Dialog, Stack} from '@mui/material'
-import { useBlockNumber } from 'wagmi'
+import { useBlockNumber, useAccount} from 'wagmi'
 import Image from 'next/image'
 import { formatAmount, n1e18, formatTime } from "../utils";
 import BaseLink from "../Head/BaseLink"
@@ -145,12 +145,13 @@ const ClosureSuccessContent = ({}) => {
 const PoolItem = ({poolPro, my=false}) => {
     const [pool, setPool] = React.useState(poolPro);
     const {token} = useTokenContract();
-    const {preRemovePool, removePool, withdrawPool} = useGameContract();
+    const {preRemovePool, removePool, withdrawPool, whitelist} = useGameContract();
     const [openDialog, handleClose, props] = useCustomizedDialog()
     const [dialogInfo, setDialogInfo] = useState({})
     const { data: blockNumber, isLoading } = useBlockNumber()
     const [lockPoolStepInfo, setLockPoolStepInfo] = useState({active: 0})
     const {ToastUI, showToast} = useToast()
+    const {address} = useAccount();
 
     const steps = ["Close pool", "Wait for 3 days", "Withdraw all"]
     const handleRemovePool = () => {
@@ -258,14 +259,18 @@ const PoolItem = ({poolPro, my=false}) => {
         openDialog()
     }
 
-   
     return <>
-        {!isLoading && <Box  width='100%'>
-            <Box  width='100px' height='32px' sx={{position: 'relative',  top: '10px', left: '10px', textAlign: 'center', border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', borderRadius: '50px', font: "700 normal 14px Arial", lineHeight: '32px', color: 'white', backgroundColor: pool.id==1n?'#F59A23':'black' }} >
+        {!isLoading && <Box  width='100%' sx={{minWidth: '1080px'}} >
+            <Box  width='100%' height='32px' sx={{position: 'relative',  top: '10px', left: '10px', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}} >
+                <Box  width='100px' height='32px' sx={{textAlign: 'center', border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', borderRadius: '50px', font: "700 normal 14px Arial", lineHeight: '32px', color: 'white', backgroundColor: pool.id==1n?'#F59A23':'black' }} >
                     #00{Number(pool.id)} Pool
+                </Box>
+                {!my && whitelist==pool.id && <Box  width='100px' height='32px' sx={{textAlign: 'center',  font: "700 italic 14px Arial", lineHeight: '32px', color: 'yellow', backgroundColor: 'transparent', marginBottom: '8px', marginRight: '10px' }} >
+                    Fee Reduction
+                </Box>}
             </Box>
-            <Card variant="outlined" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',  border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', backgroundColor: 'transparent' , borderRadius: '10px'}}>
-                <Box alignItems='center' sx={{minWidth: '1080px', width: '80%',display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '128px'}}>
+            <Card variant="outlined" sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center',  border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', backgroundColor: 'transparent' , borderRadius: '10px'}}>
+                <Box alignItems='center' sx={{ width: '80%',display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '128px'}}>
                     <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', paddingRight: '28px', borderRight: pool.id==1n?'1px solid #F59A23':'1px solid #797979', width:'56%'}}>
                         <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
@@ -342,6 +347,7 @@ const PoolItem = ({poolPro, my=false}) => {
                 </Box>}
                 
             </Card>
+            
         </Box>}
         <DialogFrame {...props} title={dialogInfo.title} button={dialogInfo.button}> 
             {dialogInfo.context == "WithdrawContent"?

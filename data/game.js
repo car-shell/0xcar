@@ -144,6 +144,17 @@ export const useGameContract = (monitor=false)  => {
         }
     })
 
+    const { data:whitelist } = useContractRead({
+        address: addressGameContract,
+        abi: abi,
+        functionName: 'whitelist',
+        chainId: chainId,
+        args: [address],
+        watch: true,
+        onSuccess: (data)=>{
+            console.log(data);
+        }
+    })
 
     useEffect(()=>{
         console.log('----- format last ---- ', lastRecord);
@@ -435,5 +446,5 @@ export const useGameContract = (monitor=false)  => {
     }
 
 
-    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding, withdrawPool}
+    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding, withdrawPool, whitelist}
 }

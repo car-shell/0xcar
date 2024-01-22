@@ -72,7 +72,7 @@ const PoolList = () => {
         </Stack>
         
         <Stack width='80%' direction='column' justifyContent="flex-between" alignItems="center" gap='16px' >
-        {pools && pools.map((item)=>{
+        {pools && pools.filter((item)=>{return item.isUsed}).map((item)=>{
            return <PoolItem key={item.id} poolPro={item} my={false}/>
         })}
         </Stack>

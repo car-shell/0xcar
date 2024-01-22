@@ -975,5 +975,20 @@ export const gameABI = [
 		}],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [{
+			"internalType": "address",
+			"name": "u",
+			"type": "address"
+		}],
+		"name": "whitelist",
+		"outputs": [{
+			"internalType": "uint256",
+			"name": "",
+			"type": "uint256"
+		}],
+		"stateMutability": "view",
+		"type": "function"
 	}
 ]
