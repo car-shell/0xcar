@@ -1,5 +1,5 @@
-import Pool from '../../components/Bet/Pool'
-import Layout from '../../components/Layout/Layout'
+import Pool from '../components/Bet/Pool'
+import Layout from '../components/Layout/Layout'
 import { useRouter } from 'next/router';
 
 
@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 //     props: {},
 //   };
 // }
+
 export default function Home() {
     let router =  useRouter();
     const {id} = router.query

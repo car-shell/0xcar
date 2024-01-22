@@ -300,7 +300,7 @@ const PoolItem = ({poolPro, my=false}) => {
 
                     { !my?
                     <Box sx={{display: 'flex', flexDirection: 'column',  alignItems: 'center', width:'44%'}}>
-                        <BaseLink href={"/pool/"+pool.id} style={{width: "64%"}} >
+                        <BaseLink href={"/pool?id="+pool.id} style={{width: "64%"}} >
                             <Button variant="contained" sx={{width: "100%", height:'50px', backgroundColor: pool.id==1n?'#F59A23':"#d9001b", borderRadius: '150px'}} >
                                     Bet
                             </Button>
@@ -308,7 +308,7 @@ const PoolItem = ({poolPro, my=false}) => {
                     </Box>
                         :
                     <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingRight: '28px', paddingLeft: '28px', color: pool.id==1n?'#F59A23':"white", width:'42%', columnGap: '24px'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 16px 0 32px', textAlign: 'left', width: '50%'}}>
                             Cumulative Earnings
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
