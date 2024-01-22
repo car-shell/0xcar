@@ -713,6 +713,11 @@ export const gameABI = [
 					},
 					{
 						"internalType": "uint256",
+						"name": "income",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "nextWidthdrawBlockNum",
 						"type": "uint256"
 					}
@@ -789,6 +794,11 @@ export const gameABI = [
 					{
 						"internalType": "uint256",
 						"name": "betCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "income",
 						"type": "uint256"
 					},
 					{

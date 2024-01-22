@@ -26,6 +26,8 @@ const IDO = () => {
     const {address} = useAccount()
     const {amountsOut} = useSwapContract()
     const [value, setValue] = React.useState(5000);
+    const [checked, setChecked] = React.useState(false);
+
     const {ToastUI, showToast} = useToast()
     const {setStepInfo, setStepNodes, StepInfo} = useStepInfo()
     
@@ -56,6 +58,9 @@ const IDO = () => {
     };
 
     const tipContent = () => {
+        if (!checked) {
+            return "Please agree the ido rules, please"
+        }
         if (value < 5000 || value > 50000) {
             return "The valid range is 5000 to 50000."
         }
@@ -130,7 +135,7 @@ const IDO = () => {
                         </Typography>
                     </Stack>
                     <Stack width='50%' sx={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'right', textAlign: 'right'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '10px'}}>
                             Balance
                         </Typography>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400'}}>
@@ -173,11 +178,11 @@ const IDO = () => {
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained" disabled={value < 5000 || value > 50000} color='error' sx={{height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
+                <Button variant="contained" disabled={!checked || (value < 5000 || value > 50000)} color='error' sx={{height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
                     {tipContent()}
                 </Button>
                 <FormGroup width='100%'>
-                    <FormControlLabel  height='12px' control={<Checkbox defaultChecked  sx={{
+                    <FormControlLabel  height='12px' control={<Checkbox checked={checked} onChange={(e)=>{setChecked(!checked)}} sx={{
                         color: 'white',
                         '&.Mui-checked': {
                             color: 'white',

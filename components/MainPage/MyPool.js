@@ -25,15 +25,14 @@ const MyPool = () => {
                 </Typography> 
                 {pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).map((item)=>{
                     return <Box key={'box-'+item.id} >
-                        <Stack key={'stack-'+item.id} direction='row' justifyContent="flex-end" alignItems="left" width="100%" sx={{padding: '32px 0 0 0'}}>
+                        {/* <Stack key={'stack-'+item.id} direction='row' justifyContent="flex-end" alignItems="left" width="100%" sx={{padding: '32px 0 0 0'}}>
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '16px'}}>
                                 Created Time
                             </Typography>
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400'}}>
                                 {item?.startTimestamp?formatTime(new Date(Number(item.startTimestamp)*1000).toString(), true):'--'}
                             </Typography>
-                           
-                        </Stack>
+                        </Stack> */}
                         <PoolItem key={'pool-'+item.id} poolPro={item} my={true}/>
                     </Box>
                 })}
@@ -51,7 +50,7 @@ const MyPool = () => {
                         At the end of each cycle, there is a 3-day period for pool withdrawal. If this period is exceeded, the pool is automatically renewed for another 3 months.
                         </li>
                         <li style={{margin: "8px"}}>
-                        Withdrawal process: Lock pool -&gt Wait for 3 days -&gt Manual withdrawal available after 3 days.
+                        Withdrawal process: Lock pool &gt; Wait for 3 days &gt; Manual withdrawal available after 3 days.
                         </li>
                         <li style={{margin: "8px"}}>
                         The withdrawal operation is the same as the withdrawal logic for regular users, including a deduction of a handling fee.

@@ -34,6 +34,7 @@ export const useTokenContract = (tokenAddress=null)  => {
 
     const { data: token } = useToken({
         address: addressTokenContract,
+        watch: true,
     })
     
     const allowance = useCallback(async (owner, addr, success, fail)=>{

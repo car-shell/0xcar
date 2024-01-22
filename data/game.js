@@ -303,7 +303,7 @@ export const useGameContract = (monitor=false)  => {
         })
     }
 
-    const withdrawPool = async (id, success, fail, setStepStatus)=>{
+    const withdrawPool = async (id, success, fail)=>{
         const config = await prepareWriteContract({
             address: addressGameContract,
             abi: abi,
@@ -312,26 +312,26 @@ export const useGameContract = (monitor=false)  => {
         }).then( async (config)=>{
             await writeContract(config).then(async ({hash})=>{
                 console.log("----------writeContract-----------");
-                setStepStatus('withdraw', 1)
+                // setStepStatus('withdraw', 1)
 
                 const receipt = await waitForTransaction({
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
-                setStepStatus('withdraw', 2)
+                // setStepStatus('withdraw', 2)
 
                 console.log("transfer receipt",receipt)
                 success()
             }).catch((e)=>{
                 console.log("withdraw failed")
                 console.log(e.message)
-                setStepStatus('withdraw', 1)
+                // setStepStatus('withdraw', 1)
                 fail(e)
             })
         }).catch((e)=>{
             console.log("withdraw failed")
             console.log(e.message)
-            setStepStatus('withdraw', 1)
+            // setStepStatus('withdraw', 1)
             fail(e)
         })
     }
@@ -435,5 +435,5 @@ export const useGameContract = (monitor=false)  => {
     }
 
 
-    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding}
+    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding, withdrawPool}
 }

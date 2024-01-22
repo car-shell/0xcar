@@ -18,7 +18,7 @@ const WithdrawContent = ({token, amount})=> {
     return <>
         <Stack direction='column' alignItems='center' >
             <Typography gutterBottom sx={{font:'700 normal 36px Arial',color:'#06FC99'}}>
-                {formatAmount((amount).toString())} {token?.symbol}
+                {amount + " " + token?.symbol.toString()}
             </Typography>
             <Typography gutterBottom  sx={{font:'400 normal 16px Arial', color:'#fff'}}>
             10% of the current balance of the Prize Pool
@@ -57,9 +57,9 @@ const ClosureRulesContent = ({time}) => {
 
 
 const ClosureStepContent = ({steps, token, stepContent, amount}) => {
-    return <> <Stack direction='column' alignItems='center' width='480px'>
+    return <> <Stack direction='column' alignItems='center' width='520px'>
         <Typography gutterBottom sx={{font:'700 normal 36px Arial',color:'#06FC99'}}>
-            {formatAmount((amount).toString())} {token?.symbol}
+            {formatAmount(amount)} {token?.name}
         </Typography>
         <Typography gutterBottom sx={{font:'400 italic 14px Arial'}}>
         Prize Pool Balance
@@ -105,13 +105,13 @@ const ClosureStepContent = ({steps, token, stepContent, amount}) => {
 
 const ClosureSuccessContent = ({}) => {
     return <><Stack direction='column' alignItems='center'  width='480px'>
-        <Typography gutterBottom sx={{font:'700 normal 28px Arial',color:'#06FC99'}}>
+        <Typography gutterBottom sx={{font:'700 italic 28px Arial',color:'#06FC99'}}>
         All withdrawals complete
         </Typography>
-        <Typography gutterBottom sx={{font:'700 normal 28px Arial',color:'#06FC99'}}>
-        Prize pool has been cancelled
+        <Typography gutterBottom sx={{font:'700 italic 28px Arial',color:'#06FC99'}}>
+        Prize pool has been <span style={{color: 'white'}}>cancelled</span>
         </Typography>
-        <Stack direction='column' alignItems='left' sx={{border: '1px solid #333', borderRadius: '10px', padding: '16px 16px 16px 16px', marginTop: '32px'}} width="90%">
+        {/* <Stack direction='column' alignItems='left' sx={{border: '1px solid #333', borderRadius: '10px', padding: '16px 16px 16px 16px', marginTop: '32px'}} width="90%">
             <Stack direction='row' alignItems='left' justifyContent='space-between'>
                 <Typography gutterBottom sx={{font:'400 italic 16px Arial',color:'#fff'}}>
                     Amount Withdrawn
@@ -136,7 +136,7 @@ const ClosureSuccessContent = ({}) => {
                     489,500,000.00 CDNL
                 </Typography>
             </Stack>
-        </Stack>
+        </Stack> */}
 
     </Stack></> 
 }
@@ -145,11 +145,11 @@ const ClosureSuccessContent = ({}) => {
 const PoolItem = ({poolPro, my=false}) => {
     const [pool, setPool] = React.useState(poolPro);
     const {token} = useTokenContract();
-    const {preRemovePool, removePool, widthdrawPool} = useGameContract();
+    const {preRemovePool, removePool, withdrawPool} = useGameContract();
     const [openDialog, handleClose, props] = useCustomizedDialog()
     const [dialogInfo, setDialogInfo] = useState({})
     const { data: blockNumber, isLoading } = useBlockNumber()
-    const [lockPoolStepInfo, {setLockPoolStepInfo}] = useState({active: 0})
+    const [lockPoolStepInfo, setLockPoolStepInfo] = useState({active: 0})
     const {ToastUI, showToast} = useToast()
 
     const steps = ["Close pool", "Wait for 3 days", "Withdraw all"]
@@ -178,53 +178,64 @@ const PoolItem = ({poolPro, my=false}) => {
     }
 
     const nextWidthdraw = () => {
+        // let one_period = 3600n*24n*16n/3n;
+        let one_period = 3600n*3n/3n;
+        // let widthdraw_period = 3600n*24n/3n
+        let widthdraw_period = 3600n/3n
+
         console.log( `cur ${blockNumber} -- ${pool.nextWidthdrawBlockNum}`);
         if (blockNumber > pool.nextWidthdrawBlockNum) {
             let pass = blockNumber - pool.nextWidthdrawBlockNum;
-            if ( pass < 3600n*24n/3n ) {
+            if ( pass < widthdraw_period ) {
                 return 0;
             }
-            let one_period = 3600n*24n*16n/3n;
             let mod = pass%one_period;
-            if (mod < 3600n*24n/3n)  {
+            if (mod < widthdraw_period)  {
                 return 0;
             }
 
-            return one_period - mod;
+            return mod - one_period;
         }
 
         return blockNumber - pool.nextWidthdrawBlockNum;
     }
 
     const nextLockPool = () => {
-        let one_period = 3600n*24n*15n/3n;
-        if (blockNumber > pool.createdBlockNum + one_period ) {
-            let pass = blockNumber - pool.createdBlockNum - one_period;
-            if ( pass < 3600n*24n*3n/3n ) {
+        // let one_period = 3600n*24n*15n/3n;
+        let lock_period = 3600n*2n/3n;
+        // let widthdraw_period = 3600n*24n*3n/3n;
+        let widthdraw_period = 3600n/3n;
+
+        if (blockNumber > pool.createdBlockNum + lock_period ) {
+            let pass = blockNumber - pool.createdBlockNum;
+            if ( pass < widthdraw_period + lock_period &&  pass > lock_period ) {
                 return 0;
             }
-            let mod = pass%(one_period+3600n*24n*3n/3n);
-            if (mod > one_period)  {
+            let mod = pass%(lock_period+widthdraw_period);
+            if (mod > lock_period)  {
                 return 0;
             } else {
-                return mod - one_period;
+                return mod - lock_period;
             }
         }
 
-        return blockNumber - (one_period + pool.createdBlockNum);
+        return blockNumber - (lock_period + pool.createdBlockNum);
     }
     
-    const handleClosePool = (pool) => { 
+    const handleClosePool = () => { 
         let t = nextLockPool()
-        if (!pool.isLocked) {
+        console.log( `cur ${blockNumber} -- ${t}`);
+        console.log(pool)
+
+        if (pool.isLocked && pool.isUsed) {
             if (blockNumber < pool.canEndBlockNum) {
                 setLockPoolStepInfo({active: 1})
-                setDialogInfo({title: "Close Pool", context: "ClosureStepContent", button: {title: `Available for withdrawal in ${Number(pool.canEndBlockNum - blockNumber)*3}`, disable: true, action: null}})
+                setDialogInfo({title: "Close Pool", context: "ClosureStepContent", button: {title: `Available for withdrawal in ${ (new Date((new Date()).getTime()+(Number(pool.canEndBlockNum - blockNumber)*3*1000))).toString()  }`, disable: true, action: null}})
             } else if (pool.isUsed) {
                 setLockPoolStepInfo({active: 2})
                 setDialogInfo({title: "Close Pool", context: "ClosureStepContent", button: {title: 'Withdraw All', disable: false, action: handleRemovePool}})
             }
-        } else if (t<0) {
+        } else if (t<0 && pool.isUsed) {
             setDialogInfo({title: "Close Pool", context: "ClosureRulesContent", button: {title: 'Got It', disable: false, action: null}})
         } else if (pool.isUsed) {
             setDialogInfo({title: "Close Pool", context: "ClosureStepContent", button: {title: 'Close Pool', disable: false, action: handleRemovePool}})
@@ -253,60 +264,94 @@ const PoolItem = ({poolPro, my=false}) => {
             <Box  width='100px' height='32px' sx={{position: 'relative',  top: '10px', left: '10px', textAlign: 'center', border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', borderRadius: '50px', font: "700 normal 14px Arial", lineHeight: '32px', color: 'white', backgroundColor: pool.id==1n?'#F59A23':'black' }} >
                     #00{Number(pool.id)} Pool
             </Box>
-            <Card variant="outlined" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', height: '128px', border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', backgroundColor: 'transparent' , borderRadius: '10px'}}>
-                <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', paddingRight: '28px', borderRight: pool.id==1n?'1px solid #F59A23':'1px solid #797979', width:'56%'}}>
-                    <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
+            <Card variant="outlined" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center',  border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', backgroundColor: 'transparent' , borderRadius: '10px'}}>
+                <Box alignItems='center' sx={{minWidth: '1080px', width: '80%',display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '128px'}}>
+                    <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', paddingRight: '28px', borderRight: pool.id==1n?'1px solid #F59A23':'1px solid #797979', width:'56%'}}>
+                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
+                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
+                                Initial Pool Fund
+                            </Typography>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
+                                {formatAmount(pool?.initBalance)} {token?.symbol}
+                            </Typography>
+                        </Box>
+                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white",width: '100%'}}>
+                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
+                                Current Pool Balance
+                            </Typography>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
+                                {formatAmount(pool?.remainBalance)} {token?.symbol}
+                            </Typography>
+                        </Box>
+                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
+                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
+                                Bet count
+                            </Typography>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
+                                {Number(pool?.betCount)}
+                            </Typography>
+                        </Box>
+                    </Box>
+
+                    { !my?
+                    <Box sx={{display: 'flex', flexDirection: 'column',  alignItems: 'center', width:'44%'}}>
+                        <BaseLink href={"/pool/"+pool.id} style={{width: "64%"}} >
+                            <Button variant="contained" sx={{width: "100%", height:'50px', backgroundColor: pool.id==1n?'#F59A23':"#d9001b", borderRadius: '150px'}} >
+                                    Bet
+                            </Button>
+                        </BaseLink>
+                    </Box>
+                        :
+                    <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingRight: '28px', paddingLeft: '28px', color: pool.id==1n?'#F59A23':"white", width:'42%', columnGap: '24px'}}>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
-                            Initial Pool Fund
+                            Cumulative Earnings
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
-                            {formatAmount(pool?.initBalance)} {token?.symbol}
+                            {formatAmount(pool?.income)} {token?.symbol}
                         </Typography>
                     </Box>
-                    <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white",width: '100%'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
-                            Current Pool Balance
-                        </Typography>
-                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
-                            {formatAmount(pool?.remainBalance)} {token?.symbol}
-                        </Typography>
-                    </Box>
-                    <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
-                            Bet count
-                        </Typography>
-                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
-                            {Number(pool?.betCount)}
-                        </Typography>
-                    </Box>
+                    }
                 </Box>
-                { !my?
-                <Box sx={{display: 'flex', flexDirection: 'column',  alignItems: 'center', width:'44%'}}>
-                    <BaseLink href={"/pool/"+pool.id} style={{width: "64%"}} >
-                        <Button variant="contained" sx={{width: "100%", height:'50px', backgroundColor: pool.id==1n?'#F59A23':"#d9001b", borderRadius: '150px'}} >
-                                Bet
+
+                { my && <Box sx={{display: 'flex', flexDirection: 'row', height: '64px', justifyContent: 'space-between', borderTop: pool.id==1n?'1px solid #F59A23':'1px solid #797979', paddingRight: '28px', paddingLeft: '28px', width:'100%', columnGap: '24px'}}>
+                    <Stack direction='row' justifyContent="flex-between" width="58%" alignItems='center' sx={{marginLeft: '16px'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '16px', color: 'white'}}>
+                            Created Time
+                        </Typography>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: 'white'}}>
+                            {pool?.startTimestamp?formatTime(new Date(Number(pool.startTimestamp)*1000).toString(), true):'--'}
+                        </Typography>
+                    </Stack>
+
+                    {pool.isUsed?
+                    <Box sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', color: pool.id==1n?'#F59A23':"white", width:'42%', columnGap: '24px'}}>
+                        <Button variant="contained" color="error" sx={{borderRadius: '90px', height: '32px',  width: "170px"}} onClick={handleWithdraw} >
+                        Withdraw
                         </Button>
-                    </BaseLink>
-                </Box>
+                        <Button variant="contained" color="error" sx={{borderRadius: '90px', height: '32px',  width: "170px"}} onClick={handleClosePool} >
+                        Close Pool
+                        </Button>
+                    </Box>
                     :
-                <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingLeft: '16px', color: pool.id==1n?'#F59A23':"white", width:'42%', columnGap: '24px'}}>
-                    <Button variant="contained" color="error" sx={{borderRadius: '90px',  width: "170px"}} onClick={handleWithdraw} >
-                    Withdraw
+                    <Stack direction='row' justifyContent="center" width="58%" alignItems='center' sx={{marginLeft: '16px'}}>
+                    <Button variant="contained" disabled sx={{borderRadius: '90px', height: '32px',  width: "340px", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleWithdraw} >
+                    The prize pool has been closed
                     </Button>
-                    <Button variant="contained" color="error" sx={{borderRadius: '90px',  width: "170px"}} onClick={handleClosePool} >
-                    Close Pool
-                    </Button>
+                    </Stack>}
+
                 </Box>}
+                
             </Card>
         </Box>}
         <DialogFrame {...props} title={dialogInfo.title} button={dialogInfo.button}> 
             {dialogInfo.context == "WithdrawContent"?
-            <WithdrawContent token={token} amount={pool?.remainBalance/10n} />:
+            <WithdrawContent token={token} amount={formatAmount(pool?.remainBalance/10n)} />:
             dialogInfo.context == "ClosureRulesContent"?
             <ClosureRulesContent time={ (new Date((new Date()).getTime()+(Number(-nextLockPool())*3*1000))).toString() }/>:
             dialogInfo.context == "ClosureStepContent"?
             <ClosureStepContent token={token} steps={steps} stepContent={lockPoolStepInfo} amount={pool?.remainBalance} />:
-            <ClosureSuccessContent />
+            dialogInfo.context == "ClosureSuccessContent"?
+            <ClosureSuccessContent />:<></>
             }
         </DialogFrame>
         <ToastUI />
