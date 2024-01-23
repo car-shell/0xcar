@@ -982,7 +982,7 @@ export const gameABI = [
 			"name": "u",
 			"type": "address"
 		}],
-		"name": "whitelist",
+		"name": "whitelistPool",
 		"outputs": [{
 			"internalType": "uint256",
 			"name": "",

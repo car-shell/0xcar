@@ -145,7 +145,7 @@ const ClosureSuccessContent = ({}) => {
 const PoolItem = ({poolPro, my=false}) => {
     const [pool, setPool] = React.useState(poolPro);
     const {token} = useTokenContract();
-    const {preRemovePool, removePool, withdrawPool, whitelist} = useGameContract();
+    const {preRemovePool, removePool, withdrawPool, whitelistPool} = useGameContract();
     const [openDialog, handleClose, props] = useCustomizedDialog()
     const [dialogInfo, setDialogInfo] = useState({})
     const { data: blockNumber, isLoading } = useBlockNumber()
@@ -265,7 +265,7 @@ const PoolItem = ({poolPro, my=false}) => {
                 <Box  width='100px' height='32px' sx={{textAlign: 'center', border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', borderRadius: '50px', font: "700 normal 14px Arial", lineHeight: '32px', color: 'white', backgroundColor: pool.id==1n?'#F59A23':'black' }} >
                     #00{Number(pool.id)} Pool
                 </Box>
-                {!my && whitelist==pool.id && <Box  width='100px' height='32px' sx={{textAlign: 'center',  font: "700 italic 14px Arial", lineHeight: '32px', color: 'yellow', backgroundColor: 'transparent', marginBottom: '8px', marginRight: '10px' }} >
+                {!my && whitelistPool==pool.id && <Box  width='100px' height='32px' sx={{textAlign: 'center',  font: "700 italic 14px Arial", lineHeight: '32px', color: 'yellow', backgroundColor: 'transparent', marginBottom: '8px', marginRight: '10px' }} >
                     Fee Reduction
                 </Box>}
             </Box>
@@ -276,15 +276,15 @@ const PoolItem = ({poolPro, my=false}) => {
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
                                 Initial Pool Fund
                             </Typography>
-                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', textAlign: 'right', width: '200px'}}>
                                 {formatAmount(pool?.initBalance)} {token?.symbol}
                             </Typography>
                         </Box>
                         <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white",width: '100%'}}>
-                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
+                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  width: '160px'}}>
                                 Current Pool Balance
                             </Typography>
-                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', textAlign: 'right', width: '200px'}}>
                                 {formatAmount(pool?.remainBalance)} {token?.symbol}
                             </Typography>
                         </Box>
@@ -292,7 +292,7 @@ const PoolItem = ({poolPro, my=false}) => {
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
                                 Bet count
                             </Typography>
-                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', textAlign: 'right', width: '200px'}}>
                                 {Number(pool?.betCount)}
                             </Typography>
                         </Box>
@@ -301,17 +301,17 @@ const PoolItem = ({poolPro, my=false}) => {
                     { !my?
                     <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center',  alignItems: 'center', width:'42%'}}>
                         <BaseLink href={"/pool?id="+pool.id} style={{width: "280px"}} >
-                            <Button variant="contained" sx={{width: "100%", height:'50px', backgroundColor: pool.id==1n?'#F59A23':"#d9001b", borderRadius: '150px'}} >
+                            <Button variant="contained" color="error"  sx={{ width: "100%", height:'50px', backgroundColor: pool.id==1n?'#F59A23':"#d9001b", borderRadius: '150px', textTransform:'none' }} >
                                     Bet
                             </Button>
                         </BaseLink>
                     </Box>
                         :
-                    <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width:'42%'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '180px'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width:'44%'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
                             Cumulative Earnings
                         </Typography>
-                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
+                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', textAlign: 'right', width: '200px'}}>
                             {formatAmount(pool?.income)} {token?.symbol}
                         </Typography>
                     </Box>
@@ -325,7 +325,7 @@ const PoolItem = ({poolPro, my=false}) => {
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
                             Created Time
                             </Typography>
-                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', textAlign: 'right', width: '200px'}}>
                             {pool?.startTimestamp?formatTime(new Date(Number(pool.startTimestamp)*1000).toString(), true):'--'}
                             </Typography>
                         </Box>

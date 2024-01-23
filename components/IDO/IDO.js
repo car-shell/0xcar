@@ -13,6 +13,7 @@ import { useSwapContract } from "../../data/swap";
 import { amountFromFormatedStr, formatAmount,n1e18} from "../utils"
 import useStepInfo from '../StepInfo'
 import { useConnectModal } from '@rainbow-me/rainbowkit';
+import Link from "next/link";
 
 import useToast from '../Toast'
 import FormGroup from '@mui/material/FormGroup';
@@ -26,7 +27,7 @@ const IDO = () => {
     const {token} = useTokenContract();
     const {address, isConnected} = useAccount()
     const {amountsOut} = useSwapContract()
-    const [value, setValue] = React.useState(5000);
+    const [value, setValue] = React.useState(0.00);
     const [checked, setChecked] = React.useState(false);
 
     const {ToastUI, showToast} = useToast()
@@ -71,7 +72,7 @@ const IDO = () => {
             return "Connect Wallet"
         }
         if (!checked) {
-            return "Please agree the ido rules"
+            return "Agree to the IDO rules before creating a pool"
         }
         if (value < 5000 || value > 50000) {
             return "The valid range is 5,000.00 to 50,000.00"
@@ -105,19 +106,19 @@ const IDO = () => {
             <Typography component='div' sx={{fontSize: '36px', fontWeight: '700', color: '#F59A23', marginTop: '70px'}}>
                 CDNL IDO
             </Typography>
-            <Typography component='div' sx={{fontSize: '36px', fontWeight: '700'}}>
+            <Typography component='div' sx={{fontSize: '36px',  fontStyle: 'italic', fontWeight: '700'}}>
                 Become a Market Maker
             </Typography>
             <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}} >
-                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}>
-                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         Total Supply
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                         {init} {token?.symbol}
                     </Typography>
                 </Stack>
-                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex',  fontStyle: 'italic', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         Remaining Tokens
                     </Typography>
@@ -125,7 +126,7 @@ const IDO = () => {
                         {remain} {token?.symbol}
                     </Typography>
                 </Stack>
-                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex',  fontStyle: 'italic', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         USDT Raised
                     </Typography>
@@ -136,15 +137,15 @@ const IDO = () => {
             </Stack>
 
             <Stack direction='column' justifyContent="space-between" alignItems="center" gap='16px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', paddingBottom: '16px'}}>
-                <Typography component='div' sx={{fontSize: '28px', fontWeight: '700', paddingTop: '32px'}}>
+                <Typography component='div' sx={{fontSize: '28px', fontStyle: 'italic',  fontWeight: '700', paddingTop: '32px'}}>
                     Create a Bet Pool
                 </Typography>
                 <Stack direction='row' width='90%' justifyContent="space-between"  gap='16px' alignItems="center" sx={{ marginTop: '8px'}}>
                     <Stack direction='row' width='50%' justifyContent="flex-start"  alignItems="center"  sx={{ marginTop: '8px'}}>
-                        <Box height='8px' width='8px' sx={{backgroundColor:"#06FC99", border: "1px solid #06FC99", borderRadius: "100%", marginRight: '8px'}}/>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px'}}>
+                    {isConnected &&<Box height='8px' width='8px' sx={{backgroundColor:"#06FC99", border: "1px solid #06FC99", borderRadius: "100%", marginRight: '8px'}}/>}
+                    {isConnected &&<Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px'}}>
                             {address?.slice(0, 6) + '...' + address?.slice(38)}
-                        </Typography>
+                        </Typography>}
                     </Stack>
                     <Stack width='50%' sx={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'right', textAlign: 'right'}}>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '10px'}}>
@@ -161,7 +162,7 @@ const IDO = () => {
                 </Stack>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
-                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333", borderRadius: '5px', backgroundColor: '#333333' , marginTop: '18px'}}>
+                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333", fontStyle: 'italic',  borderRadius: '5px', backgroundColor: '#333333' , marginTop: '18px'}}>
                     <Typography component='div' width='100%' sx={{fontSize: '16px', fontWeight: '700', paddingTop: '16px', paddingLeft: '32px', textAlign: 'left'}}>
                         Information
                     </Typography>
@@ -197,9 +198,9 @@ const IDO = () => {
                     <FormControlLabel  height='12px'  control={<Checkbox checked={checked} onChange={(e)=>{setChecked(!checked)}} sx={{
                         color: 'white',
                         '&.Mui-checked': {
-                            color: 'white',
+                            color: '#06FC99',
                         },
-                    }} />} label="I understand and agree to the <IDO Rules>" />
+                    }} />} label={<Typography>I understand and agree to the <Link href='https://www.google.com' target='blank' style={{color: 'blue'}}>&lt;IDO Rules&gt;</Link></Typography>}/>
                 </FormGroup>
             </Stack>
         </Stack>

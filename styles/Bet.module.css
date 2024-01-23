@@ -12,6 +12,7 @@
 .pool_id_and_burned {
   width: 100%;
 
+  margin-bottom: 8px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

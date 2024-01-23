@@ -144,10 +144,10 @@ export const useGameContract = (monitor=false)  => {
         }
     })
 
-    const { data:whitelist } = useContractRead({
+    const { data:whitelistPool } = useContractRead({
         address: addressGameContract,
         abi: abi,
-        functionName: 'whitelist',
+        functionName: 'whitelistPool',
         chainId: chainId,
         args: [address],
         watch: true,
@@ -446,5 +446,5 @@ export const useGameContract = (monitor=false)  => {
     }
 
 
-    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding, withdrawPool, whitelist}
+    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding, withdrawPool, whitelistPool}
 }
