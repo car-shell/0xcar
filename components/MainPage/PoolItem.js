@@ -59,7 +59,7 @@ const ClosureRulesContent = ({time}) => {
 const ClosureStepContent = ({steps, token, stepContent, amount}) => {
     return <> <Stack direction='column' alignItems='center' width='520px'>
         <Typography gutterBottom sx={{font:'700 normal 36px Arial',color:'#06FC99'}}>
-            {formatAmount(amount)} {token?.name}
+            {formatAmount(amount)} {token?.symbol}
         </Typography>
         <Typography gutterBottom sx={{font:'400 italic 14px Arial'}}>
         Prize Pool Balance
@@ -340,10 +340,10 @@ const PoolItem = ({poolPro, my=false}) => {
 
                     {pool.isUsed?
                     <Box sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width:'42%'}}>
-                        <Button variant="contained" color="error" sx={{borderRadius: '90px', height: '32px',  width: "170px"}} onClick={handleWithdraw} >
+                        <Button variant="contained" color="error" sx={{textTransform: 'none',borderRadius: '90px', height: '32px',  width: "170px"}} onClick={handleWithdraw} >
                         Withdraw
                         </Button>
-                        <Button variant="contained" color="error" sx={{borderRadius: '90px', height: '32px',  width: "170px"}} onClick={handleClosePool} >
+                        <Button variant="contained" color="error" sx={{textTransform: 'none', borderRadius: '90px', height: '32px',  width: "170px"}} onClick={handleClosePool} >
                         Close Pool
                         </Button>
                     </Box>

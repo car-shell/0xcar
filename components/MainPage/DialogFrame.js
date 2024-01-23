@@ -61,7 +61,7 @@ export const DialogFrame = (({open, handleClose, title, button, children})=>{
                 {children}
             </DialogContent>
             <DialogActions>
-            <Button autoFocus variant='contained' disabled={button?.disabled} sx={{ textDecoration: 'none', width:'90%', borderRadius: '220px', font:'400 normal 14px Arial', height: '45px', margin: '32px 0 32px 0', backgroundColor: button?.disable?'#333':'#d9001b' }} onClick={button?.action?button?.action:handleClose}>
+            <Button autoFocus variant='contained' disabled={button?.disabled} sx={{ textDecoration: 'none', width:'90%', borderRadius: '220px', font:'400 normal 14px Arial', height: '45px', margin: '32px 0 32px 0', backgroundColor: button?.disable?'#333':'#d9001b'}} onClick={button?.action?button?.action:handleClose}>
                 {button?.title}
             </Button>
             </DialogActions>
