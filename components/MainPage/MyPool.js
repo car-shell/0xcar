@@ -18,8 +18,8 @@ const MyPool = () => {
 
     return (
     <React.Fragment>
-        <Stack direction='column' alignItems='center' justifyContent="center" width='100%'>
-            <Stack direction='column' alignItems='center' width='60%'>
+        <Stack direction='column' alignItems='center' justifyContent="center">
+            <Stack direction='column' alignItems='center' >
                 <Typography component='div' width='100%' sx={{margin: '80px 0 0px 0', color: "#7D7D7D", font: '700 normal 20px Arial', textAlign: 'left'}}>
                     My Prize Pool
                 </Typography> 
@@ -37,7 +37,7 @@ const MyPool = () => {
                     </Box>
                 })}
             </Stack>
-            <Box width='60%'>
+            <Box>
                 <Typography component='div' sx={{ padding: '50px 16px 20px 16px', font: '700 normal 16px Arial'}}>
                     Withdrawal Pool Rules
                 </Typography>

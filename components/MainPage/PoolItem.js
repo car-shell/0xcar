@@ -270,66 +270,69 @@ const PoolItem = ({poolPro, my=false}) => {
                 </Box>}
             </Box>
             <Card variant="outlined" sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center',  border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', backgroundColor: 'transparent' , borderRadius: '10px'}}>
-                <Box alignItems='center' sx={{ width: '80%',display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '128px'}}>
-                    <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', paddingRight: '28px', borderRight: pool.id==1n?'1px solid #F59A23':'1px solid #797979', width:'56%'}}>
-                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
-                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
+                <Box alignItems='center' sx={{ width: '100%',display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '128px'}}>
+                    <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', borderRight: pool.id==1n?'1px solid #F59A23':'1px solid #797979', width:'56%'}}>
+                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
+                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
                                 Initial Pool Fund
                             </Typography>
-                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
                                 {formatAmount(pool?.initBalance)} {token?.symbol}
                             </Typography>
                         </Box>
-                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white",width: '100%'}}>
-                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
+                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white",width: '100%'}}>
+                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
                                 Current Pool Balance
                             </Typography>
-                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
                                 {formatAmount(pool?.remainBalance)} {token?.symbol}
                             </Typography>
                         </Box>
-                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '28px', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
-                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 24px 0 32px', textAlign: 'left', width: '50%'}}>
+                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around',color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
+                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
                                 Bet count
                             </Typography>
-                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
                                 {Number(pool?.betCount)}
                             </Typography>
                         </Box>
                     </Box>
 
                     { !my?
-                    <Box sx={{display: 'flex', flexDirection: 'column',  alignItems: 'center', width:'44%'}}>
-                        <BaseLink href={"/pool?id="+pool.id} style={{width: "64%"}} >
+                    <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center',  alignItems: 'center', width:'42%'}}>
+                        <BaseLink href={"/pool?id="+pool.id} style={{width: "280px"}} >
                             <Button variant="contained" sx={{width: "100%", height:'50px', backgroundColor: pool.id==1n?'#F59A23':"#d9001b", borderRadius: '150px'}} >
                                     Bet
                             </Button>
                         </BaseLink>
                     </Box>
                         :
-                    <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingRight: '28px', paddingLeft: '28px', color: pool.id==1n?'#F59A23':"white", width:'42%', columnGap: '24px'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', padding: '0 16px 0 32px', textAlign: 'left', width: '50%'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width:'42%'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '180px'}}>
                             Cumulative Earnings
                         </Typography>
-                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '650'}}>
+                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
                             {formatAmount(pool?.income)} {token?.symbol}
                         </Typography>
                     </Box>
                     }
                 </Box>
 
-                { my && <Box sx={{display: 'flex', flexDirection: 'row', height: '64px', justifyContent: 'space-between', borderTop: pool.id==1n?'1px solid #F59A23':'1px solid #797979', paddingRight: '28px', paddingLeft: '28px', width:'100%', columnGap: '24px'}}>
-                    <Stack direction='row' justifyContent="flex-between" width="58%" alignItems='center' sx={{marginLeft: '16px'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '16px', color: 'white'}}>
+                { my && 
+                <Box alignItems='center' sx={{ width: '100%', height: '64px', display: 'flex', flexDirection: 'row', alignItems: 'center', borderTop: pool.id==1n?'1px solid #F59A23':'1px solid #797979'}}>
+                    <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', width:'56%'}}>
+                        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
+                            <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
                             Created Time
-                        </Typography>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: 'white'}}>
+                            </Typography>
+                            <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', width: '200px'}}>
                             {pool?.startTimestamp?formatTime(new Date(Number(pool.startTimestamp)*1000).toString(), true):'--'}
-                        </Typography>
-                    </Stack>
+                            </Typography>
+                        </Box>
+                    </Box>
 
                     {pool.isUsed?
-                    <Box sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-between', paddingLeft: '16px', color: pool.id==1n?'#F59A23':"white", width:'42%', columnGap: '24px'}}>
+                    <Box sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width:'42%'}}>
                         <Button variant="contained" color="error" sx={{borderRadius: '90px', height: '32px',  width: "170px"}} onClick={handleWithdraw} >
                         Withdraw
                         </Button>
@@ -338,7 +341,7 @@ const PoolItem = ({poolPro, my=false}) => {
                         </Button>
                     </Box>
                     :
-                    <Stack direction='row' justifyContent="center" width="58%" alignItems='center' sx={{marginLeft: '16px'}}>
+                    <Stack direction='row' justifyContent="center" width="42%" alignItems='center' sx={{marginLeft: '16px'}}>
                     <Button variant="contained" disabled sx={{borderRadius: '90px', height: '32px',  width: "340px", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleWithdraw} >
                     The prize pool has been closed
                     </Button>

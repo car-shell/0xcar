@@ -12,6 +12,7 @@ import { useTokenContract } from "../../data/token";
 import { useSwapContract } from "../../data/swap";
 import { amountFromFormatedStr, formatAmount,n1e18} from "../utils"
 import useStepInfo from '../StepInfo'
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 
 import useToast from '../Toast'
 import FormGroup from '@mui/material/FormGroup';
@@ -23,13 +24,16 @@ import Checkbox from '@mui/material/Checkbox';
 const IDO = () => {
     const {init, remain, total_usdt_raised, createIDOPool, usdtBalance} = useIDOContract();
     const {token} = useTokenContract();
-    const {address} = useAccount()
+    const {address, isConnected} = useAccount()
     const {amountsOut} = useSwapContract()
     const [value, setValue] = React.useState(5000);
     const [checked, setChecked] = React.useState(false);
 
     const {ToastUI, showToast} = useToast()
     const {setStepInfo, setStepNodes, StepInfo} = useStepInfo()
+
+    const {openConnectModal} = useConnectModal()
+
     
     useEffect(()=>{
         setStepNodes({create_pool: [{name: 'Comfirm in Wallet'}, {name: 'Pool Created'}], 
@@ -44,8 +48,13 @@ const IDO = () => {
     }, [setStepInfo])
 
     const handleCreate = (event) => {
+        if (!isConnected) {
+            openConnectModal()
+            return
+        }
+
         if (value < 5000 || value > 50000) {
-            showToast("The amount exceeds the limit. The valid range is 5000 to 50000.", 'error')
+            showToast("The amount exceeds the limit. The valid range is 5,000.00 to 50,000.00", 'error')
             return
         }
 
@@ -58,18 +67,21 @@ const IDO = () => {
     };
 
     const tipContent = () => {
+        if (!isConnected) {
+            return "Connect Wallet"
+        }
         if (!checked) {
-            return "Please agree the ido rules, please"
+            return "Please agree the ido rules"
         }
         if (value < 5000 || value > 50000) {
-            return "The valid range is 5000 to 50000."
+            return "The valid range is 5,000.00 to 50,000.00"
         }
         return "Create"
     }
 
     const handleInput = useCallback(
       (e) => {
-          e.target.value = e.target.value.replace(/[^\d]/g, "")
+          e.target.value = e.target.value.replace(/[^\d.]/g, "")
           setValue(e.target.value)
       },
       [setValue])
@@ -166,7 +178,7 @@ const IDO = () => {
                         Cost
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {formatAmount(value)} USDT
+                        {value?formatAmount(value):"0.00"} USDT
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', marginBottom: '16px'}}>
@@ -178,11 +190,11 @@ const IDO = () => {
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained" disabled={!checked || (value < 5000 || value > 50000)} color='error' sx={{height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
+                <Button variant="contained"  disabled={(isConnected && !checked) || (isConnected && (value < 5000 || value > 50000 )) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
                     {tipContent()}
                 </Button>
                 <FormGroup width='100%'>
-                    <FormControlLabel  height='12px' control={<Checkbox checked={checked} onChange={(e)=>{setChecked(!checked)}} sx={{
+                    <FormControlLabel  height='12px'  control={<Checkbox checked={checked} onChange={(e)=>{setChecked(!checked)}} sx={{
                         color: 'white',
                         '&.Mui-checked': {
                             color: 'white',

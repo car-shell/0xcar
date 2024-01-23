@@ -612,7 +612,7 @@ const BetArea = () => {
         </button>
         <div className={styles.line}>
             <div className={styles.content_text}>
-              Mining Rewards: <span style={{color: '#06FC99'}}> {miningFunding?formatAmount(miningFunding): '--'} {token?.symbol}</span>
+              Mining Rewards: <span style={{color: '#06FC99'}}> {miningFunding?formatAmount(miningFunding): '0.00'} {token?.symbol}</span>
             </div>
             <div className={styles.content_text} style={{color: 'blue', cursor: 'pointer'}} onClick={handleWithdrawMiningFunding}>
               Widthdraw
