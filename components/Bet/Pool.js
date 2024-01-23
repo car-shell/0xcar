@@ -11,7 +11,7 @@ import { BigNumber } from "wagmi"
 const Pool = ({id}) => {
   const [poolId, setPoolId] = useState(id)
   const [info, setInfo] = useState({})
-  const { poolDetails, setCurrentPoolId, whitelist } = useGameContract()
+  const { poolDetails, setCurrentPoolId, whitelistPool } = useGameContract()
   const [type, setType] = useState("official")
   const {deadBalance, addressTokenContract, token} = useTokenContract()
   const [light, setLight] = useState(true)
@@ -41,7 +41,7 @@ const Pool = ({id}) => {
     <div className={styles.container}>
       <div className={styles.pool_id_and_burned}>
         <div className={styles.pool_id}>
-          # 00{poolId} Pool { (whitelist == poolId) && <span style={{color: "yellow", font: "900 italic 11px arial"}}>( Fee Reduction )</span>}
+          # 00{poolId} Pool { (whitelistPool == poolId) && <span style={{color: "yellow", font: "900 italic 11px arial"}}>( Fee Reduction )</span>}
         </div>
           {/* Burned: <a style={{textDecoration: 'none3', color: '#2471fe'}} target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}>{deadBalance}</a> CDNT */}
           <div className={styles.content}> 

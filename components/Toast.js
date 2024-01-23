@@ -32,7 +32,7 @@ const useToast = ()=>{
                     }
                     return (prevProgress >= 0 ? prevProgress - 1 : 100 )
                 });
-            }, 33);
+            }, 10);
 
             return () => {
                 clearInterval(timer);

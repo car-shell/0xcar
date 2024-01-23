@@ -27,7 +27,7 @@ const IDO = () => {
     const {token} = useTokenContract();
     const {address, isConnected} = useAccount()
     const {amountsOut} = useSwapContract()
-    const [value, setValue] = React.useState(0.00);
+    const [value, setValue] = React.useState();
     const [checked, setChecked] = React.useState(false);
 
     const {ToastUI, showToast} = useToast()
@@ -136,11 +136,11 @@ const IDO = () => {
                 </Stack>
             </Stack>
 
-            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='16px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', paddingBottom: '16px'}}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', paddingBottom: '16px'}}>
                 <Typography component='div' sx={{fontSize: '28px', fontStyle: 'italic',  fontWeight: '700', paddingTop: '32px'}}>
                     Create a Bet Pool
                 </Typography>
-                <Stack direction='row' width='90%' justifyContent="space-between"  gap='16px' alignItems="center" sx={{ marginTop: '8px'}}>
+                <Stack direction='row' width='90%' justifyContent="space-between"  gap='4px' alignItems="center" sx={{ marginTop: '8px'}}>
                     <Stack direction='row' width='50%' justifyContent="flex-start"  alignItems="center"  sx={{ marginTop: '8px'}}>
                     {isConnected &&<Box height='8px' width='8px' sx={{backgroundColor:"#06FC99", border: "1px solid #06FC99", borderRadius: "100%", marginRight: '8px'}}/>}
                     {isConnected &&<Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px'}}>
@@ -162,7 +162,7 @@ const IDO = () => {
                 </Stack>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
-                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333", fontStyle: 'italic',  borderRadius: '5px', backgroundColor: '#333333' , marginTop: '18px'}}>
+                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333", fontStyle: 'italic',  borderRadius: '5px', backgroundColor: '#333333' , marginTop: '32px'}}>
                     <Typography component='div' width='100%' sx={{fontSize: '16px', fontWeight: '700', paddingTop: '16px', paddingLeft: '32px', textAlign: 'left'}}>
                         Information
                     </Typography>
@@ -178,7 +178,7 @@ const IDO = () => {
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         Cost
                         </Typography>
-                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                         {value?formatAmount(value):"0.00"} USDT
                         </Typography>
                     </Stack>
@@ -186,7 +186,7 @@ const IDO = () => {
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         Buyable
                         </Typography>
-                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                             {formatAmount(value*parseFloat(amountsOut?amountsOut[1]/n1e18:200n)/0.85)} {token?.symbol}
                         </Typography>
                     </Stack>
@@ -200,7 +200,7 @@ const IDO = () => {
                         '&.Mui-checked': {
                             color: '#06FC99',
                         },
-                    }} />} label={<Typography>I understand and agree to the <Link href='https://www.google.com' target='blank' style={{color: 'blue'}}>&lt;IDO Rules&gt;</Link></Typography>}/>
+                    }} />} label={<Typography>I understand and agree to the <Link href='https://www.google.com' target='blank' style={{color: '#41A0DA'}}>&lt;IDO Rules&gt;</Link></Typography>}/>
                 </FormGroup>
             </Stack>
         </Stack>
