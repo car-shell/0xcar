@@ -259,11 +259,18 @@ const PoolItem = ({poolPro, my=false}) => {
         openDialog()
     }
 
+    const padStart = (x) => {
+        return new Intl.NumberFormat(undefined, {
+            minimumIntegerDigits: 3,
+            useGrouping: false
+        }).format(x)
+    } 
+
     return <>
         {!isLoading && <Box  width='100%' sx={{minWidth: '1080px'}} >
             <Box  width='100%' height='32px' sx={{position: 'relative',  top: '10px', left: '10px', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}} >
                 <Box  width='100px' height='32px' sx={{textAlign: 'center', border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', borderRadius: '50px', font: "700 normal 14px Arial", lineHeight: '32px', color: 'white', backgroundColor: pool.id==1n?'#F59A23':'black' }} >
-                    #00{Number(pool.id)} Pool
+                    # {padStart(Number(pool.id))} Pool
                 </Box>
                 {!my && whitelistPool==pool.id && <Box  width='100px' height='32px' sx={{textAlign: 'center',  font: "700 italic 14px Arial", lineHeight: '32px', color: 'yellow', backgroundColor: 'transparent', marginBottom: '8px', marginRight: '10px' }} >
                     Fee Reduction

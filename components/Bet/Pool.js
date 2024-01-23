@@ -41,7 +41,10 @@ const Pool = ({id}) => {
     <div className={styles.container}>
       <div className={styles.pool_id_and_burned}>
         <div className={styles.pool_id}>
-          # 00{poolId} Pool { (whitelistPool == poolId) && <span style={{color: "yellow", font: "900 italic 11px arial"}}> Fee Reduction </span>}
+          # {new Intl.NumberFormat(undefined, {
+        minimumIntegerDigits: 3,
+        useGrouping: false
+    }).format(poolId)} Pool { (whitelistPool == poolId) && <span style={{color: "yellow", font: "900 italic 11px arial", marginLeft: '8px'}}> Fee Reduction </span>}
         </div>
           {/* Burned: <a style={{textDecoration: 'none3', color: '#2471fe'}} target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}>{deadBalance}</a> CDNT */}
           <div className={styles.content}> 

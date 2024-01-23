@@ -608,7 +608,7 @@ const BetArea = () => {
           <button className={styles.input} style={{cursor: 'pointer'}} onClick={()=>setAmount(parseInt(balance.replaceAll(",","")))} > MAX </button>
         </div>
         <button className={styles.submit} onClick={submitBet} style={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) ?{}:{font: 'bold 16px sans'}} disabled={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) }>
-          { isConnected ? chains.map(c=>c.id).indexOf(chain?.id) != -1 ?  (numbers.length != title.select || numbers[0]===undefined) ? `Please choose ${title.select==2?"two numbers":"a number"}` : amount === '' ? "Please input amount" : "Bet" : `Switch to ${chains[0].name}` : "Connect Wallet" }
+          { isConnected ? chains.map(c=>c.id).indexOf(chain?.id) != -1 ? poolDetails.locked? "Pool locked by owner":(numbers.length != title.select || numbers[0]===undefined) ? `Please choose ${title.select==2?"two numbers":"a number"}` : amount === '' ? "Please input amount" : "Bet" : `Switch to ${chains[0].name}` : "Connect Wallet" }
         </button>
         <div className={styles.line}>
             <div className={styles.content_text}>
