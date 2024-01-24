@@ -152,7 +152,7 @@ export const useGameContract = (monitor=false)  => {
         args: [address],
         watch: true,
         onSuccess: (data)=>{
-            // console.log(data);
+            console.log(data);
         }
     })
 
