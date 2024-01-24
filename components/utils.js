@@ -15,8 +15,8 @@ export function formatAmount(amount) {
     } else {
         console.log(`${amount} ${typeof amount}`);
     }
-
-    let formattedNumber = amount.toFixed(2);
+    var re = new RegExp('^-?\\d+(?:\.\\d{0,2})?');
+    let formattedNumber = amount.toString().match(re)[0];;
     const parts = formattedNumber.toString().split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
@@ -33,7 +33,6 @@ export const n1e18 = 1000000000000000000n
 export function isDictEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
-
 
 const padStart = (x) => {
     return new Intl.NumberFormat(undefined, {

@@ -10,7 +10,7 @@ import useDispatch from '../../store/useDispatch'
 import { useAccount, useNetwork} from 'wagmi';
 import useToast from '../Toast'
 import { useConnectModal, useChainModal } from '@rainbow-me/rainbowkit';
-import { formatAmount, isDictEmpty, n1e18 } from "../utils";
+import { formatAmount, isDictEmpty, n1e18, amountFromFormatedStr } from "../utils";
 import { BetStatus } from "../constant"
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -47,14 +47,17 @@ const BetArea = () => {
 
   const {address, isConnected} = useAccount()
   const {balance, token, allowance, approve} = useTokenContract()
-  const {poolDetails, bet, result, withdraw, last, withdrawMiningFunding, miningFunding} = useGameContract(true)
+  const {poolDetails, bet, result, withdraw, last, withdrawMiningFunding, miningFunding, setCurrentPoolId} = useGameContract(true)
   const {chain, chains} = useNetwork()
   const {openConnectModal} = useConnectModal()
   const {openChainModal} = useChainModal();
 
   let router =  useRouter();
   const {id: poolId} = router.query
-  
+  useEffect(()=>{
+    setCurrentPoolId(poolId);
+  }, [poolId])
+
   const setActiveStep = useCallback((type, step, msg=null)=>{
     if (type === 'bet' && step === 1) {
       setTipInfo((pre)=>{ return {...pre, status: BetStatus.confirmed}})
@@ -368,7 +371,7 @@ const BetArea = () => {
 
   const handleChange = useCallback(
       (e) => {
-          e.target.value = e.target.value.replace(/[^\d]/g, "")
+          e.target.value = e.target.value.replace(/[^\d^\.]/g, "")
           setAmount(e.target.value)
       },
       [setAmount],
@@ -464,7 +467,7 @@ const BetArea = () => {
       stepMsg:  InfoTip({type:title.value, odds:title.odds, number:formatNumber(numbers), amount:amount, win:false})
     })
     
-    if (!bet(id, BigInt(amount)*n1e18, poolId, title.key, formatNumber(numbers), betSuccess, betFail, setActiveStep)){
+    if (!bet(id, BigInt(amount*1e18), poolId, title.key, formatNumber(numbers), betSuccess, betFail, setActiveStep)){
       setIsLoading(false)
       showToast("connect wallet first!",  'error')
     }
@@ -605,16 +608,16 @@ const BetArea = () => {
         </div>
         <div className={styles.amount}>
           <input className={styles.input} style={{width: '80%'}} type='numbmic' placeholder='Input amount' value={amount} onChange={handleChange}/>
-          <button className={styles.input} style={{cursor: 'pointer'}} onClick={()=>setAmount(parseInt(balance.replaceAll(",","")))} > MAX </button>
+          <button className={styles.input} style={{cursor: 'pointer'}} onClick={()=>setAmount(amountFromFormatedStr(balance))} > MAX </button>
         </div>
-        <button className={styles.submit} onClick={submitBet} style={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) ?{}:{font: 'bold 16px sans'}} disabled={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) }>
-          { isConnected ? chains.map(c=>c.id).indexOf(chain?.id) != -1 ? poolDetails.locked? "Pool locked by owner":(numbers.length != title.select || numbers[0]===undefined) ? `Please choose ${title.select==2?"two numbers":"a number"}` : amount === '' ? "Please input amount" : "Bet" : `Switch to ${chains[0].name}` : "Connect Wallet" }
+        <button className={styles.submit} onClick={submitBet} style={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) ?{}:{font: 'bold 16px sans'}} disabled={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined || poolDetails.isLocked || amount > amountFromFormatedStr(balance)) }>
+          { isConnected ? chains.map(c=>c.id).indexOf(chain?.id) != -1 ? poolDetails?.isLocked ? "Pool locked by owner":(numbers.length != title.select || numbers[0]===undefined) ? `Please choose ${title.select==2?"two numbers":"a number"}` : amount === '' ? "Please input amount" :  amount > amountFromFormatedStr(balance) ? 'Insufficient balance' :  "Bet" : `Switch to ${chains[0].name}` : "Connect Wallet" }
         </button>
         <div className={styles.line}>
             <div className={styles.content_text}>
               Mining Rewards: <span style={{color: '#06FC99'}}> {miningFunding?formatAmount(miningFunding): '0.00'} {token?.symbol}</span>
             </div>
-            <div className={styles.content_text} style={{color: 'blue', cursor: 'pointer'}} onClick={handleWithdrawMiningFunding}>
+            <div className={styles.content_text} style={{color: '#41A0DA', cursor: 'pointer'}} onClick={handleWithdrawMiningFunding}>
               Widthdraw
             </div>
         </div>

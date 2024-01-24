@@ -74,7 +74,7 @@ const IDO = () => {
         if (!checked) {
             return "Agree to the IDO rules before creating a pool"
         }
-        if (value < 5000 || value > 50000) {
+        if (!value || value < 5000 || value > 50000) {
             return "The valid range is 5,000.00 to 50,000.00"
         }
         return "Create"
@@ -82,7 +82,7 @@ const IDO = () => {
 
     const handleInput = useCallback(
       (e) => {
-          e.target.value = e.target.value.replace(/[^\d.]/g, "")
+          e.target.value = e.target.value.replace(/[^\d]/g, "")
           setValue(e.target.value)
       },
       [setValue])
@@ -168,10 +168,18 @@ const IDO = () => {
                     </Typography>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
-                        Current CDNL Price
+                        Market Price
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                             {formatAmount(amountsOut?amountsOut[1]:200n*n1e18)} {token?.symbol}
+                        </Typography>
+                    </Stack>
+                    <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
+                        DTO Price (15% off)
+                        </Typography>
+                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                            {formatAmount(amountsOut?amountsOut[1]*100n/85n:200n*n1e18*100n/85n)} {token?.symbol}
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
@@ -187,11 +195,11 @@ const IDO = () => {
                         Buyable
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {value?formatAmount(value*parseFloat(amountsOut?amountsOut[1]/n1e18:200n)/0.85):'0.00'} {token?.symbol}
+                            {value?formatAmount(BigInt(value)*(amountsOut?amountsOut[1]*100n/85n:200n*n1e18*100n/85n)):'0.00'} {token?.symbol}
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained"  disabled={(isConnected && !checked) || (isConnected && (value < 5000 || value > 50000 )) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
+                <Button variant="contained"  disabled={(isConnected && !checked) || (isConnected && (!value || (value < 5000 || value > 50000) )) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
                     {tipContent()}
                 </Button>
                 <FormGroup width='100%'>

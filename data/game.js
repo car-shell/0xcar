@@ -95,7 +95,7 @@ export const useGameContract = (monitor=false)  => {
             chainId: chainId,
             watch: true,
             onSuccess(data){
-            //    console.log('Success', data)
+               console.log('Success', data)
             },
             // onError(error) {
             //     //console.log('Error', error)
@@ -128,7 +128,7 @@ export const useGameContract = (monitor=false)  => {
         args: [address],
         cache: 1_000,
         onSuccess: (data)=>{
-            console.log(`----------- lastRecord ------------`);
+            // console.log(`----------- lastRecord ------------`);
         }
     })
 
@@ -140,7 +140,7 @@ export const useGameContract = (monitor=false)  => {
         args: [address],
         watch: true,
         onSuccess: (data)=>{
-            console.log(data);
+//            console.log(data);
         }
     })
 
@@ -152,7 +152,7 @@ export const useGameContract = (monitor=false)  => {
         args: [address],
         watch: true,
         onSuccess: (data)=>{
-            console.log(data);
+            // console.log(data);
         }
     })
 
@@ -197,6 +197,7 @@ export const useGameContract = (monitor=false)  => {
         functionName: 'pools',
         chainId: chainId,
         watch: true,
+        cache: 2_000,
         onSuccess(data) {
         //    console.log('Success', data)
         },
@@ -332,7 +333,7 @@ export const useGameContract = (monitor=false)  => {
                 // setStepStatus('withdraw', 2)
 
                 console.log("transfer receipt",receipt)
-                success()
+                success(hash)
             }).catch((e)=>{
                 console.log("withdraw failed")
                 console.log(e.message)
@@ -413,7 +414,7 @@ export const useGameContract = (monitor=false)  => {
                     onReplaced: (transaction) => console.log(transaction),
                 })
                 console.log("transfer receipt",receipt)
-                success()
+                success(hash)
             }).catch((e)=>{
                 console.log("removePool failed")
                 console.log(e.message)
@@ -447,4 +448,4 @@ export const useGameContract = (monitor=false)  => {
 
 
     return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding, withdrawPool, whitelistPool}
-}
+} 

@@ -32,6 +32,44 @@ const WithdrawContent = ({token, amount})=> {
     </>
 }
 
+const WithdrawSuccessContent = ({token, withdrawContentInfo}) => {
+    return <><Stack direction='column' alignItems='center'  width='480px'>
+        <Typography gutterBottom sx={{font:'700 italic 28px Arial',color:'#8400FF'}}>
+        Congratulation!
+        </Typography>
+        <Typography gutterBottom sx={{font:'700 italic 28px Arial',color:'#06FC99'}}>
+        Withdrawal Successful
+        </Typography>
+        <Stack direction='column' alignItems='left' sx={{border: '1px solid #333', borderRadius: '10px', padding: '16px 16px 16px 16px', marginTop: '32px'}} width="90%">
+            <Stack direction='row' alignItems='left' justifyContent='space-between'>
+                <Typography gutterBottom sx={{font:'400 italic 16px Arial',color:'#fff'}}>
+                    Amount Withdrawn
+                </Typography>
+                <Typography gutterBottom sx={{font:'400 normal 16px Arial',color:'#06FC99'}}>
+                    {withdrawContentInfo.amount} {token?.symbol} 
+                </Typography>
+            </Stack>
+            <Stack direction='row' alignItems='left' justifyContent='space-between'>
+                <Typography gutterBottom sx={{font:'400 italic 16px Arial',color:'#fff'}}>
+                    Withdrawal Time
+                </Typography>
+                <Typography gutterBottom sx={{font:'400 normal 16px Arial',color:'#06FC99'}}>
+                    {withdrawContentInfo.time}
+                </Typography>
+            </Stack>
+            <Stack direction='row' alignItems='left' justifyContent='space-between'>
+                <Typography gutterBottom sx={{font:'400 italic 16px Arial',color:'#fff'}}>
+                    Transaction Hash
+                </Typography>
+                <Typography gutterBottom sx={{font:'400 normal 16px Arial',color:'#06FC99'}}>
+                    {withdrawContentInfo.hash}
+                </Typography>
+            </Stack>
+        </Stack>
+
+    </Stack></> 
+}
+
 const ClosureRulesContent = ({time}) => {
     return <><Stack direction='column' alignItems='left' sx={{border: '1px solid #333', borderRadius: '10px', padding: '8px 16px'}}>
         <Typography gutterBottom sx={{font:'400 italic 14px Arial',color:'#f59a23'}}>
@@ -50,7 +88,7 @@ const ClosureRulesContent = ({time}) => {
         4. The next window for closing the pool is:
         </Typography>
         <Typography gutterBottom sx={{font:'400 italic 14px Arial',color:'#06FC99'}}>
-        {time}
+        {formatTime(time, true)} -- {formatTime((new Date(time)).setDate(time.getDate()+1), true)}
         </Typography>
     </Stack></>
 }
@@ -103,7 +141,7 @@ const ClosureStepContent = ({steps, token, stepContent, amount}) => {
     </Stack></>
 }
 
-const ClosureSuccessContent = ({}) => {
+const ClosureSuccessContent = ({token, withdrawContentInfo}) => {
     return <><Stack direction='column' alignItems='center'  width='480px'>
         <Typography gutterBottom sx={{font:'700 italic 28px Arial',color:'#06FC99'}}>
         All withdrawals complete
@@ -111,32 +149,32 @@ const ClosureSuccessContent = ({}) => {
         <Typography gutterBottom sx={{font:'700 italic 28px Arial',color:'#06FC99'}}>
         Prize pool has been <span style={{color: 'white'}}>cancelled</span>
         </Typography>
-        {/* <Stack direction='column' alignItems='left' sx={{border: '1px solid #333', borderRadius: '10px', padding: '16px 16px 16px 16px', marginTop: '32px'}} width="90%">
+        <Stack direction='column' alignItems='left' sx={{border: '1px solid #333', borderRadius: '10px', padding: '16px 16px 16px 16px', marginTop: '32px'}} width="90%">
             <Stack direction='row' alignItems='left' justifyContent='space-between'>
                 <Typography gutterBottom sx={{font:'400 italic 16px Arial',color:'#fff'}}>
                     Amount Withdrawn
                 </Typography>
                 <Typography gutterBottom sx={{font:'400 normal 16px Arial',color:'#06FC99'}}>
-                    489,500,000.00 CDNL
+                    {withdrawContentInfo.amount} {token?.symbol} 
                 </Typography>
             </Stack>
             <Stack direction='row' alignItems='left' justifyContent='space-between'>
                 <Typography gutterBottom sx={{font:'400 italic 16px Arial',color:'#fff'}}>
-                    Amount Withdrawn
+                    Withdrawal Time
                 </Typography>
                 <Typography gutterBottom sx={{font:'400 normal 16px Arial',color:'#06FC99'}}>
-                    489,500,000.00 CDNL
+                    {withdrawContentInfo.time}
                 </Typography>
             </Stack>
             <Stack direction='row' alignItems='left' justifyContent='space-between'>
                 <Typography gutterBottom sx={{font:'400 italic 16px Arial',color:'#fff'}}>
-                    Amount Withdrawn
+                    Transaction Hash
                 </Typography>
                 <Typography gutterBottom sx={{font:'400 normal 16px Arial',color:'#06FC99'}}>
-                    489,500,000.00 CDNL
+                    {withdrawContentInfo.hash}
                 </Typography>
             </Stack>
-        </Stack> */}
+        </Stack>
 
     </Stack></> 
 }
@@ -148,37 +186,58 @@ const PoolItem = ({poolPro, my=false}) => {
     const {preRemovePool, removePool, withdrawPool, whitelistPool} = useGameContract();
     const [openDialog, handleClose, props] = useCustomizedDialog()
     const [dialogInfo, setDialogInfo] = useState({})
+    const [withdrawContentInfo, setWithdrawContentInfo] = useState({})
+
     const { data: blockNumber, isLoading } = useBlockNumber()
     const [lockPoolStepInfo, setLockPoolStepInfo] = useState({active: 0})
     const {ToastUI, showToast} = useToast()
     const {address} = useAccount();
 
     const steps = ["Close pool", "Wait for 3 days", "Withdraw all"]
+
+    React.useEffect(() => {
+        setPool(poolPro);
+    }, [poolPro]);
+
     const handleRemovePool = () => {
         if (pool.isLocked) {
+            setDialogInfo({title: "Close Pool", context: "ClosureStepContent", button: {title: 'Processing...', disable: true, action: null}})
+            let amount = pool.remainBalance;
             removePool(pool.id, ()=>{
-                showToast("success", "success")
+                showToast("success", "success");
+                setWithdrawContentInfo({hash: data, time: new Date(), amount: amount})
+                setDialogInfo({title: "Close Pool", context: "ClosureSuccessContent", button: {title: 'Got It', disable: false, action: null}})
             }, (error)=>{
                 showToast(error.shortMessage || error.message || error.reason, "error")
+                handleClose()
             })
         } else {
+            setDialogInfo({title: "Close Pool", context: "ClosureStepContent", button: {title: 'Processing...', disable: true, action: null}})
             preRemovePool(pool.id, ()=>{
                 showToast("success", "success")
+                setLockPoolStepInfo({active: 1})
+                setDialogInfo({title: "Close Pool", context: "ClosureStepContent", button: {title: `Available for withdrawal in ${ (new Date((new Date()).getTime()+(Number(pool.canEndBlockNum - blockNumber)*3*1000))).toString()  }`, disable: true, action: null}})
             }, (error)=>{
                 showToast(error.shortMessage || error.messag || error.reason, "error")
+                handleClose()
             })
         }
     }
 
     const handleWithdrawPool = () => {
-        withdrawPool(pool.id, ()=>{
+        setDialogInfo({title: "Withdraw", context: "WithdrawContent", button: {title: 'Processing...', disable: true, action: null}})
+        let amount = pool.remainBalance/10n;
+        withdrawPool(pool.id, (data)=>{
+            setWithdrawContentInfo({hash: data, time: new Date(), amount: amount})
+            setDialogInfo({title: "Withdraw", context: "WithdrawSuccessContent", button: {title: 'Got it', disable: false, action: null}})
             showToast("success", "success")
         }, (error)=>{
             showToast(error.shortMessage || error.message || error.reason, "error")
+            handleClose()
         })
     }
 
-    const nextWidthdraw = () => {
+    const nextWidthdraw = useCallback(() => {
         // let one_period = 3600n*24n*16n/3n;
         let one_period = 3600n*3n/3n;
         // let widthdraw_period = 3600n*24n/3n
@@ -199,9 +258,9 @@ const PoolItem = ({poolPro, my=false}) => {
         }
 
         return blockNumber - pool.nextWidthdrawBlockNum;
-    }
+    }, [pool, blockNumber])
 
-    const nextLockPool = () => {
+    const nextLockPool = useCallback(() => {
         // let one_period = 3600n*24n*15n/3n;
         let lock_period = 3600n*2n/3n;
         // let widthdraw_period = 3600n*24n*3n/3n;
@@ -221,7 +280,7 @@ const PoolItem = ({poolPro, my=false}) => {
         }
 
         return blockNumber - (lock_period + pool.createdBlockNum);
-    }
+    }, [pool, blockNumber])
     
     const handleClosePool = () => { 
         let t = nextLockPool()
@@ -252,7 +311,8 @@ const PoolItem = ({poolPro, my=false}) => {
         console.log(`new widthdraw time is ${Number(t)*3}`);
         if (t<0) {
             let d = new Date((new Date()).getTime()+(Number(-t)*3*1000))
-            setDialogInfo({title: "Withdraw", context: "WithdrawContent", button: {title: `Please withdraw on ${d}`, disable: true, action: null}})
+            let end = (new Date(d)).setDate(d.getDate() + 1);
+            setDialogInfo({title: "Withdraw", context: "WithdrawContent", button: {title: `Please withdraw between ${formatTime(d, true)} and ${formatTime(end, true)}`, disable: true, action: null}})
         } else {
             setDialogInfo({title: "Withdraw", context: "WithdrawContent", button: {title: 'Withdraw', disable: false, action: handleWithdrawPool}})
         }
@@ -349,7 +409,7 @@ const PoolItem = ({poolPro, my=false}) => {
                     </Box>
                     :
                     <Stack direction='row' justifyContent="center" width="42%" alignItems='center' sx={{marginLeft: '16px'}}>
-                    <Button variant="contained" disabled sx={{borderRadius: '90px', height: '32px',  width: "340px", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleWithdraw} >
+                    <Button variant="contained" disabled sx={{textTransform: 'none', borderRadius: '90px', height: '32px',  width: "340px", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleWithdraw} >
                     The prize pool has been closed
                     </Button>
                     </Stack>}
@@ -363,11 +423,12 @@ const PoolItem = ({poolPro, my=false}) => {
             {dialogInfo.context == "WithdrawContent"?
             <WithdrawContent token={token} amount={formatAmount(pool?.remainBalance/10n)} />:
             dialogInfo.context == "ClosureRulesContent"?
-            <ClosureRulesContent time={ (new Date((new Date()).getTime()+(Number(-nextLockPool())*3*1000))).toString() }/>:
+            <ClosureRulesContent time={ new Date((new Date()).getTime()+(Number(-nextLockPool())*3*1000)) }/>:
             dialogInfo.context == "ClosureStepContent"?
             <ClosureStepContent token={token} steps={steps} stepContent={lockPoolStepInfo} amount={pool?.remainBalance} />:
             dialogInfo.context == "ClosureSuccessContent"?
-            <ClosureSuccessContent />:<></>
+            <ClosureSuccessContent token={token} withdrawContentInfo={withdrawContentInfo} />
+            :<WithdrawSuccessContent token={token} withdrawContentInfo={withdrawContentInfo}/>
             }
         </DialogFrame>
         <ToastUI />

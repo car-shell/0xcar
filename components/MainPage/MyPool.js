@@ -24,12 +24,12 @@ const MyPool = () => {
                     My Prize Pool
                 </Typography> 
                 {pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).map((item)=>{
-                    return <Box key={'box-'+item.id} >
+                    return <Box key={'box-'+item.id} sx={{paddingTop: '4px'}}>
                         <PoolItem key={'pool-'+item.id} poolPro={item} my={true}/>
                     </Box>
                 })}
 
-                <Typography component='div' width='100%' sx={{ padding: '50px 0px 12px 0px', font: '700 normal 16px Arial'}}>
+                <Typography component='div' width='100%' sx={{ padding: '50px 0px 0px 0px', font: '700 normal 16px Arial'}}>
                     Withdrawal Pool Rules
                 </Typography>
                 <ul style={{padding: '0px 0px 0px 10px', font: '400 normal 14px Arial'}}>

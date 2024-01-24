@@ -111,6 +111,7 @@ const Header = ({showMenu=true}) => {
   const ownPool = () => {
     return (pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).length != 0 )
   }
+  
   return (
     <>
       <ToastUI />
