@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useCallback, useState, useRef, useEffect, useContext} from "react";
 import {Box, Card, CardActionArea, Typography, Button, Dialog, Stack} from '@mui/material'
+
 import { useBlockNumber, useAccount} from 'wagmi'
 import Image from 'next/image'
 import { formatAmount, n1e18, formatTime } from "../utils";
@@ -178,7 +179,6 @@ const ClosureSuccessContent = ({token, withdrawContentInfo}) => {
 
     </Stack></> 
 }
-
 
 const PoolItem = ({poolPro, my=false}) => {
     const [pool, setPool] = React.useState(poolPro);
@@ -419,7 +419,7 @@ const PoolItem = ({poolPro, my=false}) => {
             </Card>
             
         </Box>}
-        <DialogFrame {...props} title={dialogInfo.title} button={dialogInfo.button}> 
+        <DialogFrame {...props} title={dialogInfo.title} button={dialogInfo.button} tail={dialogInfo.context == "ClosureStepContent" && lockPoolStepInfo.active==0}> 
             {dialogInfo.context == "WithdrawContent"?
             <WithdrawContent token={token} amount={formatAmount(pool?.remainBalance/10n)} />:
             dialogInfo.context == "ClosureRulesContent"?

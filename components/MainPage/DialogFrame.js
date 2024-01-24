@@ -6,7 +6,9 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import {Box, Card, CardActionArea, Typography, Button, Dialog, Stack} from '@mui/material'
-
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import { styled } from '@mui/material/styles';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -35,12 +37,15 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   }));
 
 
-export const DialogFrame = (({open, handleClose, title, button, children})=>{
+export const DialogFrame = (({open, handleClose, title, button, children, tail})=>{
+    const [checked, setChecked] = React.useState(false);
+
     return <>
         <BootstrapDialog
             onClose={handleClose}
             aria-labelledby="customized-dialog-title"
             open={open}
+            sx={{marginBottom: '32px'}}
         >
             <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
             {title}
@@ -61,10 +66,18 @@ export const DialogFrame = (({open, handleClose, title, button, children})=>{
                 {children}
             </DialogContent>
             <DialogActions>
-            <Button autoFocus variant='contained' disabled={button?.disable} sx={{ textTransform: 'none', width:'90%', borderRadius: '220px', font:'400 normal 14px Arial', height: '45px', margin: '32px 0 32px 0', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}, '&.MuiButton-root': {backgroundColor: '#d9001b'}}} onClick={button?.action?button?.action:handleClose}>
-                {button?.title}
+            <Button autoFocus variant='contained' disabled={button?.disable || (tail && !checked)} sx={{ textTransform: 'none', width:'90%', borderRadius: '220px', font:'400 normal 14px Arial', height: '45px', margin: '16px 0 0px 0', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}, '&.MuiButton-root': {backgroundColor: '#d9001b'}}} onClick={button?.action?button?.action:handleClose}>
+                {(tail && !checked)?'Agree close pool rules first':button?.title}
             </Button>
             </DialogActions>
+            { tail && <FormGroup sx={{'&.MuiFormGroup-root':{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}}>
+                <FormControlLabel sx={{width: '85%'}} control={<Checkbox size="small" checked={checked} onChange={(e)=>{setChecked(!checked)}} sx={{
+                    color: 'white',
+                    '&.Mui-checked': {
+                        color: '#06FC99',
+                    },
+                }} />} label={<Typography sx={{font: '400 normal 13px arial', color: 'white'}}>I understand that closing the pool is irreversible and will permanently terminate this prize pool</Typography>}/>
+            </FormGroup> }
         </BootstrapDialog>
     </>
 })

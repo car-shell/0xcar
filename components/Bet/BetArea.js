@@ -531,6 +531,24 @@ const BetArea = () => {
         </div></>)
   }
 
+  const buttonContent = () => {
+    if (!isConnected) {
+      return "Connect Wallet"
+    } else if ( chains.map(c=>c.id).indexOf(chain?.id) == -1) {
+      return `Switch to ${chains[0].name}`
+    } else if ( poolDetails?.isLocked ) {
+      return  "Pool locked by owner"
+    } else if (numbers.length != title.select || numbers[0]===undefined) {
+      return `Please choose ${title.select==2?"two numbers":"a number"}`
+    } else if ( amount === '' ) {
+      return "Please input amount"
+    } else if ( amount > amountFromFormatedStr(balance) ) { 
+      return 'Insufficient balance'
+     } else if ( BigInt(amount * title.odds * 10 * 1e18) > poolDetails.remainBalance ) {
+      return `Current pool's max bet is ${formatAmount(poolDetails.remainBalance/BigInt(title.odds)/10n)} ${token?.symbol}`
+     } 
+     return "Bet"
+  }
   return (
     <div className={styles.bet_container}>
       {isLoading && <div className={`${isLoading?styles.display:styles.displayNone} ${styles.umask}`}>
@@ -610,8 +628,8 @@ const BetArea = () => {
           <input className={styles.input} style={{width: '80%'}} type='numbmic' placeholder='Input amount' value={amount} onChange={handleChange}/>
           <button className={styles.input} style={{cursor: 'pointer'}} onClick={()=>setAmount(amountFromFormatedStr(balance))} > MAX </button>
         </div>
-        <button className={styles.submit} onClick={submitBet} style={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) ?{}:{font: 'bold 16px sans'}} disabled={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined || poolDetails.isLocked || amount > amountFromFormatedStr(balance)) }>
-          { isConnected ? chains.map(c=>c.id).indexOf(chain?.id) != -1 ? poolDetails?.isLocked ? "Pool locked by owner":(numbers.length != title.select || numbers[0]===undefined) ? `Please choose ${title.select==2?"two numbers":"a number"}` : amount === '' ? "Please input amount" :  amount > amountFromFormatedStr(balance) ? 'Insufficient balance' :  "Bet" : `Switch to ${chains[0].name}` : "Connect Wallet" }
+        <button className={styles.submit} onClick={submitBet} style={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) ?{}:{font: 'bold 16px sans'}} disabled={ buttonContent()!="Bet" &&  buttonContent()!="Connect Wallet" &&  !buttonContent().startsWith("Switch to")}>
+          { buttonContent() }
         </button>
         <div className={styles.line}>
             <div className={styles.content_text}>

@@ -72,7 +72,7 @@ const IDO = () => {
             return "Connect Wallet"
         }
         if (!checked) {
-            return "Agree to the IDO rules before creating a pool"
+            return "Agree to the DTO rules before creating a pool"
         }
         if (!value || value < 5000 || value > 50000) {
             return "The valid range is 5,000.00 to 50,000.00"
@@ -104,7 +104,7 @@ const IDO = () => {
         <StepInfo />
         <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="600px" >
             <Typography component='div' sx={{fontSize: '36px', fontWeight: '700', color: '#F59A23', marginTop: '70px'}}>
-                CDNL IDO
+                CDNL DTO
             </Typography>
             <Typography component='div' sx={{fontSize: '36px',  fontStyle: 'italic', fontWeight: '700'}}>
                 Become a Market Maker
@@ -202,13 +202,14 @@ const IDO = () => {
                 <Button variant="contained"  disabled={(isConnected && !checked) || (isConnected && (!value || (value < 5000 || value > 50000) )) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
                     {tipContent()}
                 </Button>
-                <FormGroup width='100%'>
-                    <FormControlLabel  height='12px'  control={<Checkbox checked={checked} onChange={(e)=>{setChecked(!checked)}} sx={{
+               
+                <FormGroup width='100%' sx={{'&.MuiFormGroup-root':{backgroundColor: 'black'}}}>
+                    <FormControlLabel   control={<Checkbox size='small' checked={checked} onChange={(e)=>{setChecked(!checked)}} sx={{
                         color: 'white',
                         '&.Mui-checked': {
                             color: '#06FC99',
                         },
-                    }} />} label={<Typography>I understand and agree to the <Link href='https://www.google.com' target='blank' style={{color: '#41A0DA'}}>&lt;IDO Rules&gt;</Link></Typography>}/>
+                    }} />} label={<Typography  sx={{font: '400 normal 13px arial', color: 'white'}} >I understand and agree to the <Link href='https://www.google.com' target='blank' style={{color: '#41A0DA'}}>&lt;DTO Rules&gt;</Link></Typography>}/>
                 </FormGroup>
             </Stack>
         </Stack>

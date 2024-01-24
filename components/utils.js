@@ -16,7 +16,9 @@ export function formatAmount(amount) {
         console.log(`${amount} ${typeof amount}`);
     }
     var re = new RegExp('^-?\\d+(?:\.\\d{0,2})?');
-    let formattedNumber = amount.toString().match(re)[0];;
+    let formattedNumber = amount.toString().match(re)[0];
+    formattedNumber = parseFloat(formattedNumber).toFixed(2)
+    
     const parts = formattedNumber.toString().split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
@@ -24,7 +26,7 @@ export function formatAmount(amount) {
 }
 
 export function amountFromFormatedStr(str) {
-    str = str.replace(',', '')
+    str = str.replaceAll(',', '')
     return parseFloat(str)
 }
 

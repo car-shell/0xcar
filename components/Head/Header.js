@@ -111,7 +111,7 @@ const Header = ({showMenu=true}) => {
   const ownPool = () => {
     return (pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).length != 0 )
   }
-  
+
   return (
     <>
       <ToastUI />
@@ -133,8 +133,8 @@ const Header = ({showMenu=true}) => {
               <BaseLink href="/" >App</BaseLink>
               {/* {curRouter=='/app' && <div className={styles.underline} style={{width: }}></div>} */}
           </div>
-          <div className={styles.menuItem} style={curRouter=='/ido'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
-              <BaseLink href="/ido" >IDO</BaseLink>
+          <div className={styles.menuItem} style={curRouter=='/dto'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+              <BaseLink href="/dto" >DTO</BaseLink>
           </div> 
           {/*<div className={styles.menuItem} style={curRouter=='/swap'?{color: '#06FC99'}:{}}>
               <BaseLink href="/swap" >Swap</BaseLink>
