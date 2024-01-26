@@ -107,7 +107,7 @@ const IDO = () => {
                 CDNL DTO
             </Typography>
             <Typography component='div' sx={{fontSize: '36px',  fontStyle: 'italic', fontWeight: '700'}}>
-                Become a Market Maker
+            Become the Owner of a Betting Pool
             </Typography>
             <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}} >
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
