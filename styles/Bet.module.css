@@ -391,11 +391,12 @@
   width: calc(100% - 32px);
   border: none;
   cursor: pointer;
+  font-size: '14px';
 
   background-color: #f40000;
 }
 .submit:disabled {
-  color: #726b6b;
+  color: #aaaaaa;
   background-color: #333333;
 }
 .umask {

@@ -199,7 +199,7 @@ const IDO = () => {
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained"  disabled={(isConnected && !checked) || (isConnected && (!value || (value < 5000 || value > 50000) )) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
+                <Button variant="contained"  disabled={(isConnected && !checked) || (isConnected && (!value || (value < 5000 || value > 50000) )) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleCreate}>
                     {tipContent()}
                 </Button>
                
