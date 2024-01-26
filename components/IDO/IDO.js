@@ -171,7 +171,7 @@ const IDO = () => {
                         Market Price
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {formatAmount(amountsOut?amountsOut[1]:200n*n1e18)} {token?.symbol}
+                            {formatAmount(amountsOut?amountsOut[1]:200n*n1e18)} {token?.symbol}/USDT
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}>
@@ -179,7 +179,7 @@ const IDO = () => {
                         DTO Price (15% off)
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {formatAmount(amountsOut?amountsOut[1]*100n/85n:200n*n1e18*100n/85n)} {token?.symbol}
+                            {formatAmount(amountsOut?amountsOut[1]*100n/85n:200n*n1e18*100n/85n)} {token?.symbol}/USDT
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>

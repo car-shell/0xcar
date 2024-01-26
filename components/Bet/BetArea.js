@@ -19,6 +19,8 @@ import StepLabel from '@mui/material/StepLabel';
 import CustomizedSteppers from './Progress'
 import { useRouter } from 'next/router';
 import useAudio from '../Audio'
+import useNFTContract from '../../data/nft'
+
 
 const BetArea = () => {
   const rules = [{key: 0, value: '1-Star (5x)', number: 5, select: 1, odds: 5}, {key: 1, value: '1-Star (10x)', number: 10, select: 1, odds: 10}, {key: 2, value: '2-Star (100x)', number: 10, select: 2, odds: 100}]
@@ -47,10 +49,13 @@ const BetArea = () => {
 
   const {address, isConnected} = useAccount()
   const {balance, token, allowance, approve} = useTokenContract()
-  const {poolDetails, bet, result, withdraw, last, withdrawMiningFunding, miningFunding, setCurrentPoolId} = useGameContract(true)
+  const {poolDetails, bet, result, withdraw, last, whitelistPool, withdrawMiningFunding, miningFunding, setCurrentPoolId} = useGameContract(true)
   const {chain, chains} = useNetwork()
   const {openConnectModal} = useConnectModal()
   const {openChainModal} = useChainModal();
+
+  const {ownList, getNFT} = useNFTContract()
+
 
   let router =  useRouter();
   const {id: poolId} = router.query
@@ -222,7 +227,7 @@ const BetArea = () => {
               console.log(`tipInfo amount: ${preTip.amount} `);
               setStepInfo((pre)=>{
                 console.log(`tipInfo amount: ${preTip.amount} `);
-                return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", <>YOU WIN THE BET!<div style={{font: '700 20px normal sans', textAlign: "center", paddingTop: "24px"}}>+{formatAmount(preTip?.amount*((preTip?.odds-1)*0.87+1))} {token?.symbol}</div></>)}
+                return {...pre, stepMsg: getStepMsg("CONGRATULATIONS", <>YOU WIN THE BET!<div style={{font: '700 20px normal sans', textAlign: "center", paddingTop: "24px"}}>+{formatAmount(preTip?.amount*((preTip?.odds-1)*(0.93+totalDiscout/100)+1))} {token?.symbol}</div></>)}
               })
               return {...preTip, status: BetStatus.win, action: null, random: preTip.number}
             })
@@ -284,7 +289,7 @@ const BetArea = () => {
 
   const withdrawWin = useCallback((info)=>{
     setIsLoading(true)
-    setActiveStep('withdraw', 0, InfoTip({...info, title: 'withdraw'}))
+    setActiveStep('withdraw', 0, InfoTip({...info, title: 'withdraw', showDiscout: true}))
 
     withdraw(info.id, ()=>{
       setStepInfo((pre)=>{
@@ -310,7 +315,7 @@ const BetArea = () => {
 
     setIsLoading(true)
     setStepInfo((pre)=>{
-      return {...pre, steps: stepNodes['withdraw'], active: 0, stepTitle: 'withdraw', isShow: true, stepMsg: getStepMsg("WITHDRAW", "MINING FUNDING!")}
+      return {...pre, steps: stepNodes['withdraw'], active: 0, stepTitle: 'withdraw', isShow: true, stepMsg: getStepMsg("WITHDRAW", <>MINING REWARDS<div style={{font: '700 20px normal sans', textAlign: "center", paddingTop: "24px"}}>+{formatAmount(miningFunding)} {token?.symbol}</div></>)}
     })
 
     withdrawMiningFunding(poolId, (data)=>{
@@ -483,7 +488,21 @@ const BetArea = () => {
     return false
   }
 
-  const InfoTip = ({type, odds, number, amount, status=-3, title='bet'}) => {
+  const [discout, setDiscout] = useState([])
+  const [totalDiscout, setTotalDiscout] = useState(0)
+
+  useEffect(()=>{
+    let discout = []
+    let totalDiscout = 0;
+    if (whitelistPool == poolId) {
+      discout.push({name: 'Whitelist', discout: '1'})
+      totalDiscout += 1;
+    }
+    setTotalDiscout(totalDiscout)
+    setDiscout(discout)
+  }, [whitelistPool, poolId])
+
+  const InfoTip = ({type, odds, number, amount, status=-3, title='bet', showDiscout=false}) => {
     const formatNumber = (number, odds) => {
       if (number == 'undefined' || odds == 'undefined') {
         return '';
@@ -527,8 +546,27 @@ const BetArea = () => {
         </div>
         <div className={styles.tipLine}>
           <div className={styles.tipTilte}>{(status==BetArea.win||title==='withdraw')?'Net Profit':'Potential Net Profit'}</div>
-          <div className={styles.tipValue}>{formatAmount(amount*((odds-1)*0.87+1))}</div>
-        </div></>)
+          <div className={styles.tipValue} style={{color: '#06FC99'}}>{formatAmount(amount*(odds-1)*(0.93+totalDiscout/100))}</div>
+        </div>
+        { showDiscout && discout?.length!=0 && <div className={styles.separate_gray}/> }
+        { showDiscout && discout.map((r)=>{
+            return <>
+                <div className={styles.tipLine}>
+                  <div className={styles.tipTilte}>Fee Reduction Types</div>
+                  <div className={styles.tipValue} style={{color: '#41A0DA'}}>{r.name}</div>
+                </div>
+                <div className={styles.tipLine}>
+                  <div className={styles.tipTilte}>Fee Reduction Percentage</div>
+                  <div className={styles.tipValue} style={{color: '#41A0DA'}}>{r.discout}%</div>
+                </div>
+                <div className={styles.tipLine}>
+                  <div className={styles.tipTilte}>Reduction Amount</div>
+                  <div className={styles.tipValue} style={{color: '#41A0DA'}}>{r.discout/100*amount*(odds-1)}</div>
+                </div>
+            </>
+        })
+        }
+        </>)
   }
 
   const buttonContent = () => {
@@ -549,6 +587,7 @@ const BetArea = () => {
      } 
      return "Bet"
   }
+
   return (
     <div className={styles.bet_container}>
       {isLoading && <div className={`${isLoading?styles.display:styles.displayNone} ${styles.umask}`}>

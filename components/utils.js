@@ -37,7 +37,7 @@ export function isDictEmpty(obj) {
   return Object.keys(obj).length === 0;
 }
 
-const padStart = (x) => {
+export const padStart = (x) => {
     return new Intl.NumberFormat(undefined, {
         minimumIntegerDigits: 2,
         useGrouping: false

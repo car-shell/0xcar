@@ -499,3 +499,12 @@
   border-bottom-style: solid;
   border-color: #06FC99;  
 }
+
+.separate_gray {
+  height: 1px;
+  width: 100%;
+
+  border: 1px;
+  border-bottom-style: solid;
+  border-color: #333;  
+}

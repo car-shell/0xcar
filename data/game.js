@@ -95,7 +95,7 @@ export const useGameContract = (monitor=false)  => {
             chainId: chainId,
             watch: true,
             onSuccess(data){
-               console.log('Success', data)
+            //    console.log('Success', data)
             },
             // onError(error) {
             //     //console.log('Error', error)
