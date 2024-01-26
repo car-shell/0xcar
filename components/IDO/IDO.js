@@ -152,7 +152,7 @@ const IDO = () => {
                             Balance
                         </Typography>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400'}}>
-                            {usdtBalance} usdt
+                            {usdtBalance} USDT
                         </Typography>
                     </Stack>
                 </Stack>
@@ -171,7 +171,7 @@ const IDO = () => {
                         Market Price
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {formatAmount(amountsOut?amountsOut[1]:200n*n1e18)} {token?.symbol}/USDT
+                            {formatAmount(amountsOut?amountsOut[1]:200n*n1e18)} <span style={{fontSize: '14px'}}>{token?.symbol}/USDT</span>
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}>
@@ -179,7 +179,7 @@ const IDO = () => {
                         DTO Price (15% off)
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {formatAmount(amountsOut?amountsOut[1]*100n/85n:200n*n1e18*100n/85n)} {token?.symbol}/USDT
+                            {formatAmount(amountsOut?amountsOut[1]*100n/85n:200n*n1e18*100n/85n)} <span style={{fontSize: '14px'}}>{token?.symbol}/USDT</span>
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
@@ -187,7 +187,7 @@ const IDO = () => {
                         Cost
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {value?formatAmount(value):"0.00"} USDT
+                        {value?formatAmount(value):"0.00"} <span style={{fontSize: '14px'}}>USDT</span>
                         </Typography>
                     </Stack>
                     <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', marginBottom: '16px'}}>
@@ -195,11 +195,11 @@ const IDO = () => {
                         Buyable
                         </Typography>
                         <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {value?formatAmount(BigInt(value)*(amountsOut?amountsOut[1]*100n/85n:200n*n1e18*100n/85n)):'0.00'} {token?.symbol}
+                            {value?formatAmount(BigInt(value)*(amountsOut?amountsOut[1]*100n/85n:200n*n1e18*100n/85n)):'0.00'} <span style={{fontSize: '14px'}}>{token?.symbol}</span>
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained"  disabled={(isConnected && !checked) || (isConnected && (!value || (value < 5000 || value > 50000) )) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 18px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleCreate}>
+                <Button variant="contained"  disabled={(isConnected && !checked) || (isConnected && (!value || (value < 5000 || value > 50000) )) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleCreate}>
                     {tipContent()}
                 </Button>
                
