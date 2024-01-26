@@ -583,7 +583,7 @@ const BetArea = () => {
     } else if ( amount > amountFromFormatedStr(balance) ) { 
       return 'Insufficient balance'
      } else if ( BigInt(amount * title.odds * 10 * 1e18) > poolDetails.remainBalance ) {
-      return `Current pool's max bet is ${formatAmount(poolDetails.remainBalance/BigInt(title.odds)/10n)} ${token?.symbol}`
+      return `Max bet at this multiplier is ${formatAmount(poolDetails.remainBalance/BigInt(title.odds)/10n)} ${token?.symbol}`
      } 
      return "Bet"
   }
@@ -667,7 +667,7 @@ const BetArea = () => {
           <input className={styles.input} style={{width: '80%'}} type='numbmic' placeholder='Input amount' value={amount} onChange={handleChange}/>
           <button className={styles.input} style={{cursor: 'pointer'}} onClick={()=>setAmount(amountFromFormatedStr(balance))} > MAX </button>
         </div>
-        <button className={styles.submit} onClick={submitBet} style={chains.map(c=>c.id).indexOf(chain?.id) != -1 && (amount === '' || numbers.length !== title.select || numbers[0]===undefined) ?{}:{font: 'bold 16px sans'}} disabled={ buttonContent()!="Bet" &&  buttonContent()!="Connect Wallet" &&  !buttonContent().startsWith("Switch to")}>
+        <button className={styles.submit} onClick={submitBet} style={buttonContent()!="Bet" &&  buttonContent()!="Connect Wallet" &&  !buttonContent().startsWith("Switch to") ?{}:{font: 'bold 16px sans'}} disabled={ buttonContent()!="Bet" &&  buttonContent()!="Connect Wallet" &&  !buttonContent().startsWith("Switch to")}>
           { buttonContent() }
         </button>
         <div className={styles.line}>
