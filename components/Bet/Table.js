@@ -12,10 +12,13 @@ import Box from '@mui/material/Box';
 import Modal, { ConfirmationModal, useModal } from '../Tips';
 import { store, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
-import { BetStatus } from '..//constant'
+import { BetStatus } from '../constant'
 import Image from 'next/image'
 import useToast from '../Toast'
 import { useAccount } from "wagmi";
+import {formatTime} from '../utils'
+
+
 
 function StickyHeadTable({columns, data, maxHeight="478px", type=null}) { 
     const {address} = useAccount()
@@ -123,19 +126,7 @@ function StickyHeadTable({columns, data, maxHeight="478px", type=null}) {
         }
         return parseInt( n );
     }
-    const padStart = (x) => {
-        return new Intl.NumberFormat(undefined, {
-            minimumIntegerDigits: 2,
-            useGrouping: false
-        }).format(x)
-    } 
-    const formatTime = (timestamp, needYear=false, onlyTime=false) => {
-        let d = new Date(timestamp)
-        if (onlyTime) {
-            return `${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
-        }
-        return `${needYear?padStart(d.getFullYear())+"-":""}${padStart(d.getMonth()+1)}-${padStart(d.getDate())} ${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
-    }
+
 
     // const hashContent= (h, i, bet)=>{
     //     return (<div className={styles.message}>

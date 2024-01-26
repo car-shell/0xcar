@@ -5,7 +5,7 @@ import Pool from '../components/Bet/Pool'
 export default function Home() {
   return (
     <Layout>
-        <Pool />
+        <MainPage />
     </Layout>
   )
 }

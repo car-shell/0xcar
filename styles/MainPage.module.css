@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600,900');
+
+@font-face {
+    font-family: 'Mona Sans';
+    src:
+      url('/Mona-Sans.woff2') format('woff2 supports variations'),
+      url('/Mona-Sans.woff2') format('woff2-variations');
+    font-weight: 200 900;
+    font-stretch: 75% 125%;
+  }
 
 .flex_row {
     display: flex;
@@ -14,17 +24,67 @@
 }
 
 .container {
+    position: relative;
+    margin: 1% 5% 1% 5%;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: #fff;
+
+  }
+
+/* .container {
     position: absolute;
-    /* top: 70px; */
     margin: auto;
     top: 0;
     left: 0; 
     right: 0;
     bottom: 0;
-    /* min-height: 640px;
-    min-width: 1200px; */
+ 
     color: #fff;
-}
+    
+    background: transparent;
+    background-image: url('/cardinal02.png');
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: center;
+} */
+
+.umask {
+    /* width: 100%; */
+    height: 380px;
+    /* background: rgba(32, 33, 34, 0.3); */
+    background: black;
+
+    /* position: fixed; */
+    left: 0;
+    top: 0;
+
+    background-image: url('/cardinal02.png');
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: center;
+    background-size: 480px 480px;
+  }
+
+/* .container::before{
+    content: ' ';
+    display: block;
+    position: absolute;
+    z-index: 0;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    background-image: url('../public/cardinal02.png');
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: center;
+
+} */
 
 .header {
     height: 256px;
@@ -73,45 +133,40 @@
     text-align: center;
 
     cursor: pointer;
+
+    font-family: 'Mona Sans', sans-serif;
 }
 
-.pageBackground {
-    /* background-image: url('../public/cardinal.png');
+/* .pageBackground {
+    background-image: url('../public/cardinal.png');
     background-size: 80%;
     background-repeat: no-repeat;
-    background-position: center; */
+    background-position: center;
 
     background: url('../public/cardinal.png') center top no-repeat;
     background-size: 40%;
     opacity: 0.9;
-}
-
-/* .container::after{
-    content: ' ';
-    display: block;
-    position: absolute;
-    z-index: -100;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.35;
-    background-image: url('/cardinal.png');
-    background-repeat: no-repeat;
-    background-position-y: center;
-    background-position-x: center;
 } */
 
+
 .fontTitle {
-    font: 650 20px normal sans;
+    font: 650 normal 30px sans;
+    font-family: 'Mona Sans', sans-serif;
 }
 
 .fontBigTitle {
-    font: 650 36px normal sans;
+    font: 900 italic 48px sans;
+    font-family: 'Mona Sans', sans-serif;
+}
+
+.fontBigTitleNormal {
+    font: 900 normal 48px sans;
+    font-family: 'Mona Sans', sans-serif;
 }
 
 .fontLargeTilte {
-    font: 650 100px normal sans;
+    font: 650 normal 100px sans;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .fontNormal {
@@ -205,6 +260,8 @@
     justify-content: space-between;
     align-items: center;
     column-gap: 56px;
+
+    font-family: 'Mona Sans', sans-serif;
 }
 
 /* .button {

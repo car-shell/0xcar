@@ -6,6 +6,8 @@ import styles from "../../styles/Header.module.css";
 import { store, SET_SELECTED_ADDR, SET_ACTION } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import useTokenContract from "../../data/token";
+import {useGameContract} from "../../data/game";
+
 import Link from "next/link";
 import BaseLink from './BaseLink';
 import { useRouter } from 'next/router';
@@ -41,6 +43,7 @@ const Header = ({showMenu=true}) => {
   const { openChainModal } = useChainModal();
   
   const {chain, chains} = useNetwork();
+  const {pools} = useGameContract();
 
   const disconnect = ()=>{
     dispatch({
@@ -92,20 +95,23 @@ const Header = ({showMenu=true}) => {
     e.nativeEvent.stopImmediatePropagation();
   }
 
-  const shutdown = (event)=>{
+  const shutdown = useCallback((event)=>{
       if (showWalletInfo) {
         setShowWalletInfo(false)
       }
-  }
+  }, [showWalletInfo])
 
   useEffect(() => {
     document.body.addEventListener('click', shutdown)
     return () => {
           document.body.removeEventListener('click', shutdown);
       };
-  }, [showWalletInfo]);
+  }, [showWalletInfo, shutdown]);
 
-  
+  const ownPool = () => {
+    return (pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).length != 0 )
+  }
+
   return (
     <>
       <ToastUI />
@@ -117,7 +123,7 @@ const Header = ({showMenu=true}) => {
               <span style={{color: "#D9001B"}}>0x</span>Cardinal
             </div>
             <div className={styles.envLabel}>
-              Alpha
+              Beta
             </div>
           </div>
         </Link>
@@ -127,11 +133,10 @@ const Header = ({showMenu=true}) => {
               <BaseLink href="/" >App</BaseLink>
               {/* {curRouter=='/app' && <div className={styles.underline} style={{width: }}></div>} */}
           </div>
-          {/* <div className={styles.menuItem} style={curRouter=='/ido'?{color: '#06FC99'}:{}}>
-              <BaseLink href="/ido" >IDO</BaseLink>
-              {curRouter=='/ido' && <div className={styles.underline}></div>}
-          </div>
-          <div className={styles.menuItem} style={curRouter=='/swap'?{color: '#06FC99'}:{}}>
+          <div className={styles.menuItem} style={curRouter=='/dto'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+              <BaseLink href="/dto" >DTO</BaseLink>
+          </div> 
+          {/*<div className={styles.menuItem} style={curRouter=='/swap'?{color: '#06FC99'}:{}}>
               <BaseLink href="/swap" >Swap</BaseLink>
               {curRouter=='/swap' && <div className={styles.underline}></div>}
           </div>*/}
@@ -178,10 +183,11 @@ const Header = ({showMenu=true}) => {
             {formatAmount(balance)} <span className={styles.cdnlLabel}> {token?.symbol} </span>
           </div>
         </div>
-        <div className={styles.separate} />
+        <div className={styles.separate} /> 
         {/* <button className={styles.walletButton} style={{backgroundColor: '#c00017'}} onClick={()=>window.open("https://discord.gg/6b6JFrNzsT", '_bank')}>Get {token?.symbol}</button> */}
-        <BaseLink className={styles.walletButton} style={{backgroundColor: '#c00017', paddingTop: '8px'}} href="/nft">My NFT</BaseLink>
-        <button className={styles.walletButton} style={{backgroundColor: '#333333'}} onClick={disconnect}>Disconnect</button>
+        <BaseLink className={styles.walletButton} style={{backgroundColor: '#c00017', marginTop: '16x'}} href="/nft">My NFT</BaseLink>
+        { ownPool() && <BaseLink className={styles.walletButton} style={{backgroundColor: '#c00017', marginTop: '16x'}} href="/mypool">My Pool</BaseLink>}
+        <button className={styles.walletButton} style={{backgroundColor: '#333333', marginTop: '16x'}} onClick={disconnect}>Disconnect</button>
       </div>}
     </>
   )

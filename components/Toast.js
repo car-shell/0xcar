@@ -21,7 +21,7 @@ const useToast = ()=>{
             return;
         }
         setInfo({...info, open: false});
-    }, []);
+    }, [info]);
 
     React.useEffect(() => {
         if (open) {
@@ -32,13 +32,13 @@ const useToast = ()=>{
                     }
                     return (prevProgress >= 0 ? prevProgress - 1 : 100 )
                 });
-            }, 33);
+            }, 30);
 
             return () => {
                 clearInterval(timer);
             };
         }
-    }, [open]);
+    }, [info, open]);
 
     const showToast = React.useCallback((msg, severity='success')=>{
         console.log( 'show Toast');

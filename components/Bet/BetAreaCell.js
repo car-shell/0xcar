@@ -91,7 +91,6 @@ const BetAreaCell = () => {
     if (tipInfo === null || isDictEmpty(tipInfo)) {
       return;
     }
-    console.log(betLogs);
     //update betlogs
     if ( betLogs!= null && betLogs != undefined && betLogs.length != 0 ) {
       for (let index = 0; index < betLogs.length; index++) {
@@ -379,7 +378,7 @@ const BetAreaCell = () => {
         queryResult(pre.id)
         return {...pre, transactionHash: r.transactionHash, status: BetStatus.submitted}
       })
-    }, [amount, numbers, title, isLoading, tipInfo])
+    }, [amount, numbers, title, isLoading])
 
   const betFail = useCallback((err)=>{
       console.log(`entry betFail`);
@@ -396,7 +395,7 @@ const BetAreaCell = () => {
         })
         showToast(err.reason || err.data?.message || err.message || "Bet failed, please try again!", 'error')
       }
-    }, [amount, numbers, title, isLoading, tipInfo, setTipInfo])
+    }, [amount, numbers, title, isLoading])
 
   const setActiveStep = (type, step, msg=null)=>{
     if (type === 'bet' && step === 1) {
@@ -424,7 +423,7 @@ const BetAreaCell = () => {
       return
     }
 
-    const poolRemainBalance = poolDetails?poolDetails[1].hex/1000000000000000000:10e8
+    const poolRemainBalance = poolDetails?poolDetails[1]:10e8
     if ( parseFloat(amount)>poolRemainBalance*title.odds ) {
       showToast('amount too large!', 'error' )
       return

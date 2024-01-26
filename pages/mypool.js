@@ -1,11 +1,11 @@
-import Pool from '../components/Bet/Pool'
+import MyPool from '../components/MainPage/MyPool'
 import Layout from '../components/Layout/Layout'
 
 export default function Home() {
   return (
     <>
       <Layout>
-        <Pool />
+        <MyPool />
       </Layout>
     </>
   )

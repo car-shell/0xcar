@@ -1,6 +1,6 @@
 import styles from "../../styles/Log.module.css";
 import {useCallback, useMemo, useState, useContext, useEffect, useRef} from "react";
-import { store, SET_ACTION } from '../../store/store'
+import { store, SET_ACTION, SET_LOG_CHANGE } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import StickyHeadTable from "./Table";
 import { formatAmount } from "../utils"
@@ -11,8 +11,9 @@ const BetRecord = () => {
     const {
             state: { betLogs },
     } = useContext(store)
+
     const dispatch = useDispatch()
-    const {isConnected} = useAccount();
+    const {address, isConnected} = useAccount();
     const columns = useMemo(
         () => [
             {
@@ -79,7 +80,31 @@ const BetRecord = () => {
         ],
         []
     )
-  
+    
+    useEffect(()=>{
+        if (address) {
+            let l = JSON.parse(localStorage.getItem("BET_LOG_" + address))
+            if ( l == null || l == undefined || l.length==0) {
+                l = []
+                localStorage.setItem("BET_LOG_"  + address, "[]");
+            }
+
+            dispatch({
+                type: SET_LOG_CHANGE,
+                payload: l
+            })
+        }
+    }, [address])
+
+    useEffect(()=>{
+        if ( isConnected ) {
+            if ( betLogs != null && betLogs != undefined && betLogs.length > 0 ) {
+                localStorage.setItem("BET_LOG_" + address, JSON.stringify(betLogs));
+            }
+        }
+    }, [betLogs])
+    
+
     return (
         <>
             { !isConnected?<div style={{alignItems: 'center', textAlign:"center", position: 'relative', top: '50%'}}>The betting records will be displayed here after the wallet is connected.</div>:<StickyHeadTable  columns={columns} data={betLogs} /> }

@@ -1,5 +1,5 @@
 import {ethers} from 'ethers'
-import { abi } from './abi/GamePoolABI'
+import { gameABI as abi } from './abi/GamePoolABI'
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useTokenContract } from "./token";
 import { store, SET_WIN_LOGS } from '../store/store'
@@ -8,10 +8,9 @@ import useDispatch from '../store/useDispatch'
 import {  useAccount, useNetwork, useContractRead, useContractEvent, usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction } from "wagmi";
-import { ADDRESSES } from '../config/constants/address' 
+import { ADDRESSES } from '../config/constants/address';
 import { BetStatus } from "../components/constant";
 import { readContract, writeContract, prepareWriteContract, waitForTransaction, getWalletClient} from "@wagmi/core";
-
 // export const useBet = ({id, amount, rule, number, success, failed})=>{
 //     const {chain, chains} = useNetwork()
 //     const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
@@ -72,6 +71,8 @@ import { readContract, writeContract, prepareWriteContract, waitForTransaction, 
 // }
 
 export const useGameContract = (monitor=false)  => {
+    const n1e18 = 1000000000000000000n
+
     const {chain, chains} = useNetwork()
     const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
     const addressGameContract = ADDRESSES[chainId]?.game;
@@ -79,6 +80,9 @@ export const useGameContract = (monitor=false)  => {
 
     const {allowance, approve} = useTokenContract()
     const {address, isConnected} = useAccount()
+    const [currentPoolId, setCurrentPoolId] = useState(1)
+    const [last, setLast] = useState({})
+
 
     const dispatch = useDispatch()
     const odds = {0: 5, 1: 10, 2: 100}
@@ -86,17 +90,24 @@ export const useGameContract = (monitor=false)  => {
     const { data: poolDetails, isError, isLoading: poolLoading } = useContractRead({
             address: addressGameContract,
             abi: abi,
-            functionName: 'pool',
-            args: [0],
+            functionName: 'poolInfo',
+            args: [currentPoolId],
             chainId: chainId,
             watch: true,
             onSuccess(data){
-                // console.log('Success', data)
-            } 
+            //    console.log('Success', data)
+            },
+            // onError(error) {
+            //     //console.log('Error', error)
+            // },
         }
     )
 
-    monitor && useEffect(()=>{
+    // monitor && useEffect(()=>{
+    useEffect(()=>{
+        if (!monitor) {
+            return;
+        }
         let winLog = localStorage.getItem('WIN_LOG')
         if (winLog) {
             let l = JSON.parse(winLog)
@@ -106,7 +117,8 @@ export const useGameContract = (monitor=false)  => {
                 payload: l
             })
         }
-    }, [])
+    }, [dispatch, monitor])
+
 
     const { data:lastRecord, isError: lastRecordError, isLoading: lastLoading } = useContractRead({
         address: addressGameContract,
@@ -114,19 +126,59 @@ export const useGameContract = (monitor=false)  => {
         functionName: 'last',
         chainId: chainId,
         args: [address],
+        cache: 1_000,
+        onSuccess: (data)=>{
+            // console.log(`----------- lastRecord ------------`);
+        }
+    })
+
+    const { data:miningFunding } = useContractRead({
+        address: addressGameContract,
+        abi: abi,
+        functionName: 'miningFunding',
+        chainId: chainId,
+        args: [address],
+        watch: true,
+        onSuccess: (data)=>{
+//            console.log(data);
+        }
+    })
+
+    const { data:whitelistPool } = useContractRead({
+        address: addressGameContract,
+        abi: abi,
+        functionName: 'whitelistPool',
+        chainId: chainId,
+        args: [address],
+        watch: true,
         onSuccess: (data)=>{
             console.log(data);
         }
     })
+
+    useEffect(()=>{
+        console.log('----- format last ---- ', lastRecord);
+        if ( lastRecordError || lastLoading || lastRecord == undefined) {
+            setLast({})
+            return
+        }
+
+        const amount = lastRecord[1]/n1e18
+        let s = status(lastRecord[4], lastRecord[6], lastRecord[7])
+        setLast({id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[4], odds: odds[lastRecord[3]], status: s, random: s!=BetStatus.timeout?lastRecord[6]:'-'})
+    }, [lastRecord])
     
-    monitor && useContractEvent({
+    useContractEvent({
         address: addressGameContract,
         abi: abi,
         eventName: 'ResultObtained',
         chainId: chainId,
         listener(better, id, amount, betNumber, random, odds, netWin, height) {
+            if (!monitor) {
+                return;
+            }
             //Result(address indexed better, uint amount, uint winAmount, uint blockNumber, uint timestamp, uint poolId, uint gameId, bytes32 blockHash);
-            let log = { "winner": better, 'random': random, "amount": amount/1000000000000000000n, "profit": netWin/1000000000000000000n, "odds": odds,  id: id.toNumber(), height: height.toNumber() }
+            let log = { "winner": better, 'random': random, "amount": amount/n1e18, "profit": netWin/n1e18, "odds": odds,  id: id.toNumber(), height: height.toNumber() }
             logs.unshift(log)
             setLogs(logs.slice(0,99))
             localStorage.setItem('WIN_LOG', JSON.stringify(logs))
@@ -137,35 +189,38 @@ export const useGameContract = (monitor=false)  => {
             console.log( logs )
         },
     })
-    
-    // const getWinNumber = (hash, odds) => {
-    //     let i = 0;
-    //     switch (odds) {
-    //         case 5:
-    //             i = hash.search(/[0-4]/)
-    //             return hash[i]
-    //         case 10:
-    //             i = hash.search(/[0-9]/)
-    //             return hash[i]
-    //         case 100:
-    //             i = hash.search(/[0-9]/)
-    //             let j = hash.slice(j).search(/[0-9]/)
-    //             return hash[i]+hash[i+j]
-    //         default:
-    //             return -1
-    //     }
-    // }
 
+
+    const { data: pools, isError: poolsListLoadingError, isLoading: poolsListLoading } = useContractRead({
+        address: addressGameContract,
+        abi: abi,
+        functionName: 'pools',
+        chainId: chainId,
+        watch: true,
+        cache: 2_000,
+        onSuccess(data) {
+        //    console.log('Success', data)
+        },
+        onError(error) {
+  //          console.log('Error', error)
+        },
+    })
+    
     const delay = ms => new Promise(res => setTimeout(res, ms));
-    
 
-    const _bet = useCallback( async (id, amount, ruleId, selectNumber, success, fail, setActiveStep)=>{
+    // const remove = useCallback( async (id) ) => {
+
+    // }
+    
+    const _bet = useCallback( async (id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)=>{
+        console.log( `${id} ${amount} ${poolId} ${poolId} ${poolId}`);
         const config = await prepareWriteContract({
             address: addressGameContract,
             abi: abi,
             functionName: 'bet',
-            args: [id, amount, 0, ruleId, selectNumber]
+            args: [id, amount, poolId, ruleId, selectNumber]
         }).then( async (config)=>{
+            console.log(`bet in ${poolId} pool`);
             await writeContract(config).then(async ({hash})=>{
                 setActiveStep('bet', 1)
                 const receipt = await waitForTransaction({
@@ -175,15 +230,15 @@ export const useGameContract = (monitor=false)  => {
                 success(receipt)
             }).catch((e)=>fail(e))
         }).catch((e)=>fail(e))
-    }, [])
+    }, [addressGameContract])
+    
 
-    const bet = async (id, amount, ruleId, selectNumber, success, fail, setActiveStep)=>{
-        
+    const bet = async (id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)=>{
         if (!isConnected) {
             return false;
         }
-        console.log('--------bet', id);
-        let a = amount/1000000000000000000n
+        
+        console.log(`--------bet ${id}  ${amount}` );
         let al = 0n
 
         if (!allowance(address, addressGameContract, async (result)=>{
@@ -196,7 +251,7 @@ export const useGameContract = (monitor=false)  => {
                         setActiveStep('approve', 1)
                     } else {
                         setActiveStep('bet', 0)
-                        await _bet(id, amount, ruleId, selectNumber, success, fail, setActiveStep)
+                        await _bet(id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)
                     }
                 }, (e)=>{
                     console.log( `approve failed ${e}`);
@@ -204,7 +259,7 @@ export const useGameContract = (monitor=false)  => {
                 })
             } else {
                 setActiveStep('bet', 0)
-                await _bet(id, amount, ruleId, selectNumber, success, fail, setActiveStep)
+                await _bet(id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)
             }
         }, (e)=>{fail(e)})){
             return false;
@@ -229,6 +284,7 @@ export const useGameContract = (monitor=false)  => {
     }
 
     const withdraw = async (id, success, fail, setStepStatus)=>{
+        console.log( '------ start withdraw -----' );
         const config = await prepareWriteContract({
             address: addressGameContract,
             abi: abi,
@@ -237,12 +293,13 @@ export const useGameContract = (monitor=false)  => {
         }).then( async (config)=>{
             await writeContract(config).then(async ({hash})=>{
                 console.log("----------writeContract-----------");
+                setStepStatus('withdraw', 1)
                 const receipt = await waitForTransaction({
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
-                console.log("transfer receipt",receipt)
                 setStepStatus('withdraw', 2)
+                console.log("transfer receipt",receipt)
                 success()
             }).catch((e)=>{
                 console.log("withdraw failed")
@@ -257,6 +314,119 @@ export const useGameContract = (monitor=false)  => {
             fail(e)
         })
     }
+
+    const withdrawPool = async (id, success, fail)=>{
+        const config = await prepareWriteContract({
+            address: addressGameContract,
+            abi: abi,
+            functionName: 'withdrawPool',
+            args: [id]
+        }).then( async (config)=>{
+            await writeContract(config).then(async ({hash})=>{
+                console.log("----------writeContract-----------");
+                // setStepStatus('withdraw', 1)
+
+                const receipt = await waitForTransaction({
+                    hash,
+                    onReplaced: (transaction) => console.log(transaction),
+                })
+                // setStepStatus('withdraw', 2)
+
+                console.log("transfer receipt",receipt)
+                success(hash)
+            }).catch((e)=>{
+                console.log("withdraw failed")
+                console.log(e.message)
+                // setStepStatus('withdraw', 1)
+                fail(e)
+            })
+        }).catch((e)=>{
+            console.log("withdraw failed")
+            console.log(e.message)
+            // setStepStatus('withdraw', 1)
+            fail(e)
+        })
+    }
+
+    const withdrawMiningFunding = async (id, success, fail, setStepStatus)=>{
+        const config = await prepareWriteContract({
+            address: addressGameContract,
+            abi: abi,
+            functionName: 'withdrawMiningFunding',
+            args: []
+        }).then( async (config)=>{
+            await writeContract(config).then(async ({hash})=>{
+                setStepStatus('withdraw', 1)
+
+                const receipt = await waitForTransaction({
+                    hash,
+                    onReplaced: (transaction) => console.log(transaction),
+                })
+                setStepStatus('withdraw', 2)
+                success()
+            }).catch((e)=>{
+                console.log(e.message)
+                setStepStatus('withdraw', 1)
+                fail(e)
+            })
+        }).catch((e)=>{
+            console.log(e.message)
+            setStepStatus('withdraw', 1)
+            fail(e)
+        })
+    }
+
+    const preRemovePool = async (id, success, fail)=>{
+        const config = await prepareWriteContract({
+            address: addressGameContract,
+            abi: abi,
+            functionName: 'preRemovePool',
+            args: [id]
+        }).then( async (config)=>{
+            await writeContract(config).then(async ({hash})=>{
+                const receipt = await waitForTransaction({
+                    hash,
+                    onReplaced: (transaction) => console.log(transaction),
+                })
+                success()
+            }).catch((e)=>{
+                console.log("preRemovePool failed")
+                console.log(e.message)
+                fail(e)
+            })
+        }).catch((e)=>{
+            console.log("preRemovePool failed")
+            console.log(e.message)
+            fail(e)
+        })
+    }
+
+    const removePool = async (id, success, fail)=>{
+        const config = await prepareWriteContract({
+            address: addressGameContract,
+            abi: abi,
+            functionName: 'removePool',
+            args: [id]
+        }).then( async (config)=>{
+            await writeContract(config).then(async ({hash})=>{
+                const receipt = await waitForTransaction({
+                    hash,
+                    onReplaced: (transaction) => console.log(transaction),
+                })
+                console.log("transfer receipt",receipt)
+                success(hash)
+            }).catch((e)=>{
+                console.log("removePool failed")
+                console.log(e.message)
+                fail(e)
+            })
+        }).catch((e)=>{
+            console.log("removePool failed")
+            console.log(e.message)
+            fail(e)
+        })
+    }
+
 
     //(item.amount, item.ruleId, item.guess, item.qrngRequestId, item.random, item.expired);
     //let log = {type: title.value, "height": r.blockNumber, "amount": amount, "number": formatNumber(numbers), "odds": title.odds, "win": [-1, '-'], "random":'-', "id": betLog.length}
@@ -276,14 +446,6 @@ export const useGameContract = (monitor=false)  => {
         }
     }
 
-    const formatLast = ()=>{
-        if ( lastRecordError || lastLoading ) {
-            return {}
-        }                            
-        const amount = lastRecord[1]/1000000000000000000n
-        let s = status(lastRecord[3], lastRecord[5], lastRecord[6])
-        return {id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[3], odds: odds[lastRecord[2]], status: s, random: s!=BetStatus.timeout?lastRecord[5]:'-'}
-    }
 
-    return { poolDetails, bet, result, withdraw, logs, last: formatLast()}
-}
+    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding, withdrawPool, whitelistPool}
+} 

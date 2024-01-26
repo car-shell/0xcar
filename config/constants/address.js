@@ -29,16 +29,18 @@ export const ADDRESSES = {
         // nft: "0xb4521875a75dacbe44dfda09713d59c1fbe1003a",
         // game: "0x841d9d2ec3908f0b73a910435fc8c1d88b642584",
         // faucet: "0x6D70B8d77B12211915aEf7D93E58352B4d003efC",
-
-        token: "0x53482E17636cC6dB4cEB9378A0580386E2AB272a",
-        nft: "0xc6a129C6b4fD755d0637BeEd0Dbee989835FC9A8",
-        game: "0x9FcE3b87531fd8D325A0DB7d3347Ddc9448D4b5F",
+        usdt: "0x3c0f19Ac8b5EA723d11BcD3A78066Db233EbC719",
+        token: "0x3881458E0f65DCe7d72223C3b9EF228e4aFA0cEE",
+        nft: "0xE301f94140a401AF845fcda0AACD377D8A52BBc8",
+        game: "0x0A5271100f64CcF505a53413AA177890Aa2F0BD3",
+        ido: "0xF06C5B3CB514fEE520799Ea4c033C50ef9d21564",
+        swap: "0xD99D1c33F9fC3444f8101754aBC46c52416550D1",
         faucet: "0x6D70B8d77B12211915aEf7D93E58352B4d003efC",
-       
+
         topic_bet: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
         topic_win: "0x9f8ce2e31646e98e72e097e8abe5539ff064932fc90b722b121b9c83f9351b40",
         topic_got_result: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
         // sponsor: "0x58ae9bcfa7be29825bfb921847af8ed0bf45dd1f",
-        sponsor: "0x2a549080C0f0B93dee0c37aCd63ed06932260D1C",
+        sponsor: "0x2d377033c1888aD95FAf65cF57fD99EC9a10C472",
     }
 };

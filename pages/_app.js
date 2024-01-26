@@ -22,11 +22,11 @@ function MyApp({ Component, pageProps }) {
 
     const isMobile = userAgent.device && userAgent.device.type === 'mobile';
 
-    if (isMobile) {
-      Router.push('/mobile');
-    } else {
-      Router.push('/');
-    }
+    // if (isMobile) {
+    //   Router.push('/mobile');
+    // } else {
+    //   Router.push('/');
+    // }
 
   }, [])
 

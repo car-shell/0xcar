@@ -50,6 +50,7 @@ export default function Ranking({width = '920px'}) {
   const handleChange = (event, newValue) => {
       setValue(newValue);
   };
+
   React.useEffect(()=>{
     setWinRows([])
     getWinLogs()
@@ -295,6 +296,7 @@ export default function Ranking({width = '920px'}) {
                 Header: "Boost(24H)",
                 accessor: "boost",
                 align: "center",
+                
                 // format: (x)=>{
                 //   return formatAmount(x)
                 // }

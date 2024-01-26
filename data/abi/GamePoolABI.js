@@ -1,4 +1,4 @@
-export const abi = [
+export const gameABI = [
 	{
 		"inputs": [
 			{
@@ -40,6 +40,12 @@ export const abi = [
 				"internalType": "uint256",
 				"name": "amount",
 				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint64",
+				"name": "poolId",
+				"type": "uint64"
 			},
 			{
 				"indexed": false,
@@ -87,9 +93,9 @@ export const abi = [
 			},
 			{
 				"indexed": false,
-				"internalType": "uint256",
+				"internalType": "uint64",
 				"name": "poolId",
-				"type": "uint256"
+				"type": "uint64"
 			}
 		],
 		"name": "PoolCreated",
@@ -219,9 +225,9 @@ export const abi = [
 				"type": "uint256"
 			},
 			{
-				"internalType": "uint8",
+				"internalType": "uint64",
 				"name": "poolId",
-				"type": "uint8"
+				"type": "uint64"
 			},
 			{
 				"internalType": "uint8",
@@ -265,6 +271,30 @@ export const abi = [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "creater",
+				"type": "address"
+			}
+		],
+		"name": "createForIDO",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "deadAddress",
 		"outputs": [
@@ -272,6 +302,149 @@ export const abi = [
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "discout_for_brone_nft",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "discout_for_diamond_nft",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "discout_for_gold_nft",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "discout_for_sliver_nft",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "discout_for_whitelist",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "duration_lock_forbidden",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "duration_remove_after_submit_lock",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "duration_submit_lock",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "duration_withdraw",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "duration_withdraw_forbidden",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "fee_increase_for_diamond_nft",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -316,6 +489,11 @@ export const abi = [
 				"type": "uint256"
 			},
 			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			},
+			{
 				"internalType": "uint8",
 				"name": "",
 				"type": "uint8"
@@ -346,7 +524,7 @@ export const abi = [
 	},
 	{
 		"inputs": [],
-		"name": "liqudity",
+		"name": "marketing",
 		"outputs": [
 			{
 				"internalType": "address",
@@ -359,12 +537,90 @@ export const abi = [
 	},
 	{
 		"inputs": [],
-		"name": "marketing",
+		"name": "max_fee_for_proj",
 		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "uint256",
 				"name": "",
-				"type": "address"
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "max_fee_for_user_pool_owner",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "min_amount_for_office_pool",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "nft_level_brone",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "nft_level_diamond",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "nft_level_gold",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "nft_level_sliver",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -386,35 +642,203 @@ export const abi = [
 	{
 		"inputs": [
 			{
-				"internalType": "uint8",
+				"internalType": "uint64",
 				"name": "poolId",
-				"type": "uint8"
+				"type": "uint64"
 			}
 		],
-		"name": "pool",
+		"name": "poolInfo",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"components": [
+					{
+						"internalType": "bool",
+						"name": "isUsed",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint64",
+						"name": "id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint8",
+						"name": "poolType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startTimestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "initBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "remainBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isLocked",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "createdBlockNum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "canEndBlockNum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lockedBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "betCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "income",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nextWidthdrawBlockNum",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct IGame.PoolProperty",
 				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			},
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
+				"type": "tuple"
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "pools",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "bool",
+						"name": "isUsed",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint64",
+						"name": "id",
+						"type": "uint64"
+					},
+					{
+						"internalType": "uint8",
+						"name": "poolType",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startTimestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "initBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "remainBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isLocked",
+						"type": "bool"
+					},
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "createdBlockNum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "canEndBlockNum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "lockedBalance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "betCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "income",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nextWidthdrawBlockNum",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct IGame.PoolProperty[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"name": "preRemovePool",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"name": "removePool",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -457,6 +881,19 @@ export const abi = [
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "ido",
+				"type": "address"
+			}
+		],
+		"name": "setIDOContract",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "_airnode",
 				"type": "address"
 			},
@@ -490,19 +927,6 @@ export const abi = [
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "treasury",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "uint256",
@@ -513,6 +937,58 @@ export const abi = [
 		"name": "withdraw",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdrawMiningFunding",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint64",
+				"name": "id",
+				"type": "uint64"
+			}
+		],
+		"name": "withdrawPool",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "better",
+				"type": "address"
+			}
+		],
+		"name": "miningFunding",
+		"outputs": [{
+			"internalType": "uint256",
+			"name": "",
+			"type": "uint256"
+		}],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [{
+			"internalType": "address",
+			"name": "u",
+			"type": "address"
+		}],
+		"name": "whitelistPool",
+		"outputs": [{
+			"internalType": "uint256",
+			"name": "",
+			"type": "uint256"
+		}],
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

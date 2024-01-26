@@ -5,13 +5,13 @@ import BetArea from "./BetArea";
 import BetRecord from "./BetRecord"
 import LiveBettingRecord from "./LiveBettingRecord"
 import useTokenContract from "../../data/token"
-import { formatAmount } from "../utils";
+import { formatAmount, n1e18 } from "../utils";
 import { BigNumber } from "wagmi"
 
-const Pool = () => {
-  
+const Pool = ({id}) => {
+  const [poolId, setPoolId] = useState(id)
   const [info, setInfo] = useState({})
-  const { poolDetails } = useGameContract()
+  const { poolDetails, setCurrentPoolId, whitelistPool } = useGameContract()
   const [type, setType] = useState("official")
   const {deadBalance, addressTokenContract, token} = useTokenContract()
   const [light, setLight] = useState(true)
@@ -19,9 +19,16 @@ const Pool = () => {
   const onChangeType = (e)=>{
     setType(e.target.value)
   }
+  
+  useEffect(()=>{
+    if (id != undefined) {
+      console.log(`set pool id ${id}`);
+      setCurrentPoolId(id)
+      setPoolId(id)
+    }
+  }, [id, setCurrentPoolId])
 
   useEffect(()=>{
-    console.log('set interval');
     let a = 0;
     let i = setInterval(() => {
       a += 1
@@ -29,35 +36,38 @@ const Pool = () => {
     }, 500);
     return ()=>clearInterval(i)
   }, [])
+
   return (
     <div className={styles.container}>
-      {/* <div className={styles.poolTypeAndBurn}>
-        <div className={styles.radio}>
-          <div >
-            <input type="radio" value="official" defaultChecked onClick={onChangeType}/>
-            <label className={type=='official'?styles.selected:null}>Official Pool</label>
-          </div>
+      <div className={styles.pool_id_and_burned}>
+        <div className={styles.pool_id}>
+          # {poolId==1?"Official":new Intl.NumberFormat(undefined, {
+        minimumIntegerDigits: 3,
+        useGrouping: false
+    }).format(poolId)} Pool { (whitelistPool == poolId) && <span style={{color: "#06FC99", font: "900 italic 11px arial", marginLeft: '8px'}}> Fee Reduction </span>}
         </div>
-        <div className={styles.burn}>
-          Burned: <a style={{textDecoration: 'none3', color: '#2471fe'}} target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}>{deadBalance}</a> CDNT
+          {/* Burned: <a style={{textDecoration: 'none3', color: '#2471fe'}} target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}>{deadBalance}</a> CDNT */}
+          <div className={styles.content}> 
+          <span className={styles.title}> Total Burned: </span> {formatAmount(deadBalance)} <span style={{color: '#7F7F7F', fontSize: "12px"}}>{token?.symbol}</span>
+          <a target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}><img style={{marginLeft: '4px', width: '12px', height: '12px'}} src="jump.png"/></a>
         </div>
-      </div> */}
+      </div>
+     
+      
       <div className={styles.info}>
        <div className={styles.info_item}>
         <div className={styles.title}> Initial Pool Fund</div>
-        <div className={styles.content}>{poolDetails?formatAmount(poolDetails[0]/1000000000000000000n):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
+        <div className={styles.content}>{poolDetails?.initBalance?formatAmount(poolDetails?.initBalance):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
          <div className={styles.title}> Current Pool Balance</div>
-         <div className={styles.content}>{poolDetails?formatAmount(poolDetails[1]/1000000000000000000n):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
+         <div className={styles.content}>{poolDetails?.initBalance?formatAmount(poolDetails?.remainBalance):'--'} <span style={{color: '#7F7F7F', fontSize: "12px"}}> {token?.symbol} </span></div>
        </div>
        <div className={styles.info_item}>
-        <div className={styles.title}> Total Burned</div>
-        <div className={styles.content}> 
-          {formatAmount(deadBalance)} <span style={{color: '#7F7F7F', fontSize: "12px"}}>{token?.symbol}</span>
-          <a target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}><img style={{marginLeft: '4px', width: '12px', height: '12px'}} src="jump.png"/></a>
-        </div>
+         <div className={styles.title}> Bet Count</div>
+         <div className={styles.content}>{Number(poolDetails?.betCount)}</div>
        </div>
+       
       </div>
       <div className={styles.main}>
         <div className={styles.aera}>
