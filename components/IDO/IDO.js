@@ -138,7 +138,7 @@ const IDO = () => {
 
             <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', paddingBottom: '16px'}}>
                 <Typography component='div' sx={{fontSize: '28px', fontStyle: 'italic',  fontWeight: '700', paddingTop: '32px'}}>
-                    Create a Bet Pool
+                    Create a Betting Pool
                 </Typography>
                 <Stack direction='row' width='90%' justifyContent="space-between"  gap='4px' alignItems="center" sx={{ marginTop: '8px'}}>
                     <Stack direction='row' width='50%' justifyContent="flex-start"  alignItems="center"  sx={{ marginTop: '8px'}}>
