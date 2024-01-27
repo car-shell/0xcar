@@ -102,7 +102,7 @@ const IDO = () => {
     <React.Fragment>
         <ToastUI />
         <StepInfo />
-        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="600px" >
+        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="600px" marginBottom="32px">
             <Typography component='div' sx={{fontSize: '36px', fontWeight: '700', color: '#F59A23', marginTop: '70px'}}>
                 CDNL DTO
             </Typography>
