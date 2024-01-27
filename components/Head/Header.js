@@ -120,7 +120,7 @@ const Header = ({showMenu=true}) => {
           <div className={styles.title}>
             <img src="logo.png" className={styles.image}/>
             <div className={styles.logo} style={{cursor: 'pointer'}}>
-              <span style={{color: "#D9001B"}}>0x</span>Cardinal
+              <span style={{color: "#ea3423"}}>0x</span>Cardinal
             </div>
             <div className={styles.envLabel}>
               Beta

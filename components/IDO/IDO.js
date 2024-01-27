@@ -103,10 +103,10 @@ const IDO = () => {
         <ToastUI />
         <StepInfo />
         <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="600px" marginBottom="32px">
-            <Typography component='div' sx={{fontSize: '36px', fontStyle: 'italic', fontWeight: '700', color: '#06FC99', marginTop: '48px'}}>
-                JOIN 0xCardinal DTO
+            <Typography component='div' sx={{fontSize: '30px', fontStyle: 'italic', fontWeight: '700', marginTop: '48px'}}>
+                JOIN <span style={{color: 'red'}}>0x</span>Cardinal DTO
             </Typography>
-            <Typography component='div' sx={{fontSize: '30px',  fontStyle: 'italic', fontWeight: '700', color: '#06FC99',}}>
+            <Typography component='div' sx={{fontSize: '30px',  fontStyle: 'italic', fontWeight: '700', }}>
             Become a Betting Pool Owner
             </Typography>
             <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}} >
