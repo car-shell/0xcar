@@ -209,7 +209,7 @@ const IDO = () => {
                         '&.Mui-checked': {
                             color: '#06FC99',
                         },
-                    }} />} label={<Typography  sx={{font: '400 normal 13px arial', color: 'white'}} >I understand and agree to the <Link href='https://www.google.com' target='blank' style={{color: '#41A0DA'}}>&lt;DTO Rules&gt;</Link></Typography>}/>
+                    }} />} label={<Typography  sx={{font: '400 normal 13px arial', color: 'white'}} >I understand and agree to the <Link href='' target='blank' style={{color: '#41A0DA'}}>&lt;DTO Rules&gt;</Link></Typography>}/>
                 </FormGroup>
             </Stack>
         </Stack>

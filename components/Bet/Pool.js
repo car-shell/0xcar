@@ -41,7 +41,7 @@ const Pool = ({id}) => {
     <div className={styles.container}>
       <div className={styles.pool_id_and_burned}>
         <div className={styles.pool_id}>
-          # {poolId==1?"Official":new Intl.NumberFormat(undefined, {
+          {poolId==1?"Official":"# " + new Intl.NumberFormat(undefined, {
         minimumIntegerDigits: 3,
         useGrouping: false
     }).format(poolId)} Pool { (whitelistPool == poolId) && <span style={{color: "#06FC99", font: "900 italic 11px arial", marginLeft: '8px'}}> Fee Reduction </span>}

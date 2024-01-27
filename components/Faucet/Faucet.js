@@ -33,7 +33,7 @@ const Faucet = () => {
     const { openConnectModal } = useConnectModal();
     const { openChainModal } = useChainModal();
 
-    const MINDURATION = 4*60*60*1000;
+    const MINDURATION = 24*60*60*1000;
     useEffect(()=>{
         if (isConnected) {
             let r = localStorage.getItem('LAST_REQUEST_' + address)
@@ -196,8 +196,8 @@ const Faucet = () => {
             <div onClick={()=>window.open("https://discord.gg/6b6JFrNzsT", '_bank')}  className={s.button_red}>
                     Get {token?.symbol} from Discord
                 </div>
-            <div className={s.button_gray} style={{marginTop: '10px'}} onClick={()=>window.open("https://discord.com/invite/bnbchain", '_bank')}>
-                    Get Testnet BNB from Discord
+            <div className={s.button_gray} style={{marginTop: '10px'}} onClick={()=>window.open(`https://pancakeswap.finance/swap?chain=bscTestnet&inputCurrency=${ADDRESSES[chainId]?.usdt}&outputCurrency=${ADDRESSES[chainId]?.token}`, '_bank')}>
+                    Swap {token?.symbol} from Pancakeswap
             </div>
             {/* <div className={s.tip}>
                     {canRequest?`Request testnet $${token?.symbol} once 4 hours to use for 0xCardinal Bet.`: <>Request again after <span style={{color: 'red'}}>{timeRemain}</span></>}
