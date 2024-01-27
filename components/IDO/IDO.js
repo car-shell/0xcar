@@ -103,11 +103,11 @@ const IDO = () => {
         <ToastUI />
         <StepInfo />
         <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="600px" marginBottom="32px">
-            <Typography component='div' sx={{fontSize: '36px', fontWeight: '700', color: '#F59A23', marginTop: '70px'}}>
-                CDNL DTO
+            <Typography component='div' sx={{fontSize: '36px', fontStyle: 'italic', fontWeight: '700', color: '#06FC99', marginTop: '48px'}}>
+                JOIN 0xCardinal DTO
             </Typography>
-            <Typography component='div' sx={{fontSize: '30px',  fontStyle: 'italic', fontWeight: '700'}}>
-            Become the Owner of a Betting Pool
+            <Typography component='div' sx={{fontSize: '30px',  fontStyle: 'italic', fontWeight: '700', color: '#06FC99',}}>
+            Become a Betting Pool Owner
             </Typography>
             <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '16px'}} >
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
@@ -209,7 +209,7 @@ const IDO = () => {
                         '&.Mui-checked': {
                             color: '#06FC99',
                         },
-                    }} />} label={<Typography  sx={{font: '400 normal 13px arial', color: 'white'}} >I understand and agree to the <Link href='' target='blank' style={{color: '#41A0DA'}}>&lt;DTO Rules&gt;</Link></Typography>}/>
+                    }} />} label={<Typography  sx={{font: '400 normal 13px arial', color: 'white'}} >I understand and agree to the <Link href='https://docs.0xcardinal.io/dto-faq' target='blank' style={{color: '#41A0DA'}}>&lt;DTO Rules&gt;</Link></Typography>}/>
                 </FormGroup>
             </Stack>
         </Stack>

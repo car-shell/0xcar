@@ -570,6 +570,10 @@ const BetArea = () => {
   }
 
   const buttonContent = () => {
+    if ( poolId == 1) {
+      return "Official pool opens for betting 90 days after the pool launch."
+    }
+
     if (!isConnected) {
       return "Connect Wallet"
     } else if ( chains.map(c=>c.id).indexOf(chain?.id) == -1) {
