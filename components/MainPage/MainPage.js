@@ -32,7 +32,7 @@ const MainPage = () => {
                         A Distributed Betting Pool Platform
                         </div> 
                         <div className={styles.fontTitle + ' ' + styles.white + ' ' + styles.stress}>
-                        Innovative distributed pool creation and 'Betting is Mining' model
+                        Innovative distributed pool creation and &apos;Betting is Mining&apos; model
                         </div> 
                         <div className={styles.fontTitle + ' ' + styles.white}>
                             Open-source, Decentralized，and Community-governed
