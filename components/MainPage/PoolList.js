@@ -9,21 +9,26 @@ import PoolItem from './PoolItem'
 import { useGameContract } from "../../data/game";
 
 const PoolList = () => {
-    const {pools} = useGameContract();
+    const {pools, whitelistPool} = useGameContract();
     const [value, setValue] = React.useState(0);
+    
+    const [poolList, setPoolList] = useState(pools)
+    useEffect(()=>{
+        console.log('resorting');
+        if (value == 1) {
+            setPoolList([...pools].sort((a,b)=>{
+                return -(Number(a.betCount) - Number(b.betCount));
+            }))
+        } else if ( value === 0 ) {
+            setPoolList([...pools].sort((a,b)=>{
+               return -(Number(a.remainBalance - b.remainBalance));
+            }))
+        }
+    }, [pools, value])
+
+    
     const handleChange = (event, newValue) => {
         setValue(newValue);
-
-        console.log(pools);
-        if (newValue === 1 ) {
-            pools.sort((a,b)=>{
-                return a.betCount > b.betCount;
-            })
-        } else if ( newValue === 0 ) {
-            pools.sort((a,b)=>{
-                a.remainBalance > b.remainBalance;
-            })
-        }
     };
     const StyledTabs = styled(Tabs)({
     // borderBottom: '1px solid #e8e8e8',
@@ -72,7 +77,13 @@ const PoolList = () => {
         </Stack>
         
         <Stack width='80%' direction='column' justifyContent="flex-between" alignItems="center" gap='16px' >
-        {pools && pools.filter((item)=>{return item.isUsed}).map((item)=>{
+        {poolList && poolList.filter((item)=>{return item.id == 1}).map((item)=>{
+           return <PoolItem key={item.id} poolPro={item} my={false}/>
+        })}
+        {poolList && poolList.filter((item)=>{return item.id == whitelistPool}).map((item)=>{
+           return <PoolItem key={item.id} poolPro={item} my={false}/>
+        })}
+        {poolList && poolList.filter((item)=>{return item.isUsed && item.id != 1 && item.id != whitelistPool}).map((item)=>{
            return <PoolItem key={item.id} poolPro={item} my={false}/>
         })}
         </Stack>

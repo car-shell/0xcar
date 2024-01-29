@@ -4,6 +4,8 @@ import {
   injectedWallet,
   rainbowWallet,
   trustWallet,
+  okxWallet,
+  coinbaseWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 
@@ -49,8 +51,14 @@ const connectors = connectorsForWallets([
         wallets: [
             injectedWallet({chains}),
             metaMaskWallet({ projectId: "1ecbab09b9b8ddac73ebc54d1190788c", chains }),
+            okxWallet({
+                projectId: "1ecbab09b9b8ddac73ebc54d1190788c",
+                chains: chains
+              }),
+            coinbaseWallet({ chains, appName: '0xCardinal App' }),
             trustWallet({ projectId: "1ecbab09b9b8ddac73ebc54d1190788c", chains }),
-            walletConnectWallet({ projectId: "1ecbab09b9b8ddac73ebc54d1190788c", chains }),
+            walletConnectWallet({ projectId: "1ecbab09b9b8ddac73ebc54d1190788c", chains })
+              
             // wallet.coinbase({ appName: "Coinbase", chains }),
             // ...(needsInjectedWalletFallback ? [wallet.injected({ chains })] : []),
         ],
