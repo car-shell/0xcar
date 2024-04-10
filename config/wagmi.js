@@ -78,7 +78,7 @@ const config = getDefaultConfig({
 
 export const wagmiClient = createConfig({
     connectors: [metaMask()],
-    chains: [base, baseSepolia],
+    chains: [baseSepolia],
     transports:{
         [base.id]: http("https://base.llamarpc.com"),
         [baseSepolia.id]: http("https://base-sepolia.blockpi.network/v1/rpc/public"),
