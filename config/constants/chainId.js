@@ -30,6 +30,9 @@ export const ChainId = {
     // TELOS = 40,
     // HARDHAT = 31337,
     // MOONBEAM = 1284,
+    BASE : 8453,
+    BASE_GOERLI : 84531,
+    BASE_SEPOLIA : 84532
 }
 
-export const defaultChainId = 97;
+export const defaultChainId = ChainId.BASE_SEPOLIA;

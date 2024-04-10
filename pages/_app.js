@@ -11,6 +11,12 @@ import { useState, useEffect } from "react";
 
 import UAParser from 'ua-parser-js';
 import Router from 'next/router';
+import {
+  QueryClientProvider,
+  QueryClient,
+} from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }) {
   const [loaded, setLoaded] = useState(false)
@@ -34,9 +40,11 @@ function MyApp({ Component, pageProps }) {
     {loaded && (
       <StateProvider>
         <WagmiConfig config={wagmiClient}>
-          <RainbowKitProvider chains={chains} theme={darkTheme()}>
-            <Component {...pageProps} />
-          </RainbowKitProvider>
+          <QueryClientProvider client={queryClient}>
+            <RainbowKitProvider chains={chains} theme={darkTheme()}>
+              <Component {...pageProps} />
+            </RainbowKitProvider>
+          </QueryClientProvider>
         </WagmiConfig>
       </StateProvider>
     )}

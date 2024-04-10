@@ -8,7 +8,7 @@ import ReactLoading from 'react-loading';
 import { store, SET_LOG_CHANGE, SET_ACTION} from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import Modal, { ConfirmationModal, useModal } from '../Tips';
-import { useAccount, useNetwork} from 'wagmi';
+import { useAccount} from 'wagmi';
 import useToast from '../Toast'
 import { useConnectModal, useChainModal } from '@rainbow-me/rainbowkit';
 import { formatAmount, isDictEmpty } from "../utils";
@@ -46,7 +46,7 @@ const BetAreaCell = () => {
   const {address, isConnected} = useAccount()
   const {balance, token} = useTokenContract()
   const {poolDetails, bet, result, withdraw, last} = useGameContract(true)
-  const {chain, chains} = useNetwork()
+  const {chain, chains} = useAccount()
   const {openConnectModal} = useConnectModal()
   const { openChainModal } = useChainModal();
 

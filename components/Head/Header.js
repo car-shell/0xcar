@@ -14,9 +14,8 @@ import { useRouter } from 'next/router';
 import useToast from '../Toast'
 import {formatAmount} from '../utils'
 
-import { InjectedConnector } from 'wagmi/connectors/injected';
 // import { signIn, signOut, useSession } from 'next-auth/react';
-import { useAccount, useConnect, useDisconnect, useNetwork } from 'wagmi';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 // import { useAuthRequestChallengeEvm } from '@moralisweb3/next';
 import {
@@ -42,7 +41,7 @@ const Header = ({showMenu=true}) => {
   const { openConnectModal } = useConnectModal();
   const { openChainModal } = useChainModal();
   
-  const {chain, chains} = useNetwork();
+  const {chain, chains} = useAccount();
   const {pools} = useGameContract();
 
   const disconnect = ()=>{

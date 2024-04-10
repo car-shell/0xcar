@@ -104,7 +104,7 @@ const IDO = () => {
         <StepInfo />
         <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="600px" marginBottom="32px">
             <Typography component='div' sx={{fontSize: '30px', fontStyle: 'italic', fontWeight: '700', marginTop: '48px'}}>
-                JOIN <span style={{color: 'red'}}>0x</span>Cardinal DTO
+                JOIN <span style={{color: '#ea3423'}}>0x</span>Cardinal DTO
             </Typography>
             <Typography component='div' sx={{fontSize: '30px',  fontStyle: 'italic', fontWeight: '700', }}>
             Become a Betting Pool Owner

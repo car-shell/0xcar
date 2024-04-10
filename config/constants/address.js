@@ -24,23 +24,23 @@ export const ADDRESSES = {
     //     faucet: "0x1a971f0bd7CCc21AF278A4d133095C5200c43559",
     //     sponsor: "0x662B1AA48b798D929b52aAC20E2ab991684A0B0C"
     // },
-    [ChainId.BSC_TESTNET]: {
+    [ChainId.BASE_SEPOLIA]: {
         // token: "0x1827A1e68D7b6B3F6F3c1F827Ec355d1b787376E",
         // nft: "0xb4521875a75dacbe44dfda09713d59c1fbe1003a",
         // game: "0x841d9d2ec3908f0b73a910435fc8c1d88b642584",
         // faucet: "0x6D70B8d77B12211915aEf7D93E58352B4d003efC",
-        usdt: "0x3c0f19Ac8b5EA723d11BcD3A78066Db233EbC719",
-        token: "0x0753487310c10DbF2d978A0D6105DbedB43A05fB",
-        nft: "0xA780f84DEbef5301979c406956090d62FdDb39D4",
-        game: "0x3CaFfAe2a68A16Cc28fD1F9A5f65764c634Ba7ff",
-        ido: "0x4C8555C9ACb101dfcdc2af479F5Cd5985c53A550",
-        swap: "0xD99D1c33F9fC3444f8101754aBC46c52416550D1",
-        faucet: "0x6D70B8d77B12211915aEf7D93E58352B4d003efC",
-
+        usdt: "0xBb84f892cB0d3b3816C1DE5553fCfB7C3157A186",
+        token: "0x82A9c214d75c706E4B63adfB4AC75366670Ad294",
+        nft: "0x23295EED6084951EE56b5b14D167E909e295a23F",
+        game: "0x3D8aDe7326A55bd8ddf8e42C5687e5Bcfbf345c2",
+        // ido: "0x4C8555C9ACb101dfcdc2af479F5Cd5985c53A550",
+        // swap: "0xD99D1c33F9fC3444f8101754aBC46c52416550D1",
+        // faucet: "0x6D70B8d77B12211915aEf7D93E58352B4d003efC",
+        
         topic_bet: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
         topic_win: "0x9f8ce2e31646e98e72e097e8abe5539ff064932fc90b722b121b9c83f9351b40",
         topic_got_result: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
         // sponsor: "0x58ae9bcfa7be29825bfb921847af8ed0bf45dd1f",
-        sponsor: "0x4Ca170659211737FC6e6a54Cc321A57784982cc8",
+        sponsor: "0x93Fae041619363aA9F1F8049Cb7C5294eDc6923D",
     }
 };

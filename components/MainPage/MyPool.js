@@ -37,25 +37,23 @@ const MyPool = () => {
                     The pool must be operational for at least 3 months before manual withdrawal is allowed.
                     </li>
                     <li style={{marginTop: "8px"}}>
-                    At the end of each cycle, there is a 3-day period for pool withdrawal. If this period is exceeded, the pool is automatically renewed for another 3 months.
+                    Withdrawals are available every 15 days after the initial 90 days of pool creation.
                     </li>
                     <li style={{marginTop: "8px"}}>
-                    Withdrawal process: Lock pool &gt; Wait for 3 days &gt; Manual withdrawal available after 3 days.
+                    Withdrawal process: Lock pool -&gt; Wait for 3 days -&gt; Manual withdrawal available after 3 days.
                     </li>
                     <li style={{marginTop: "8px"}}>
                     The withdrawal operation is the same as the withdrawal logic for regular users, including a deduction of a handling fee.
                     </li>
                     <li style={{marginTop: "8px"}}>
-                    Withdrawal handling fee = 7% of the pool&aposs profit balance.
+                    Withdrawal handling fee =3% of the withdrawal amount.
                     </li>
                     <li  style={{marginTop: "8px"}}>
                     The withdrawal operation is irreversible. Once completed, the wallet address previously bound to the user will automatically be bound to the official pool.
                     </li>
                 </ul>
             </Stack>
-                
         </Stack>
-
     </React.Fragment>);
 }
 

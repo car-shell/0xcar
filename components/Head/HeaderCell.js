@@ -11,9 +11,8 @@ import BaseLink from './BaseLink';
 import { useRouter } from 'next/router';
 import useToast from '../Toast'
 
-import { InjectedConnector } from 'wagmi/connectors/injected';
 // import { signIn, signOut, useSession } from 'next-auth/react';
-import { useAccount, useConnect, useDisconnect, useNetwork } from 'wagmi';
+import { useAccount, useConnect, useDisconnect, useSwitchChain} from 'wagmi';
 
 // import { useAuthRequestChallengeEvm } from '@moralisweb3/next';
 import {
@@ -39,7 +38,8 @@ const HeaderCell = ({showMenu=true}) => {
   const { openConnectModal } = useConnectModal();
   const { openChainModal } = useChainModal();
   
-  const {chain, chains} = useNetwork();
+  const {chain} = useAccount()
+  const {chains} = useSwitchChain()
 
   const disconnect = ()=>{
     dispatch({

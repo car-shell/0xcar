@@ -14,7 +14,10 @@ const PoolList = () => {
     
     const [poolList, setPoolList] = useState(pools)
     useEffect(()=>{
-        console.log('resorting');
+        if (!pools) {
+            return
+        }
+        
         if (value == 1) {
             setPoolList([...pools].sort((a,b)=>{
                 return -(Number(a.betCount) - Number(b.betCount));

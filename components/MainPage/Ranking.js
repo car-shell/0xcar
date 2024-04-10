@@ -15,7 +15,7 @@ import { styled } from '@mui/material/styles';
 import {formatAmount} from "../utils"
 import { ADDRESSES } from '../../config/constants/address' 
 import { defaultChainId } from "../../config/constants/chainId";
-import { useNetwork, useAccount } from "wagmi";
+import { useAccount } from "wagmi";
 import { useRouter } from 'next/router';
 
 
@@ -41,8 +41,8 @@ export default function Ranking({width = '920px'}) {
   const [showPointsRules, setShowPointsRules] = React.useState(false);
   const moreRef = React.useRef()
 
-  const {chain, chains} = useNetwork()
-  const {address} = useAccount()
+  const {chain, address} = useAccount()
+  const {chains} = useSwitchChain()
   const router = useRouter()
   const chainId = React.useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
   const addressGameContract = ADDRESSES[chainId]?.game;

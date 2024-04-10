@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect, useMemo} from "react";
 import {FaucetABI as abi} from '../../data/abi/Faucet'
 import s from "../../styles/Faucet.module.css";
-import {  useAccount, useBalance, useNetwork } from "wagmi";
+import {  useAccount, useBalance, useSwitchChain } from "wagmi";
 import ReactLoading from 'react-loading';
-import { readContract, writeContract, prepareWriteContract, waitForTransaction} from "@wagmi/core";
+import { writeContract, simulateContract, waitForTransaction} from "@wagmi/core";
 import useToast from '../Toast'
 import { ADDRESSES } from '../../config/constants/address' 
 import { defaultChainId } from "../../config/constants/chainId";
@@ -15,7 +15,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import useTokenContract from "../../data/token"
 
 const Faucet = () => {
-    const {chain, chains} = useNetwork()
+    const {chain} = useAccount()
+    const {chains} = useSwitchChain()
+    
     const {token} = useTokenContract()
     const chainId = useMemo(()=>{ return chain?.id ? chain.id : defaultChainId}, [chain])
     const faucetContractAddress = ADDRESSES[chainId]?.faucet;
@@ -71,22 +73,22 @@ const Faucet = () => {
         }
        
         console.log('faucet');
-        const config = await prepareWriteContract({
+        const {request} = await simulateContract(wagmiClient, {
             address: faucetContractAddress,
-            abi: abi,
+            abi,
             functionName: 'faucet',
         }).catch( (e)=>{
             console.log(e);
             showToast(e?.reason || e?.message, 'error');
         })
-        if (config === undefined) {
-            console.log('config error');
+        if (request === undefined) {
+            console.log('request error');
             return;
         }
 
         setIsLoading(true)
-        const data = await writeContract(config).then(async(data)=>{
-            const d = await waitForTransaction({
+        const data = await writeContract(wagmiClient, request).then(async(data)=>{
+            const d = await waitForTransaction(wagmiClient, {
                 hash: data?.hash,
             }).then((data)=>{
                 showToast('success!');

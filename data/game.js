@@ -5,14 +5,16 @@ import { useTokenContract } from "./token";
 import { store, SET_WIN_LOGS } from '../store/store'
 import { defaultChainId } from "../config/constants/chainId";
 import useDispatch from '../store/useDispatch'
-import {  useAccount, useNetwork, useContractRead, useContractEvent, usePrepareContractWrite,
-  useContractWrite,
+import {  useAccount, useReadContract, useWatchContractEvent, usePrepareContractWrite,
+    useSwitchChain,
+  useWriteContract,
   useWaitForTransaction } from "wagmi";
 import { ADDRESSES } from '../config/constants/address';
 import { BetStatus } from "../components/constant";
-import { readContract, writeContract, prepareWriteContract, waitForTransaction, getWalletClient} from "@wagmi/core";
+import { readContract, writeContract, simulateContract, waitForTransaction, getWalletClient} from "@wagmi/core";
+import {wagmiClient} from '../config/wagmi'
 // export const useBet = ({id, amount, rule, number, success, failed})=>{
-//     const {chain, chains} = useNetwork()
+//     const {chain, chains} = useAccount()
 //     const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
 //     const addressGameContract = ADDRESSES[chainId]?.game;
 
@@ -31,7 +33,7 @@ import { readContract, writeContract, prepareWriteContract, waitForTransaction, 
 
 //     const { config } = usePrepareContractWrite({
 //         address: addressGameContract,
-//         abi: abi,
+//         abi,
 //         functionName: 'bet',
 //         args: [id, amount, 0, rule, number],
 //         enabled: id!=null && amount!=null && rule!=null && number!=null,
@@ -73,13 +75,13 @@ import { readContract, writeContract, prepareWriteContract, waitForTransaction, 
 export const useGameContract = (monitor=false)  => {
     const n1e18 = 1000000000000000000n
 
-    const {chain, chains} = useNetwork()
+    const {chain, address, isConnected} = useAccount()
+    const {chains} = useSwitchChain()
     const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
     const addressGameContract = ADDRESSES[chainId]?.game;
     const [logs, setLogs] = useState([])
 
     const {allowance, approve} = useTokenContract()
-    const {address, isConnected} = useAccount()
     const [currentPoolId, setCurrentPoolId] = useState(1)
     const [last, setLast] = useState({})
 
@@ -87,9 +89,9 @@ export const useGameContract = (monitor=false)  => {
     const dispatch = useDispatch()
     const odds = {0: 5, 1: 10, 2: 100}
 
-    const { data: poolDetails, isError, isLoading: poolLoading } = useContractRead({
+    const { data: poolDetails, isError, isLoading: poolLoading } = useReadContract({
             address: addressGameContract,
-            abi: abi,
+            abi,
             functionName: 'poolInfo',
             args: [currentPoolId],
             chainId: chainId,
@@ -120,9 +122,9 @@ export const useGameContract = (monitor=false)  => {
     }, [dispatch, monitor])
 
 
-    const { data:lastRecord, isError: lastRecordError, isLoading: lastLoading } = useContractRead({
+    const { data:lastRecord, isError: lastRecordError, isLoading: lastLoading } = useReadContract({
         address: addressGameContract,
-        abi: abi,
+        abi,
         functionName: 'last',
         chainId: chainId,
         args: [address],
@@ -132,9 +134,9 @@ export const useGameContract = (monitor=false)  => {
         }
     })
 
-    const { data:miningFunding } = useContractRead({
+    const { data:miningFunding } = useReadContract({
         address: addressGameContract,
-        abi: abi,
+        abi,
         functionName: 'miningFunding',
         chainId: chainId,
         args: [address],
@@ -144,9 +146,9 @@ export const useGameContract = (monitor=false)  => {
         }
     })
 
-    const { data:whitelistPool } = useContractRead({
+    const { data:whitelistPool } = useReadContract({
         address: addressGameContract,
-        abi: abi,
+        abi,
         functionName: 'whitelistPool',
         chainId: chainId,
         args: [address],
@@ -168,9 +170,9 @@ export const useGameContract = (monitor=false)  => {
         setLast({id: lastRecord[0].toString(), amount: amount.toString(), number: lastRecord[4], odds: odds[lastRecord[3]], status: s, random: s!=BetStatus.timeout?lastRecord[6]:'-'})
     }, [lastRecord])
     
-    useContractEvent({
+    useWatchContractEvent({
         address: addressGameContract,
-        abi: abi,
+        abi,
         eventName: 'ResultObtained',
         chainId: chainId,
         listener(better, id, amount, betNumber, random, odds, netWin, height) {
@@ -191,18 +193,18 @@ export const useGameContract = (monitor=false)  => {
     })
 
 
-    const { data: pools, isError: poolsListLoadingError, isLoading: poolsListLoading } = useContractRead({
+    const { data: pools, isError: poolsListLoadingError, isLoading: poolsListLoading } = useReadContract({
         address: addressGameContract,
-        abi: abi,
+        abi,
         functionName: 'pools',
         chainId: chainId,
         watch: true,
         cache: 2_000,
         onSuccess(data) {
-        //    console.log('Success', data)
+           console.log('Success', data)
         },
         onError(error) {
-  //          console.log('Error', error)
+           console.log('Error', error)
         },
     })
     
@@ -214,16 +216,16 @@ export const useGameContract = (monitor=false)  => {
     
     const _bet = useCallback( async (id, amount, poolId, ruleId, selectNumber, success, fail, setActiveStep)=>{
         console.log( `${id} ${amount} ${poolId} ${poolId} ${poolId}`);
-        const config = await prepareWriteContract({
+        const config = await simulateContract(wagmiClient, {
             address: addressGameContract,
-            abi: abi,
+            abi,
             functionName: 'bet',
             args: [id, amount, poolId, ruleId, selectNumber]
-        }).then( async (config)=>{
+        }).then( async ({request})=>{
             console.log(`bet in ${poolId} pool`);
-            await writeContract(config).then(async ({hash})=>{
+            await writeContract(wagmiClient, request).then(async (hash)=>{
                 setActiveStep('bet', 1)
-                const receipt = await waitForTransaction({
+                const receipt = await waitForTransaction(wagmiClient, {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
@@ -269,13 +271,12 @@ export const useGameContract = (monitor=false)  => {
     }
 
     const result = async (id, success, fail)=>{
-        const { account } = await getWalletClient()
-        const config = await readContract({
+        const config = await readContract(wagmiClient, {
             address: addressGameContract,
-            abi: abi,
+            abi,
             functionName: 'result',
             args: [id],
-            account,
+            account: address,
         }).then((result)=>{
             success(result)
         }).catch((e)=>{
@@ -285,16 +286,16 @@ export const useGameContract = (monitor=false)  => {
 
     const withdraw = async (id, success, fail, setStepStatus)=>{
         console.log( '------ start withdraw -----' );
-        const config = await prepareWriteContract({
+        const config = await simulateContract(wagmiClient, {
             address: addressGameContract,
-            abi: abi,
+            abi,
             functionName: 'withdraw',
             args: [id]
-        }).then( async (config)=>{
-            await writeContract(config).then(async ({hash})=>{
+        }).then( async ({request})=>{
+            await writeContract(wagmiClient, request).then(async (hash)=>{
                 console.log("----------writeContract-----------");
                 setStepStatus('withdraw', 1)
-                const receipt = await waitForTransaction({
+                const receipt = await waitForTransaction(wagmiClient, {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
@@ -316,17 +317,17 @@ export const useGameContract = (monitor=false)  => {
     }
 
     const withdrawPool = async (id, success, fail)=>{
-        const config = await prepareWriteContract({
+        const config = await simulateContract(wagmiClient, {
             address: addressGameContract,
-            abi: abi,
+            abi,
             functionName: 'withdrawPool',
             args: [id]
-        }).then( async (config)=>{
-            await writeContract(config).then(async ({hash})=>{
+        }).then( async ({request})=>{
+            await writeContract(wagmiClient, request).then(async (hash)=>{
                 console.log("----------writeContract-----------");
                 // setStepStatus('withdraw', 1)
 
-                const receipt = await waitForTransaction({
+                const receipt = await waitForTransaction(wagmiClient, {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
@@ -349,16 +350,16 @@ export const useGameContract = (monitor=false)  => {
     }
 
     const withdrawMiningFunding = async (id, success, fail, setStepStatus)=>{
-        const config = await prepareWriteContract({
+        const config = await simulateContract(wagmiClient, {
             address: addressGameContract,
-            abi: abi,
+            abi,
             functionName: 'withdrawMiningFunding',
             args: []
-        }).then( async (config)=>{
-            await writeContract(config).then(async ({hash})=>{
+        }).then( async ({request})=>{
+            await writeContract(wagmiClient, request).then(async (hash)=>{
                 setStepStatus('withdraw', 1)
 
-                const receipt = await waitForTransaction({
+                const receipt = await waitForTransaction(wagmiClient, {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
@@ -377,14 +378,14 @@ export const useGameContract = (monitor=false)  => {
     }
 
     const preRemovePool = async (id, success, fail)=>{
-        const config = await prepareWriteContract({
+        const config = await simulateContract(wagmiClient, {
             address: addressGameContract,
-            abi: abi,
+            abi,
             functionName: 'preRemovePool',
             args: [id]
-        }).then( async (config)=>{
-            await writeContract(config).then(async ({hash})=>{
-                const receipt = await waitForTransaction({
+        }).then( async ({request})=>{
+            await writeContract(wagmiClient, request).then(async (hash)=>{
+                const receipt = await waitForTransaction(wagmiClient, {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
@@ -402,14 +403,14 @@ export const useGameContract = (monitor=false)  => {
     }
 
     const removePool = async (id, success, fail)=>{
-        const config = await prepareWriteContract({
+        const config = await simulateContract(wagmiClient, {
             address: addressGameContract,
-            abi: abi,
+            abi,
             functionName: 'removePool',
             args: [id]
-        }).then( async (config)=>{
-            await writeContract(config).then(async ({hash})=>{
-                const receipt = await waitForTransaction({
+        }).then( async ({request})=>{
+            await writeContract(wagmiClient, request).then(async (hash)=>{
+                const receipt = await waitForTransaction(wagmiClient, {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })

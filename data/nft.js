@@ -1,31 +1,32 @@
-import { useContract, useAccount, useContractRead, useWalletClient, useNetwork } from "wagmi";
+import { useContract, useReadContract, useWalletClient, useAccount, useSwitchChain } from "wagmi";
 import { useMemo, useCallback, useState, useEffect} from "react";
-import { readContract, writeContract, prepareWriteContract, waitForTransaction } from "@wagmi/core";
+import { readContract, writeContract, simulateContract, waitForTransaction } from "@wagmi/core";
 import { ethers } from "ethers"
 import { ADDRESSES } from '../config/constants/address' 
 import { ERC721ABI as abi } from './abi/ERC721ABI'
 import { useTokenContract } from "./token";
 import { defaultChainId } from "../config/constants/chainId";
+import {wagmiClient} from '../config/wagmi'
 
 const useNFTContract = () => {
-    const {address} = useAccount()
+    const {address, chain} = useAccount()
+    const {chains} = useSwitchChain()
     const {allowance, approve} = useTokenContract()
     const [ownList, setOwnList] = useState([])
     const [canClaimLevel, setCanClaimLevel] = useState({level:0, reason: 0})
-    const {chain, chains} = useNetwork()
     const chainId = useMemo(()=>{ return chain != undefined && chain?.id &&  chains.map(c=>c.id).indexOf(chain.id) != -1 ? chain.id : defaultChainId}, [chain])
     const addressNFTContract = ADDRESSES[chainId]?.nft
     // const addressNFTContract = useMemo(()=> {return ADDRESSES[97]?.nft})
     // const { data: signer, error, isLoading } = useWalletClient()
     // const erc721 = useContract({
     //     address: addressNFTContract,
-    //     abi: abi,
+    //     abi,
     //     signerOrProvider: signer
     // })
 
-    const { data: ownOfData } = useContractRead({
+    const { data: ownOfData } = useReadContract({
             address: addressNFTContract,
-            abi: abi,
+            abi,
             functionName: 'ownOf',
             chainId: chainId,
             args: [address],
@@ -38,9 +39,9 @@ const useNFTContract = () => {
         }
     )
 
-     const { data: whitelist } = useContractRead({
+     const { data: whitelist } = useReadContract({
             address: addressNFTContract,
-            abi: abi,
+            abi,
             functionName: 'isEligible',
             chainId: chainId,
             args: [address],
@@ -77,9 +78,9 @@ const useNFTContract = () => {
     },[whitelist])
     
     const getNFT = useCallback(async (nftID, success)=>{
-        const result = await readContract({
+        const result = await readContract(wagmiClient, {
             address: addressNFTContract,
-            abi: abi,
+            abi,
             functionName: 'getNFT',
             args: [nftID],
         }).then((result) => {
@@ -92,13 +93,13 @@ const useNFTContract = () => {
     }, [address, addressNFTContract])
 
     const merginNft = useCallback(async (level1ID1, level1ID2, level2ID, success, fail) => {
-        const config = await prepareWriteContract({
+        const config = await simulateContract(wagmiClient, {
             address: addressNFTContract,
-            abi: abi,
+            abi,
             functionName: 'mergeNFTs',
             args: [level1ID1, level1ID2, level2ID],
-        }).then( async (config)=>{
-            const data = await writeContract(config).then((data)=>{
+        }).then( async ({request})=>{
+            const data = await writeContract(wagmiClient, request).then((data)=>{
                 success(data)
             }).catch((e)=>{
                 console.log(e);
@@ -131,13 +132,13 @@ const useNFTContract = () => {
     }, [address, addressNFTContract])
 
     const claim = useCallback( async (success, fail)=>{
-        const config = await prepareWriteContract({
+        const config = await simulateContract(wagmiClient, {
             address: addressNFTContract,
-            abi: abi,
+            abi,
             functionName: 'awardItem',
-        }).then(async (config)=>{
-            const data = await writeContract(config).then(async ({hash})=>{
-                const receipt = await waitForTransaction({
+        }).then(async ({request})=>{
+            const data = await writeContract(wagmiClient, request).then(async (hash)=>{
+                const receipt = await waitForTransaction(wagmiClient, {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })

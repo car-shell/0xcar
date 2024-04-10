@@ -1,6 +1,6 @@
-import { useContract, useAccount, useContractRead, useWalletClient, useNetwork } from "wagmi";
+import { useContract, useAccount, useReadContract, useWalletClient, useSwitchChain } from "wagmi";
 import { useMemo, useCallback, useState, useEffect} from "react";
-import { readContract, writeContract, prepareWriteContract, waitForTransaction } from "@wagmi/core";
+import { readContract, writeContract, simulateContract, waitForTransaction } from "@wagmi/core";
 import { ethers } from "ethers"
 import { ADDRESSES } from '../config/constants/address' 
 import { IDOABI as abi } from './abi/IDOABI'
@@ -10,17 +10,18 @@ import { formatAmount, n1e18 } from "../components/utils";
 
 
 export const useIDOContract = () => {
-    const {address, isConnected} = useAccount()
-    const {chain, chains} = useNetwork()
+    const {address, chain, isConnected} = useAccount()
+    const {chains} = useSwitchChain()
+    
     const chainId = useMemo(()=>{ return chain != undefined && chain?.id && chains.map(c=>c?.id).indexOf(chain?.id) != -1 ? chain.id : defaultChainId}, [chain, chains])
     const addressIDOContract = ADDRESSES[chainId]?.ido
 
     const {usdt, balance: usdtBalance, allowance, approve} = useTokenContract(ADDRESSES[chainId].usdt);
 
 
-    const { data: init_balance } = useContractRead({
+    const { data: init_balance } = useReadContract({
             address: addressIDOContract,
-            abi: abi,
+            abi,
             functionName: 'init_amount',
             chainId: chainId,
             args: [],
@@ -33,9 +34,9 @@ export const useIDOContract = () => {
         }
     )
 
-    const { data: remain_balance } = useContractRead({
+    const { data: remain_balance } = useReadContract({
             address: addressIDOContract,
-            abi: abi,
+            abi,
             functionName: 'remain_amount',
             chainId: chainId,
             args: [],
@@ -48,9 +49,9 @@ export const useIDOContract = () => {
         }
     )
 
-    const { data: total_usdt_raised } = useContractRead({
+    const { data: total_usdt_raised } = useReadContract({
             address: addressIDOContract,
-            abi: abi,
+            abi,
             functionName: 'total_usdt_raised',
             chainId: chainId,
             args: [],
@@ -66,13 +67,13 @@ export const useIDOContract = () => {
 
     const _createIDOPool = useCallback(async (amount, discord, success, fail, onStepChange) => {
         console.log(`${amount} ${discord} ${addressIDOContract} ${abi}`);
-        const config = await prepareWriteContract({
+        const config = await simulateContract(wagmiClient, {
             address: addressIDOContract,
-            abi: abi,
+            abi,
             functionName: 'createIDOPool',
             args: [amount, discord],
-        }).then( async (config)=>{
-            const data = await writeContract(config).then((s, data)=>{
+        }).then( async ({request})=>{
+            const data = await writeContract(wagmiClient, request).then((s, data)=>{
                 onStepChange(2, true, null, null, "View My Pool")
                 success(data)
             }).catch((e)=>{

@@ -7,7 +7,7 @@ import Fireworks from "../animPaper";
 import ReactLoading from 'react-loading'
 import { store, SET_LOG_CHANGE, SET_ACTION} from '../../store/store'
 import useDispatch from '../../store/useDispatch'
-import { useAccount, useNetwork} from 'wagmi';
+import { useAccount, useSwitchChain} from 'wagmi';
 import useToast from '../Toast'
 import { useConnectModal, useChainModal } from '@rainbow-me/rainbowkit';
 import { formatAmount, isDictEmpty, n1e18, amountFromFormatedStr } from "../utils";
@@ -47,10 +47,11 @@ const BetArea = () => {
   const [playingLose, toggleLose] = useAudio("./lose.wav");
   const [playingWin, toggleWin] = useAudio("./win.wav");
 
-  const {address, isConnected} = useAccount()
   const {balance, token, allowance, approve} = useTokenContract()
   const {poolDetails, bet, result, withdraw, last, whitelistPool, withdrawMiningFunding, miningFunding, setCurrentPoolId} = useGameContract(true)
-  const {chain, chains} = useNetwork()
+  const {address, isConnected, chain} = useAccount()
+  const {chains} = useSwitchChain()
+  
   const {openConnectModal} = useConnectModal()
   const {openChainModal} = useChainModal();
 
@@ -570,9 +571,9 @@ const BetArea = () => {
   }
 
   const buttonContent = () => {
-    if ( poolId == 1) {
-      return "Official pool opens for betting 90 days after the pool launch."
-    }
+    // if ( poolId == 1) {
+    //   return "Official pool opens for betting 90 days after the pool launch."
+    // }
 
     if (!isConnected) {
       return "Connect Wallet"
