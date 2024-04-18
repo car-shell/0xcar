@@ -4,7 +4,7 @@ import '../styles/common.css'
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { RainbowKitProvider, darkTheme} from "@rainbow-me/rainbowkit"; 
-import { chains, wagmiClient } from "../config/wagmi";
+import { wagmiClient } from "../config/wagmi";
 import { WagmiConfig } from "wagmi";
 import { StateProvider } from '../store/store'
 import { useState, useEffect } from "react";
@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }) {
       <StateProvider>
         <WagmiConfig config={wagmiClient}>
           <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider chains={chains} theme={darkTheme()}>
+            <RainbowKitProvider theme={darkTheme()}>
               <Component {...pageProps} />
             </RainbowKitProvider>
           </QueryClientProvider>

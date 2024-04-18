@@ -340,7 +340,7 @@ const IDO = ({refera}) => {
                 </Stack>
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}/>
                 <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", marginTop: '12px'}} >
-                Through the referral link, the sharer will receive a 3% rebate from the participant's IDO contribution.
+                Through the referral link, the sharer will receive a 3% rebate from the participant&apos;s IDO contribution.
                 </Typography>
             </Stack>
         </Stack>
@@ -394,7 +394,7 @@ const IDO = ({refera}) => {
                 <Stack width='90%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}} />
                 {claimInfo.map((data, index)=>{
                     return (
-                        <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
+                        <Stack key={index} width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingLeft: '32px', textAlign: 'left', width: '30%'}}>
                             {formatTime(data)}
                             </Typography>
@@ -435,7 +435,7 @@ const IDO = ({refera}) => {
                 </Button>
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '18px'}}/>
                 <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", marginTop: '12px'}} >
-                Through the referral link, the sharer will receive a 3% rebate from the participant's IDO contribution.
+                Through the referral link, the sharer will receive a 3% rebate from the participant&apos;s IDO contribution.
                 </Typography>
             </Stack>
         </Stack>}
