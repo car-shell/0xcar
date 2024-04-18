@@ -47,7 +47,6 @@ const IDO = ({refera}) => {
     }, [setStepNodes])
     
     useEffect(()=>{
-        
         let r = 'Please Connect wallet first';
         if (isConnected) {
             let url = typeof window !== 'undefined' ? window.location.href : ''
@@ -55,7 +54,7 @@ const IDO = ({refera}) => {
             r = `${url}?refera=${address}`
         }
         setRefUrl(r)
-    }, [address, isConnected])
+    }, [address, isConnected, window])
 
     useEffect(()=>{
         const i = setInterval(()=>{
