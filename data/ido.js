@@ -200,9 +200,9 @@ export const useIDOContract = () => {
         whitelistPrice: isSuccess?Number(100000n/info[7])/100000: 1, 
         subscribed: isSuccess?Number(info[0][0]):0,
         claimed: isSuccess?Number(info[0][1]):0,
-        referaCount: isSuccess?0:0,
         referaFund: isSuccess?formatAmount(info[0][2]):"--",
         isWhitelist: isSuccess?info[0][3]:false,
+        referaCount: isSuccess?Number(info[0][4]):0,
         buyToken,
         claimTokens,
         withdrawRefferasFund}

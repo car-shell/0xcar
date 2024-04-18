@@ -224,7 +224,7 @@ const IDO = ({refera}) => {
                     IDO price
                     </Typography>
                     <Typography component='div' sx={{fontSize: '16px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '90%'}}>
-                        <span style={{font: '400 italic 14px sans'}}>Whitelist pice: </span>{whitelistPrice} USDT | <span style={{font: '400 italic 14px sans'}}>Public pice: </span> {price} USDT
+                        <span style={{font: '400 italic 14px sans'}}>Whitelist pice: </span>{whitelistPrice} USDT | <span style={{font: '400 italic 14px sans'}}>Public pice: </span> {whitelistPrice} USDT
                     </Typography>
                 </Stack>
             </Stack>
@@ -320,24 +320,23 @@ const IDO = ({refera}) => {
                 
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
-                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333", fontStyle: 'italic', backgroundColor: '#333333',  borderRadius: '5px',  marginTop: '32px'}}>
-                    <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
-                        Total Invitees
-                        </Typography>
-                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {referaCount}
-                        </Typography>
-                    </Stack>
-                    <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', marginBottom: '16px'}}>
-                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
-                        Tokens Subscribed
-                        </Typography>
-                        <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                            {referaFund}
-                        </Typography>
-                    </Stack>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',    marginTop: '16px'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
+                    Tokens Subscribed
+                    </Typography>
+                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                        {referaFund} USDT
+                    </Typography>
                 </Stack>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginBottom: '16px'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
+                    Total Invitees
+                    </Typography>
+                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                    {referaCount} 
+                    </Typography>
+                </Stack>
+                
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}/>
                 <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", marginTop: '12px'}} >
                 Through the referral link, the sharer will receive a 3% rebate from the participant&apos;s IDO contribution.
