@@ -196,7 +196,7 @@ const IDO = ({refera}) => {
                 <span style={{color: '#ea3423'}}>0x</span>
             </Typography> */}
             <Typography component='div' sx={{fontSize: '20px',  fontStyle: 'italic', fontWeight: '400', marginTop: '12px' }}>
-            {formatTime(startTime, true)} - {formatTime(endTime, true)} (UTC+0)
+            {formatTime(startTime*1000, true)} - {formatTime(endTime*1000, true)} (UTC+0)
             </Typography>
             <Typography component='div' sx={{font: '700 italic 18px sans', color: "#d7d7d7", marginTop: '12px' }}>
             Ends in <span style={{font: '700 italic 28px sans', color: "yellow"}}>{duration}</span>
@@ -224,7 +224,7 @@ const IDO = ({refera}) => {
                     IDO price
                     </Typography>
                     <Typography component='div' sx={{fontSize: '16px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '90%'}}>
-                        <span style={{font: '400 italic 14px sans'}}>Whitelist pice: </span>{price} USDT | <span style={{font: '400 italic 14px sans'}}>Public pice: </span> {whitelistPrice} USDT
+                        <span style={{font: '400 italic 14px sans'}}>Whitelist pice: </span>{whitelistPrice} USDT | <span style={{font: '400 italic 14px sans'}}>Public pice: </span> {price} USDT
                     </Typography>
                 </Stack>
             </Stack>

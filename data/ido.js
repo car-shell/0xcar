@@ -190,8 +190,8 @@ export const useIDOContract = () => {
     }, [addressIDOContract, address, allowance, approve, isConnected]);
    
     return { isSuccess, 
-        init:isSuccess?formatAmount(info[1]):'--', 
-        remain:isSuccess?formatAmount(info[2]):'--', 
+        init:isSuccess?formatAmount(info[2]):'--', 
+        remain:isSuccess?formatAmount(info[1]):'--', 
         total_usdt_raised:isSuccess?formatAmount(info[3]):"--",
         usdtBalance:usdtBalance, 
         startTime: isSuccess?Number(info[4]):'--', 
