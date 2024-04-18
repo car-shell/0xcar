@@ -675,14 +675,14 @@ const BetArea = () => {
         <button className={styles.submit} onClick={submitBet} style={buttonContent()!="Bet" &&  buttonContent()!="Connect Wallet" &&  !buttonContent().startsWith("Switch to") ?{}:{font: 'bold 16px sans'}} disabled={ buttonContent()!="Bet" &&  buttonContent()!="Connect Wallet" &&  !buttonContent().startsWith("Switch to")}>
           { buttonContent() }
         </button>
-        <div className={styles.line}>
+        {whitelistPool == poolId && <div className={styles.line}>
             <div className={styles.content_text}>
               Mining Rewards: <span style={{color: '#06FC99'}}> {miningFunding?formatAmount(miningFunding): '0.00'} {token?.symbol}</span>
             </div>
             <div className={styles.content_text} style={{color: '#41A0DA', cursor: 'pointer'}} onClick={handleWithdrawMiningFunding}>
               Widthdraw
             </div>
-        </div>
+        </div>}
       </div>
       <ToastUI />
       {showFireworks && <div className={styles.umask} style={{background: 'rgba(32, 33, 34, 0)'}}>

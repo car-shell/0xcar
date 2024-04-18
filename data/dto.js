@@ -1,0 +1,136 @@
+import { useContract, useAccount, useReadContract, useWalletClient, useSwitchChain } from "wagmi";
+import { useMemo, useCallback, useState, useEffect} from "react";
+import { readContract, writeContract, simulateContract, waitForTransaction } from "@wagmi/core";
+import { ethers } from "ethers"
+import { ADDRESSES } from '../config/constants/address' 
+import { IDOABI as abi } from './abi/IDOABI'
+import { useTokenContract } from "./token";
+import { defaultChainId } from "../config/constants/chainId";
+import { formatAmount, n1e18 } from "../components/utils";
+
+
+export const useIDOContract = () => {
+    const {address, chain, isConnected} = useAccount()
+    const {chains} = useSwitchChain()
+
+    const chainId = useMemo(()=>{ return chain != undefined && chain?.id && chains.map(c=>c?.id).indexOf(chain?.id) != -1 ? chain.id : defaultChainId}, [chain, chains])
+    const addressIDOContract = ADDRESSES[chainId]?.ido
+
+    const {usdt, balance: usdtBalance, allowance, approve} = useTokenContract(ADDRESSES[chainId].usdt);
+
+
+    const { data: init_balance } = useReadContract({
+            address: addressIDOContract,
+            abi,
+            functionName: 'init_amount',
+            chainId: chainId,
+            args: [],
+            watch: true,
+            query: {
+                notifyOnChangeProps: ['data', 'error'],
+                refetchInterval: 2000,
+                gcTime: Infinity,
+            },
+            // structuralSharing: (prev, next) => (prev === next ? prev : next),
+            onSuccess:(data)=>{
+                console.log(data);
+            }
+        }
+    )
+
+    const { data: remain_balance } = useReadContract({
+            address: addressIDOContract,
+            abi,
+            functionName: 'remain_amount',
+            query: {
+                notifyOnChangeProps: ['data', 'error'],
+                refetchInterval: 2000,
+                gcTime: Infinity,
+            },
+            chainId: chainId,
+            args: [],
+            watch: true,
+            // structuralSharing: (prev, next) => (prev === next ? prev : next),
+            onSuccess:(data)=>{
+                console.log(data);
+            }
+        }
+    )
+
+    const { data: total_usdt_raised } = useReadContract({
+            address: addressIDOContract,
+            abi,
+            functionName: 'total_usdt_raised',
+            query: {
+                notifyOnChangeProps: ['data', 'error'],
+                refetchInterval: 2000,
+                gcTime: Infinity,
+            },
+            chainId: chainId,
+            args: [],
+            watch: true,
+            // structuralSharing: (prev, next) => (prev === next ? prev : next),
+            onSuccess:(data)=>{
+                console.log(data);
+            }
+        }
+    )
+    
+
+    const _createIDOPool = useCallback(async (amount, discord, success, fail, onStepChange) => {
+        console.log(`${amount} ${discord} ${addressIDOContract} ${abi}`);
+        const config = await simulateContract(wagmiClient, {
+            address: addressIDOContract,
+            abi,
+            functionName: 'createIDOPool',
+            args: [amount, discord],
+        }).then( async ({request})=>{
+            const data = await writeContract(wagmiClient, request).then((s, data)=>{
+                onStepChange(2, true, null, null, "View My Pool")
+                success(data)
+            }).catch((e)=>{
+                console.log(e);
+                fail(e)
+            })
+        }).catch((e)=>{
+            console.log(e);
+            fail(e)
+            return
+        })
+    }, [addressIDOContract])
+
+    const createIDOPool = useCallback(async (amount, discord, success, fail, onStepChange) => {
+        if (!isConnected) {
+            return false;
+        }
+        
+        let al = 0n
+        if (!allowance(address, addressIDOContract, async (result)=>{
+            console.log('------', result);
+            al = result
+            if ( al < amount ) {
+                onStepChange(0, true, 'approve', "Pool Create")
+                approve(addressIDOContract, amount, async (s, data)=>{
+                    if ( s == 'write') {
+                        onStepChange(1, true)
+                    } else {
+                        onStepChange(0, true, 'create_pool', "Pool Create")
+                        await _createIDOPool(amount, discord, success, fail, onStepChange)
+                    }
+                }, (e)=>{
+                    console.log( `approve failed ${e}`);
+                    fail(e)
+                })
+            } else {
+                onStepChange(0, true, 'create_pool', "Pool Create")
+                await _createIDOPool(amount, discord, success, fail, onStepChange)
+            }
+        }, (e)=>{fail(e)})){
+            return false;
+        }
+
+        return true;
+    }, [addressIDOContract, _createIDOPool, address, allowance, approve,isConnected]);
+   
+    return { init:init_balance?formatAmount(init_balance):"--", remain:remain_balance?formatAmount(remain_balance):"--", createIDOPool, usdtBalance, total_usdt_raised:total_usdt_raised?formatAmount(total_usdt_raised):"0.00"}
+}

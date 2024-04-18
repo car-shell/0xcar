@@ -21,9 +21,13 @@ export const useSwapContract = ()  => {
         address: addressSwapContract,
         abi,
         functionName: 'getAmountsOut',
+        query: {
+            notifyOnChangeProps: ['data', 'error'],
+            refetchInterval: 2000,
+            gcTime: Infinity,
+        },
         chainId: chainId,
         args: [1e18, [addressUsdtContract, addressTokenContract]],
-        watch: true,
         onSuccess:(data)=>{
             console.log(data);
         },

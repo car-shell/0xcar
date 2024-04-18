@@ -29,9 +29,13 @@ const useNFTContract = () => {
             abi,
             functionName: 'ownOf',
             chainId: chainId,
+            query: {
+                notifyOnChangeProps: ['data', 'error'],
+                refetchInterval: 2000,
+                gcTime: Infinity,
+            },
             args: [address],
             watch: true,
-            cache: 20_000,
             // structuralSharing: (prev, next) => (prev === next ? prev : next),
             onSuccess:(data)=>{
                 console.log(data);
@@ -45,6 +49,11 @@ const useNFTContract = () => {
             functionName: 'isEligible',
             chainId: chainId,
             args: [address],
+            query: {
+                notifyOnChangeProps: ['data', 'error'],
+                refetchInterval: 2000,
+                gcTime: Infinity,
+            },
             watch: true,
             onSuccess:(data)=>{
                 console.log(data);

@@ -30,7 +30,7 @@ const useStepInfo = () => {
               </div>}
               <button disabled={(!stepInfo || !stepTitle || stepInfo?.active !== stepNodes[stepName]?.length)? true : false} style={{height: '48px', border: 'none', cursor: 'pointer', width: '90%', marginTop: '8px', backgroundColor: (!stepInfo || !stepTitle || stepInfo?.active != stepNodes[stepName]?.length)? '#333':'#f40000'}}  onClick={()=>{
                 setStepInfo((pre)=>{return {...pre, isShow: false}})
-                router.push("/mypool")
+                // router.push("/mypool")
               }}>
                 { active != stepNodes[stepName]?.length? 
                     "Processing...": buttonContent

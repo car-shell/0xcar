@@ -2,12 +2,14 @@
 import { ERC20ABI as abi } from './abi/ERC20ABI'
 import { useCallback, useState, useEffect, useMemo } from "react";
 import {ethers} from "ethers"
-import { useContract, useAccount, useBalance, useWalletClient, useToken, useSwitchChain } from "wagmi";
+import { useContract, useAccount, useBalance, useWalletClient, useToken, useReadContracts, useSwitchChain } from "wagmi";
 import { readContract, writeContract, simulateContract,waitForTransaction } from "@wagmi/core";
 import { ADDRESSES } from '../config/constants/address' 
 import { defaultChainId } from "../config/constants/chainId";
 import { formatAmount } from "../components/utils";
 import {wagmiClient} from '../config/wagmi'
+import { formatUnits,erc20Abi } from 'viem' 
+
 export const useTokenContract = (tokenAddress=null)  => {
     const dead = "0x000000000000000000000000000000000000dead";
     const {chain, address, isConnected} = useAccount()
@@ -20,24 +22,91 @@ export const useTokenContract = (tokenAddress=null)  => {
     const { data: signer, error, isLoading } = useWalletClient()
     const [symbol, setSymbol] = useState("")
 
-    // const [balance, setBalance] = useState("")
-    const { data: deadBalance } = useBalance({
-        address: dead,
-        token: addressTokenContract,
-        watch: true
-    })
-    
-    const { data: b } = useBalance({
-        address: address,
-        token: addressTokenContract,
-        watch: true,
-    })
+    const {data: deadBalance} = useReadContracts({ 
+        allowFailure: false, 
+        query: {
+            notifyOnChangeProps: ['data', 'error'],
+            refetchInterval: 2000,
+            gcTime: Infinity,
+        },
+        contracts: [ 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'balanceOf', 
+            args: [dead], 
+          }, 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'decimals', 
+          }, 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'symbol', 
+          }, 
+        ] 
+    }) 
 
-    const { data: token } = useToken({
-        address: addressTokenContract,
-        watch: true,
-    })
-    
+    const {data: b} = useReadContracts({ 
+        allowFailure: false, 
+        query: {
+            notifyOnChangeProps: ['data', 'error'],
+            refetchInterval: 2000,
+            gcTime: Infinity,
+        },
+        contracts: [ 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'balanceOf', 
+            args: [address], 
+          }, 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'decimals', 
+          }, 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'symbol', 
+          }, 
+        ] 
+    }) 
+
+    const {data: tokenInfo} = useReadContracts({ 
+        allowFailure: false, 
+        query: {
+            notifyOnChangeProps: ['data', 'error'],
+            refetchInterval: 2000,
+            gcTime: Infinity,
+        },
+        contracts: [ 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'decimals', 
+          }, 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'name', 
+          }, 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'symbol', 
+          }, 
+          { 
+            address: addressTokenContract, 
+            abi: erc20Abi, 
+            functionName: 'totalSupply', 
+          }, 
+        ] 
+    }) 
+
     const allowance = useCallback(async (owner, addr, success, fail)=>{
         console.log(`allowance ${owner} ${addr}`);
         const result = await readContract(wagmiClient, {
@@ -80,8 +149,8 @@ export const useTokenContract = (tokenAddress=null)  => {
             fail(e)
         })
     }, [addressTokenContract])
-
-    return { balance: formatAmount(b?.formatted), deadBalance: formatAmount(deadBalance?.formatted), allowance, approve, addressTokenContract, token}
+    
+    return { balance: formatAmount(b), deadBalance: formatAmount(deadBalance), allowance, approve, addressTokenContract, token:(tokenInfo instanceof Array)?{symbol: tokenInfo[2], decimals: tokenInfo[0]}:{}}
 }
 
 export default useTokenContract

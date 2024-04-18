@@ -93,6 +93,11 @@ export const useGameContract = (monitor=false)  => {
             address: addressGameContract,
             abi,
             functionName: 'poolInfo',
+            query: {
+                notifyOnChangeProps: ['data', 'error'],
+                refetchInterval: 2000,
+                gcTime: Infinity,
+            },
             args: [currentPoolId],
             chainId: chainId,
             watch: true,
@@ -126,36 +131,46 @@ export const useGameContract = (monitor=false)  => {
         address: addressGameContract,
         abi,
         functionName: 'last',
+        query: {
+            notifyOnChangeProps: ['data', 'error'],
+            refetchInterval: 2000,
+            gcTime: Infinity,
+        },
         chainId: chainId,
         args: [address],
-        cache: 1_000,
         onSuccess: (data)=>{
             // console.log(`----------- lastRecord ------------`);
         }
     })
 
-    const { data:miningFunding } = useReadContract({
+    const miningFunding = useReadContract({
         address: addressGameContract,
         abi,
         functionName: 'miningFunding',
         chainId: chainId,
         args: [address],
-        watch: true,
-        onSuccess: (data)=>{
-//            console.log(data);
-        }
+        query: {
+            notifyOnChangeProps: ['data', 'error'],
+            refetchInterval: 2000,
+            gcTime: Infinity,
+        },
+        // watch: true,
+        // onSuccess: (data)=>{
+        //    console.log(data);
+        // }
     })
 
     const { data:whitelistPool } = useReadContract({
         address: addressGameContract,
         abi,
         functionName: 'whitelistPool',
+        query: {
+            notifyOnChangeProps: ['data', 'error'],
+            refetchInterval: 2000,
+            gcTime: Infinity,
+        },
         chainId: chainId,
         args: [address],
-        watch: true,
-        onSuccess: (data)=>{
-            console.log(data);
-        }
     })
 
     useEffect(()=>{
@@ -199,7 +214,11 @@ export const useGameContract = (monitor=false)  => {
         functionName: 'pools',
         chainId: chainId,
         watch: true,
-        cache: 2_000,
+        query: {
+            notifyOnChangeProps: ['data', 'error'],
+            refetchInterval: 2000,
+            gcTime: Infinity,
+        },
         onSuccess(data) {
            console.log('Success', data)
         },
@@ -448,5 +467,5 @@ export const useGameContract = (monitor=false)  => {
     }
 
 
-    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding, withdrawPool, whitelistPool}
+    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding: miningFunding.data?.formatted, withdrawPool, whitelistPool}
 } 

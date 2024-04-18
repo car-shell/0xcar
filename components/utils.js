@@ -1,8 +1,13 @@
+import { formatUnits } from 'viem' 
 
 export function formatAmount(amount) {
     if (amount == undefined || amount == null || amount == NaN || amount == '--') {
         return '--'
     }
+    if ( amount instanceof Array ) {
+        amount = formatUnits(amount[0], amount[1])
+    }
+
     if (typeof amount === 'string') {
         if (amount.indexOf(",") != -1) {
             amount = amount.replaceAll(",", "")
@@ -44,9 +49,13 @@ export const padStart = (x) => {
     }).format(x)
 } 
 export const formatTime = (timestamp, needYear=false, onlyTime=false) => {
-    let d = new Date(timestamp)
+    let d = new Date(Number(timestamp))
     if (onlyTime) {
         return `${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
     }
     return `${needYear?padStart(d.getFullYear())+"-":""}${padStart(d.getMonth()+1)}-${padStart(d.getDate())} ${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
+}
+
+export const formatDuration = (durationInMiSecond) => {
+   return `${(Math.floor(durationInMiSecond/3600)).toString().padStart(2,0)}:${(Math.floor((durationInMiSecond%3600)/60)).toString().padStart(2,0)}:${(Math.floor(durationInMiSecond%60)).toString().padStart(2,0)}`
 }
