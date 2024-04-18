@@ -14,6 +14,7 @@ import { amountFromFormatedStr, formatAmount, formatTime, formatDuration, n1e18}
 import useStepInfo from '../StepInfo'
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import Link from "next/link";
+import { useRouter } from 'next/router'
 
 import useToast from '../Toast'
 import FormGroup from '@mui/material/FormGroup';
@@ -36,6 +37,7 @@ const IDO = ({refera}) => {
     const {setStepInfo, setStepNodes, StepInfo} = useStepInfo()
 
     const {openConnectModal} = useConnectModal()
+    const router = useRouter()
 
     const claimInfo = [(endTime-3600*24)*1000, (endTime+3600*24*30)*1000, (endTime+3600*24*60)*1000]
     
@@ -45,7 +47,13 @@ const IDO = ({refera}) => {
     }, [setStepNodes])
     
     useEffect(()=>{
-        let r = isConnected?`https://testnet.0xcardinal.io/ido?refera=${address}`:'Please Connect wallet first';
+        
+        let r = 'Please Connect wallet first';
+        if (isConnected) {
+            let url = window.location.href;
+            url = url.substring(0, url.indexOf('?'))
+            r = `${url}?refera=${address}`
+        }
         setRefUrl(r)
     }, [address, isConnected])
 
