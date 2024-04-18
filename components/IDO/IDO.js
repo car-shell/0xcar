@@ -50,7 +50,7 @@ const IDO = ({refera}) => {
         
         let r = 'Please Connect wallet first';
         if (isConnected) {
-            let url = window.location.href;
+            let url = typeof window !== 'undefined' ? window.location.href : ''
             url = url.substring(0, url.indexOf('?'))
             r = `${url}?refera=${address}`
         }
