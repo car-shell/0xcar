@@ -49,9 +49,10 @@ const IDO = ({refera}) => {
     useEffect(()=>{
         let r = 'Please Connect wallet first';
         if (isConnected) {
-            let url = typeof window !== 'undefined' ? window.location.href : ''
-            url = url.substring(0, url.indexOf('?'))
-            r = `${url}?refera=${address}`
+            // let url = typeof window !== 'undefined' ? window.location.href : ''
+            // url = url.substring(0, url.indexOf('?'))
+            
+            r = `https://little-shape-9383.on.fleek.co/ido?refera=${address}`
         }
         setRefUrl(r)
     }, [address, isConnected, typeof window])
