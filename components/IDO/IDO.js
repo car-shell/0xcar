@@ -54,7 +54,7 @@ const IDO = ({refera}) => {
             r = `${url}?refera=${address}`
         }
         setRefUrl(r)
-    }, [address, isConnected, window])
+    }, [address, isConnected, typeof window])
 
     useEffect(()=>{
         const i = setInterval(()=>{
