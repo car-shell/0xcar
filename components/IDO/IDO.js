@@ -224,7 +224,7 @@ const IDO = ({refera}) => {
                     IDO price
                     </Typography>
                     <Typography component='div' sx={{fontSize: '16px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '90%'}}>
-                        <span style={{font: '400 italic 14px sans'}}>Whitelist pice: </span>{whitelistPrice} USDT | <span style={{font: '400 italic 14px sans'}}>Public pice: </span> {whitelistPrice} USDT
+                        <span style={{font: '400 italic 14px sans'}}>Whitelist pice: </span>{whitelistPrice} USDT | <span style={{font: '400 italic 14px sans'}}>Public pice: </span> {price} USDT
                     </Typography>
                 </Stack>
             </Stack>
