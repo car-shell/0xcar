@@ -129,7 +129,7 @@ export const useGameContract = (monitor=false)  => {
 
     const { data:lastRecord, isError: lastRecordError, isLoading: lastLoading } = useReadContract({
         address: addressGameContract,
-        abi,
+        abi: abi,
         functionName: 'last',
         query: {
             notifyOnChangeProps: ['data', 'error'],
@@ -143,9 +143,9 @@ export const useGameContract = (monitor=false)  => {
         }
     })
 
-    const miningFunding = useReadContract({
+    const {data: miningFunding} = useReadContract({
         address: addressGameContract,
-        abi,
+        abi: abi,
         functionName: 'miningFunding',
         chainId: chainId,
         args: [address],
@@ -467,5 +467,5 @@ export const useGameContract = (monitor=false)  => {
     }
 
 
-    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding: miningFunding.data?.formatted, withdrawPool, whitelistPool}
+    return { pools, poolDetails, bet, result, withdraw, logs, last, setCurrentPoolId, preRemovePool, removePool, withdrawMiningFunding, miningFunding, withdrawPool, whitelistPool}
 } 

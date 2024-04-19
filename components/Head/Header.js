@@ -108,7 +108,7 @@ const Header = ({showMenu=true}) => {
   }, [showWalletInfo, shutdown]);
 
   const ownPool = () => {
-    return (pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).length != 0 )
+    return (pools && isConnected && pools.filter((item)=>{return item?.beneficiaries.toLowerCase()==address.toLowerCase()}).length != 0 )
   }
 
   return (
