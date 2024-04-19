@@ -153,7 +153,7 @@ const IDO = ({refera}) => {
 
     const getClaimStatus=(date, index)=>{
         if (Date.now() > date) {
-            if (subscribed/3*(index+1) < claimed) {
+            if (Number(subscribed)/3*(index+1) < claimed) {
                 return (
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '30%'}}>
                         Cliamed
@@ -296,7 +296,7 @@ const IDO = ({refera}) => {
                         Total Subscribed
                         </Typography>
                         <Typography component='div' sx={{fontSize: '14px', fontStyle: 'italic', fontWeight: '700', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {formatAmount(BigInt(subscribed))} <span style={{fontWeight: '400'}}>{token.symbol}</span>
+                        {formatAmount(subscribed)} <span style={{fontWeight: '400'}}>{token.symbol}</span>
                         </Typography>
                     </Stack>
                 </Stack>
@@ -306,7 +306,7 @@ const IDO = ({refera}) => {
                
             </Stack>
 
-            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'0px', }}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'18px', }}>
                 {/* <Typography component='div' sx={{fontSize: '28px', fontStyle: 'italic',  fontWeight: '700', paddingTop: '32px'}}>
                     Create a Betting Pool
                 </Typography> */}
@@ -376,7 +376,7 @@ const IDO = ({refera}) => {
                     Amount Spent
                     </Typography>
                     <Typography component='div' sx={{fontSize: '18px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {isSuccess  ? (isWhitelist?formatAmount(BigInt(subscribed*whitelistPrice)):formatAmount(BigInt(subscribed*price))) : '--'} USDT
+                        {isSuccess  ? (isWhitelist?formatAmount(subscribed*BigInt(whitelistPrice)):formatAmount(BigInt(subscribed)*price)) : '--'} USDT
                     </Typography>
                 </Stack>
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex',  fontStyle: 'italic', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
@@ -392,7 +392,7 @@ const IDO = ({refera}) => {
                     Tokens Subscribed
                     </Typography>
                     <Typography component='div' sx={{fontSize: '16px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '90%'}}>
-                        {formatAmount(BigInt(subscribed))} {token?.symbol}
+                        {formatAmount(subscribed)} {token?.symbol}
                     </Typography>
                 </Stack>
 
@@ -404,7 +404,7 @@ const IDO = ({refera}) => {
                             {formatTime(data)}
                             </Typography>
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
-                            {formatAmount(BigInt(subscribed)/3n)} {token?.symbol} - 33.3%
+                            {formatAmount(subscribed/3n)} {token?.symbol} - 33.3%
                             </Typography>
                             {getClaimStatus(data, index)}
                         </Stack>

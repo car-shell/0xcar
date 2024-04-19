@@ -206,7 +206,7 @@ export const useIDOContract = () => {
         endTime: isSuccess?Number(idoInfo[4]):'--', 
         price: isSuccess?Number(100000n/idoInfo[5])/100000: 1, 
         whitelistPrice: isSuccess?Number(100000n/idoInfo[6])/100000: 1, 
-        subscribed: infoSuccess?Number(info[0]):0,
+        subscribed: infoSuccess?info[0]:0,
         claimed: infoSuccess?Number(info[1]):0,
         referaFund: infoSuccess?formatAmount(info[2]):"--",
         isWhitelist: infoSuccess?info[3]:false,
