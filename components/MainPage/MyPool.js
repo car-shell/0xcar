@@ -10,6 +10,7 @@ import { useGameContract } from "../../data/game";
 
 const MyPool = () => {
     const {pools, preRemovePool, removePool} = useGameContract();
+    console.log(pools);
     const {address, isConnected} = useAccount()
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
@@ -23,7 +24,7 @@ const MyPool = () => {
                 <Typography component='div' width='100%' sx={{margin: '80px 0 38px 0px ', color: "#7D7D7D", font: '700 normal 20px Arial', textAlign: 'left'}}>
                     My Prize Pool
                 </Typography> 
-                {pools && isConnected && pools.filter((item)=>{return item?.owner.toLowerCase()==address.toLowerCase()}).map((item)=>{
+                {pools && isConnected && pools.filter((item)=>{return item?.beneficiaries.toLowerCase()==address.toLowerCase()}).map((item)=>{
                     return <Box key={'box-'+item.id} sx={{paddingTop: '4px'}}>
                         <PoolItem key={'pool-'+item.id} poolPro={item} my={true}/>
                     </Box>

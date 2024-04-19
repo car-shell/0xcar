@@ -368,12 +368,12 @@ const PoolItem = ({poolPro, my=false}) => {
                             Created Time
                             </Typography>
                             <Typography component='div' sx={{fontSize: '18px', fontWeight: '650', textAlign: 'right', width: '200px'}}>
-                            {pool?.startTimestamp?formatTime(new Date(Number(pool.startTimestamp)*1000).toString(), true):'--'}
+                            {pool?.startTimestamp?formatTime(pool.startTimestamp*1000n, true):'--'}
                             </Typography>
                         </Box>
                     </Box>
 
-                    {pool.isUsed?
+                    {/* {pool.isUsed?
                     <Box sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width:'42%'}}>
                         <Button variant="contained" color="error" sx={{textTransform: 'none',borderRadius: '90px', height: '32px',  width: "170px"}} onClick={handleWithdraw} >
                         Withdraw
@@ -387,7 +387,7 @@ const PoolItem = ({poolPro, my=false}) => {
                     <Button variant="contained" disabled sx={{textTransform: 'none', borderRadius: '90px', height: '32px',  width: "340px", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleWithdraw} >
                     The prize pool has been closed
                     </Button>
-                    </Stack>}
+                    </Stack>} */}
 
                 </Box>}
                 

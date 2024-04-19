@@ -252,22 +252,16 @@ export const gameABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [
+		"inputs": [],
+		"name": "block_interval",
+		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "create",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -279,16 +273,40 @@ export const gameABI = [
 			},
 			{
 				"internalType": "address",
-				"name": "creater",
+				"name": "partner",
 				"type": "address"
+			},
+			{
+				"internalType": "uint64",
+				"name": "lockForbiddenDuration",
+				"type": "uint64"
 			}
 		],
-		"name": "createForIDO",
+		"name": "create",
 		"outputs": [
 			{
 				"internalType": "uint64",
 				"name": "",
 				"type": "uint64"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "createOfficial",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "nonpayable",
@@ -575,6 +593,25 @@ export const gameABI = [
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "u",
+				"type": "address"
+			}
+		],
+		"name": "miningFunding",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "nft_level_brone",
 		"outputs": [
@@ -616,6 +653,19 @@ export const gameABI = [
 	{
 		"inputs": [],
 		"name": "nft_level_sliver",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "official_pool_locked",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -717,9 +767,9 @@ export const gameABI = [
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint256",
-						"name": "nextWidthdrawBlockNum",
-						"type": "uint256"
+						"internalType": "address",
+						"name": "beneficiaries",
+						"type": "address"
 					}
 				],
 				"internalType": "struct IGame.PoolProperty",
@@ -802,9 +852,9 @@ export const gameABI = [
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint256",
-						"name": "nextWidthdrawBlockNum",
-						"type": "uint256"
+						"internalType": "address",
+						"name": "beneficiaries",
+						"type": "address"
 					}
 				],
 				"internalType": "struct IGame.PoolProperty[]",
@@ -881,19 +931,6 @@ export const gameABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "ido",
-				"type": "address"
-			}
-		],
-		"name": "setIDOContract",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
 				"name": "_airnode",
 				"type": "address"
 			},
@@ -929,6 +966,25 @@ export const gameABI = [
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "u",
+				"type": "address"
+			}
+		],
+		"name": "whitelistPool",
+		"outputs": [
+			{
+				"internalType": "uint64",
+				"name": "",
+				"type": "uint64"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256",
 				"name": "id",
 				"type": "uint256"
@@ -944,51 +1000,6 @@ export const gameABI = [
 		"name": "withdrawMiningFunding",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint64",
-				"name": "id",
-				"type": "uint64"
-			}
-		],
-		"name": "withdrawPool",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "better",
-				"type": "address"
-			}
-		],
-		"name": "miningFunding",
-		"outputs": [{
-			"internalType": "uint256",
-			"name": "",
-			"type": "uint256"
-		}],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [{
-			"internalType": "address",
-			"name": "u",
-			"type": "address"
-		}],
-		"name": "whitelistPool",
-		"outputs": [{
-			"internalType": "uint256",
-			"name": "",
-			"type": "uint256"
-		}],
-		"stateMutability": "view",
 		"type": "function"
 	}
 ]

@@ -321,7 +321,7 @@ const IDO = ({refera}) => {
 
                 <Stack direction='row' justifyContent="space-between" alignItems="center" width='90%' height='48px' >
                     <input  style={{ border: "1px solid #333333", paddingLeft: '10px', width: '90%', height:'100%', outline:'null', backgroundColor: 'transparent', readonly: true, outline: 'none'}}  placeholder='Please Connect wallet first' defaultValue={refUrl} value={refUrl}/>
-                    <button style={{ width: '10%', cursor: 'pointer',height:'100%', border:'none', outline:'null', backgroundColor: '#333333'}} onClick={handleCopy} > COPY </button>
+                    <button style={{ width: '10%', cursor: 'pointer',height:'100%', border:'none', outline:'null', backgroundColor: '#333333'}} onClick={handleCopy} > Copy </button>
                 </Stack>
                 
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
