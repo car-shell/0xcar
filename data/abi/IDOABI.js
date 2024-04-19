@@ -133,7 +133,12 @@ export const IDOABI = [
 				"internalType": "bool",
 				"name": "",
 				"type": "bool"
-			}
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
 		],
 		"stateMutability": "view",
 		"type": "function"

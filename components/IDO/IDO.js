@@ -49,9 +49,6 @@ const IDO = ({refera}) => {
     useEffect(()=>{
         let r = 'Please Connect wallet first';
         if (isConnected) {
-            // let url = typeof window !== 'undefined' ? window.location.href : ''
-            // url = url.substring(0, url.indexOf('?'))
-            
             r = `https://little-shape-9383.on.fleek.co/ido?refera=${address}`
         }
         setRefUrl(r)
@@ -75,7 +72,7 @@ const IDO = ({refera}) => {
             return n })
     }, [setStepInfo])
 
-    const handleCreate = (event) => {
+    const handleBuy = useCallback((event) => {
         if (!isConnected) {
             openConnectModal()
             return
@@ -86,13 +83,14 @@ const IDO = ({refera}) => {
             return
         }
 
-        buyToken(BigInt(value*1e18), (!address || referaAddr==address)?'0x0000000000000000000000000000000000000000':referaAddr, (data)=>{
-            showToast("Congratulations，Create pool success", 'success')
+        buyToken(BigInt(value*1e18), referaAddr, (data)=>{
+            showToast("Congratulations，buy token success", 'success')
         }, (error)=>{
             onStepChange(0, false, '', '')
             showToast(error.shortMessage, 'error')
         }, onStepChange)
-    };
+    }, [isConnected, value, referaAddr]);
+
     const handleCopy = ()=>{
         navigator.clipboard.writeText(refUrl);
         showToast('url copied')
@@ -294,7 +292,7 @@ const IDO = ({refera}) => {
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained"  disabled={isConnected && (!value || (value < 50 || value > 50000)) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleCreate}>
+                <Button variant="contained"  disabled={isConnected && (!value || (value < 50 || value > 50000)) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleBuy}>
                     {tipContent()}
                 </Button>
                
@@ -314,7 +312,7 @@ const IDO = ({refera}) => {
                 </Stack>
 
                 <Stack direction='row' justifyContent="space-between" alignItems="center" width='90%' height='48px' >
-                    <input  style={{ border: "1px solid #333333", paddingLeft: '10px', width: '90%', height:'100%', outline:'null', backgroundColor: 'transparent', readonly: true, outline: 'none'}}  placeholder='Please Connect wallet first' defaultValue={refUrl}/>
+                    <input  style={{ border: "1px solid #333333", paddingLeft: '10px', width: '90%', height:'100%', outline:'null', backgroundColor: 'transparent', readonly: true, outline: 'none'}}  placeholder='Please Connect wallet first' defaultValue={refUrl} value={refUrl}/>
                     <button style={{ width: '10%', cursor: 'pointer',height:'100%', border:'none', outline:'null', backgroundColor: '#333333'}} onClick={handleCopy} > COPY </button>
                 </Stack>
                 
@@ -430,7 +428,7 @@ const IDO = ({refera}) => {
                     </Typography>
                 </Stack>
                 <Button variant="contained"  disabled={isConnected && referaFund == 0 } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleFund}>
-                    {referaFund != 0?isConnected?'Connect Wallet':'Claim':'No funds'}
+                    {referaFund!=0?isConnected?'Connect Wallet':'Claim':"You don&apos;t have a referral rebate"}
                 </Button>
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '18px'}}/>
                 <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", marginTop: '12px'}} >

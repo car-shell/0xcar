@@ -18,20 +18,14 @@ export const useIDOContract = () => {
     const addressIDOContract = ADDRESSES[chainId]?.ido
     const {usdt, balance: usdtBalance, allowance, approve} = useTokenContract(ADDRESSES[chainId].usdt);
 
-    const {data: info, isSuccess, error} = useReadContracts({ 
+    const {data: idoInfo, isSuccess, error} = useReadContracts({ 
         allowFailure: false, 
         query: {
             notifyOnChangeProps: ['data', 'error'],
             refetchInterval: 2000,
             gcTime: Infinity,
         },
-        contracts: [ 
-          { 
-            address: addressIDOContract, 
-            abi: abi, 
-            functionName: 'info', 
-            args: [address], 
-          }, 
+        contracts: [  
           { 
             address: addressIDOContract, 
             abi: abi, 
@@ -69,6 +63,19 @@ export const useIDOContract = () => {
           }, 
         ] 
     }) 
+    const {data: info, isSuccess:infoSuccess} = useReadContract({ 
+        allowFailure: false, 
+        query: {
+            notifyOnChangeProps: ['data', 'error'],
+            refetchInterval: 2000,
+            gcTime: Infinity,
+        },
+
+        address: addressIDOContract, 
+        abi: abi, 
+        functionName: 'info', 
+        args: [address], 
+        }) 
 
     const _buyToken = useCallback(async (amount, reffera, success, fail, onStepChange) => {
         console.log(`${amount} ${reffera} ${addressIDOContract} ${abi}`);
@@ -160,7 +167,7 @@ export const useIDOContract = () => {
         if (!isConnected) {
             return false;
         }
-        
+        console.log(reffera);
         let al = 0n
         if (!allowance(address, addressIDOContract, async (result)=>{
             console.log('------', result);
@@ -172,6 +179,7 @@ export const useIDOContract = () => {
                         onStepChange(1, true)
                     } else {
                         onStepChange(0, true, 'create_pool', "IDO Buy Token")
+                        console.log(reffera);
                         await _buyToken(amount, reffera, success, fail, onStepChange)
                     }
                 }, (e)=>{
@@ -190,19 +198,19 @@ export const useIDOContract = () => {
     }, [addressIDOContract, address, allowance, approve, isConnected]);
    
     return { isSuccess, 
-        init:isSuccess?formatAmount(info[2]):'--', 
-        remain:isSuccess?formatAmount(info[1]):'--', 
-        total_usdt_raised:isSuccess?formatAmount(info[3]):"--",
+        init:isSuccess?formatAmount(idoInfo[1]):'--', 
+        remain:isSuccess?formatAmount(idoInfo[0]):'--', 
+        total_usdt_raised:isSuccess?formatAmount(idoInfo[2]):"--",
         usdtBalance:usdtBalance, 
-        startTime: isSuccess?Number(info[4]):'--', 
-        endTime: isSuccess?Number(info[5]):'--', 
-        price: isSuccess?Number(100000n/info[6])/100000: 1, 
-        whitelistPrice: isSuccess?Number(100000n/info[7])/100000: 1, 
-        subscribed: isSuccess?Number(info[0][0]):0,
-        claimed: isSuccess?Number(info[0][1]):0,
-        referaFund: isSuccess?formatAmount(info[0][2]):"--",
-        isWhitelist: isSuccess?info[0][3]:false,
-        referaCount: isSuccess?Number(info[0][4]):0,
+        startTime: isSuccess?Number(idoInfo[3]):'--', 
+        endTime: isSuccess?Number(idoInfo[4]):'--', 
+        price: isSuccess?Number(100000n/idoInfo[5])/100000: 1, 
+        whitelistPrice: isSuccess?Number(100000n/idoInfo[6])/100000: 1, 
+        subscribed: infoSuccess?Number(info[0]):0,
+        claimed: infoSuccess?Number(info[1]):0,
+        referaFund: infoSuccess?formatAmount(info[2]):"--",
+        isWhitelist: infoSuccess?info[3]:false,
+        referaCount: infoSuccess?Number(info[4]):0,
         buyToken,
         claimTokens,
         withdrawRefferasFund}
