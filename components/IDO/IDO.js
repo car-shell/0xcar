@@ -176,7 +176,7 @@ const IDO = ({refera}) => {
             )
         }
     }
-    return (
+    return (isSuccess && 
     <React.Fragment>
         <ToastUI />
         <StepInfo />
@@ -252,7 +252,7 @@ const IDO = ({refera}) => {
                 </Stack>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
-                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333",  backgroundColor: '#333333',  borderRadius: '5px',  marginTop: '32px'}}>
+                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333",  backgroundColor: '#333333',  borderRadius: '5px',  marginTop: '24px'}}>
                     {/* <Typography component='div' width='100%' sx={{fontSize: '16px', fontWeight: '700', paddingTop: '16px', paddingLeft: '32px', textAlign: 'left'}}>
                         Information
                     </Typography> */}
@@ -306,7 +306,7 @@ const IDO = ({refera}) => {
                
             </Stack>
 
-            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', }}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'0px', }}>
                 {/* <Typography component='div' sx={{fontSize: '28px', fontStyle: 'italic',  fontWeight: '700', paddingTop: '32px'}}>
                     Create a Betting Pool
                 </Typography> */}
@@ -328,7 +328,7 @@ const IDO = ({refera}) => {
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',    marginTop: '16px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
-                    Tokens Subscribed
+                    Total Rebate
                     </Typography>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                         {referaFund} USDT

@@ -30,10 +30,10 @@ export const ADDRESSES = {
         // game: "0x841d9d2ec3908f0b73a910435fc8c1d88b642584",
         // faucet: "0x6D70B8d77B12211915aEf7D93E58352B4d003efC",
         usdt: "0xBb84f892cB0d3b3816C1DE5553fCfB7C3157A186",
-        token: "0x82A9c214d75c706E4B63adfB4AC75366670Ad294",
-        nft: "0x23295EED6084951EE56b5b14D167E909e295a23F",
-        game: "0x3D8aDe7326A55bd8ddf8e42C5687e5Bcfbf345c2",
-        ido: "0xd3E2a34730F77Fc5eE5a1a758466805815b80Dac",
+        token: "0x848BD5D7c6BC3C9584D99E9f3259337Ff8bd0BA0",
+        nft: "0xD2B3c217a47047A4bb4d1A4592f4CDf44F7CAec6",
+        game: "0x20Cb9743ae29578B37d5E514f098309EB00FeFD5",
+        ido: "0x35536dC6cE13Ca471b14137FaaFB81447106dC50",
         // swap: "0xD99D1c33F9fC3444f8101754aBC46c52416550D1",
         // faucet: "0x6D70B8d77B12211915aEf7D93E58352B4d003efC",
         
@@ -41,6 +41,6 @@ export const ADDRESSES = {
         topic_win: "0x9f8ce2e31646e98e72e097e8abe5539ff064932fc90b722b121b9c83f9351b40",
         topic_got_result: "0xf72a0c6bfea8817d7f217bc11fc5ad038a6f315f4643be2649cf23a39e51c4f4",
         // sponsor: "0x58ae9bcfa7be29825bfb921847af8ed0bf45dd1f",
-        sponsor: "0x93Fae041619363aA9F1F8049Cb7C5294eDc6923D",
+        sponsor: "0xa28726Bd3820a22d68838b156C967Ce346b3C255",
     }
 };
