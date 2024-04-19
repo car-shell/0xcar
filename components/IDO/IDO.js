@@ -87,7 +87,7 @@ const IDO = ({refera}) => {
         }
 
         buyToken(BigInt(value*1e18), (!address || referaAddr==address)?'0x0000000000000000000000000000000000000000':referaAddr, (data)=>{
-            // showToast("Congratulations，Create pool success", 'success')
+            showToast("Congratulations，Create pool success", 'success')
         }, (error)=>{
             onStepChange(0, false, '', '')
             showToast(error.shortMessage, 'error')
