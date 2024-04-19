@@ -336,7 +336,7 @@ const IDO = ({refera}) => {
                 </Stack>
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginBottom: '16px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
-                    Total Invitees
+                    Invitee Transaction Count
                     </Typography>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                     {referaCount} 
@@ -420,7 +420,7 @@ const IDO = ({refera}) => {
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: 'px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
-                    Total Invitees
+                    Invitee Transaction Count
                     </Typography>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                     {referaCount}
