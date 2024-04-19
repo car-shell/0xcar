@@ -24,7 +24,6 @@ import Checkbox from '@mui/material/Checkbox';
 
 
 const IDO = ({refera}) => {
-    const [referaAddr, setReferaAddr] = useState(refera)
     const {isSuccess, init, remain, total_usdt_raised, price, whitelistPrice, startTime, endTime, buyToken, usdtBalance, referaFund,referaCount, subscribed, claimed, isWhitelist, claimTokens, withdrawRefferasFund} = useIDOContract();
     const {token} = useTokenContract();
     const {address, isConnected} = useAccount()
@@ -83,13 +82,13 @@ const IDO = ({refera}) => {
             return
         }
 
-        buyToken(BigInt(value*1e18), referaAddr, (data)=>{
+        buyToken(BigInt(value*1e18), refera, (data)=>{
             showToast("Congratulations，buy token success", 'success')
         }, (error)=>{
             onStepChange(0, false, '', '')
             showToast(error.shortMessage, 'error')
         }, onStepChange)
-    }, [isConnected, value, referaAddr]);
+    }, [isConnected, value, refera]);
 
     const handleCopy = ()=>{
         navigator.clipboard.writeText(refUrl);
@@ -402,7 +401,6 @@ const IDO = ({refera}) => {
                         </Stack>
                     )
                 })}
-                
             </Stack>
 
             <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', }}>
