@@ -282,12 +282,21 @@ const IDO = ({refera}) => {
                         {isWhitelist?whitelistPrice:price} <span style={{fontWeight: '400', fontStyle: 'italic'}}>USDT</span>
                         </Typography>
                     </Stack>
-                    <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', marginBottom: '16px'}}>
+                    <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', }}>
                         <Typography component='div' sx={{fontSize: '13px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', }}>
-                        Tokens Subscribed
+                        Subscription Quantity
                         </Typography>
                         <Typography component='div' sx={{fontSize: '14px', fontStyle: 'italic', fontWeight: '700', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                         <span style={{color: '#06FC99'}}>{value?(isWhitelist)?formatAmount(Number(value/whitelistPrice)):formatAmount(Number(value/price)):'--'}</span> <span style={{fontWeight: '400'}}>{token.symbol}</span>
+                        </Typography>
+                    </Stack>
+                    <Stack width='90%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '12px'}}/>
+                    <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px', color: '#06FC99', marginBottom: '8px'}}>
+                        <Typography component='div' sx={{fontSize: '13px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', }}>
+                        Total Subscribed
+                        </Typography>
+                        <Typography component='div' sx={{fontSize: '14px', fontStyle: 'italic', fontWeight: '700', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                        {formatAmount(BigInt(subscribed))} <span style={{fontWeight: '400'}}>{token.symbol}</span>
                         </Typography>
                     </Stack>
                 </Stack>
