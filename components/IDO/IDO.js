@@ -82,7 +82,7 @@ const IDO = ({refera}) => {
             return
         }
 
-        buyToken(BigInt(value*1e18), refera, (data)=>{
+        buyToken(BigInt(value*1e18), refera?refera:'0x0000000000000000000000000000000000000000', (data)=>{
             showToast("Congratulations，buy token success", 'success')
         }, (error)=>{
             onStepChange(0, false, '', '')
@@ -287,7 +287,7 @@ const IDO = ({refera}) => {
                         Tokens Subscribed
                         </Typography>
                         <Typography component='div' sx={{fontSize: '14px', fontStyle: 'italic', fontWeight: '700', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {value?(isWhitelist)?formatAmount(Number(value/whitelistPrice)):formatAmount(Number(value/price)):'--'} <span style={{fontWeight: '400'}}>{token.symbol}</span>
+                        <span style={{color: '#06FC99'}}>{value?(isWhitelist)?formatAmount(Number(value/whitelistPrice)):formatAmount(Number(value/price)):'--'}</span> <span style={{fontWeight: '400'}}>{token.symbol}</span>
                         </Typography>
                     </Stack>
                 </Stack>
@@ -321,7 +321,7 @@ const IDO = ({refera}) => {
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Tokens Subscribed
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                         {referaFund} USDT
                     </Typography>
                 </Stack>
@@ -329,13 +329,13 @@ const IDO = ({refera}) => {
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Total Invitees
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                     {referaCount} 
                     </Typography>
                 </Stack>
                 
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}/>
-                <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", marginTop: '12px'}} >
+                <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", textAlign: 'center', marginTop: '18px'}} >
                 Through the referral link, the sharer will receive a 3% rebate from the participant&apos;s IDO contribution.
                 </Typography>
             </Stack>
@@ -413,7 +413,7 @@ const IDO = ({refera}) => {
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Total Invitees
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                     {referaCount}
                     </Typography>
                 </Stack>
@@ -421,7 +421,7 @@ const IDO = ({refera}) => {
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Tokens Subscribed
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                         {referaFund}
                     </Typography>
                 </Stack>
@@ -429,7 +429,7 @@ const IDO = ({refera}) => {
                     {referaFund!=0?isConnected?'Connect Wallet':'Claim':"You don&apos;t have a referral rebate"}
                 </Button>
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '18px'}}/>
-                <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", marginTop: '12px'}} >
+                <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", textAlign: 'center', marginTop: '18px'}} >
                 Through the referral link, the sharer will receive a 3% rebate from the participant&apos;s IDO contribution.
                 </Typography>
             </Stack>
