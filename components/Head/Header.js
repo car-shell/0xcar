@@ -87,7 +87,7 @@ const Header = ({showMenu=true}) => {
 
   const link = (e) => {
     stopPropagation(e);
-    window.open(`https://testnet.bscscan.com/address/${address}`, "_blank")
+    window.open(`https://base-sepolia.blockscout.com//address/${address}`, "_blank")
   }
 
   const stopPropagation = (e) => {

@@ -42,6 +42,7 @@ const IDO = ({refera}) => {
     
     useEffect(()=>{
         setStepNodes({create_pool: [{name: 'Comfirm in Wallet'}, {name: 'Done'}], 
+            withdraw: [{name: 'Comfirm in Wallet'}, {name: 'Done'}], 
             approve: [{name: 'Approve submited'}, {name: 'Approve completed'}]})
     }, [setStepNodes])
     
@@ -77,8 +78,8 @@ const IDO = ({refera}) => {
             return
         }
 
-        if (value < 50 || value > 50000) {
-            showToast("The amount exceeds the limit. The valid range is 50.00 to 50,000.00", 'error')
+        if (value < 50 ) {
+            showToast("Minimum amount is 50", 'error')
             return
         }
 
@@ -99,8 +100,8 @@ const IDO = ({refera}) => {
         if (!isConnected) {
             return "Connect Wallet"
         }
-        if (!value || value < 50 || value > 50000) {
-            return "The valid range is 50.00 to 50,000.00"
+        if (!value || value < 50) {
+            return "Input amount (Min 50 USDT)"
         }
         return "Buy"
     }
@@ -116,11 +117,7 @@ const IDO = ({refera}) => {
     const handleMax = (e)=>{
         let b = amountFromFormatedStr(usdtBalance)
         console.log( `usdt balance ${b}` );
-        if (b > 50000) {
-            setValue(50000.00);
-        } else {
-            setValue(b)
-        }
+        setValue(b)
     }
 
     const handleClaim = useCallback(()=>{
@@ -135,14 +132,14 @@ const IDO = ({refera}) => {
             onStepChange(0, false, '', '')
             showToast(error.shortMessage, 'error')
         }, onStepChange)
-    },[])
+    },[isConnected, onStepChange])
 
     const handleFund = useCallback(()=>{
         if (!isConnected) {
             openConnectModal()
             return
         }
-
+        onStepChange(0, true, 'withdraw' )
         withdrawRefferasFund((data)=>{
             // showToast("Congratulations，Create pool success", 'success')
         }, (error)=>{
@@ -152,16 +149,16 @@ const IDO = ({refera}) => {
     },[])
 
     const getClaimStatus=(date, index)=>{
-        if (Date.now() > date) {
-            if (Number(subscribed)/3*(index+1) < claimed) {
+        if (Date.now() > date && Number(subscribed) > 0) {
+            if (subscribed*BigInt(index+1)/3n <= claimed) {
                 return (
-                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '30%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '20%'}} onClick={handleFund}>
                         Cliamed
                     </Typography>
                 )
             } else {
                 return (
-                    <Stack direction='column' justifyContent="space-between" alignItems="center" width='30%' sx={{paddingRight: '32px'}} >
+                    <Stack direction='column' justifyContent="space-between" alignItems="center" width='20%' sx={{paddingRight: '32px'}} >
                             <Button variant="contained" color='error' sx={{textTransform:'none', width: '100%', font: "400 normal 14px Arial"}} onClick={handleClaim}>
                                 {!isConnected?"Connect":"Claim"}
                             </Button>
@@ -170,7 +167,7 @@ const IDO = ({refera}) => {
             }
         } else {
             return (
-                <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '30%'}}>
+                <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '20%'}}>
                     --
                 </Typography>
             )
@@ -182,7 +179,7 @@ const IDO = ({refera}) => {
         <StepInfo />
         { Date.now()/1000<endTime
         ?
-        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="620px" marginBottom="32px">
+        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="720px" marginBottom="32px"  marginTop="32px">
             <Stack direction='row' alignItems='baseline' sx={{columnGap: '4px'}} >
                 <Image  alt="" src='./fire.png' width='32' height='32' />
                 <Typography component='div' sx={{marginTop: '18px', font: '900 oblique 36px Arial'}}>
@@ -199,20 +196,20 @@ const IDO = ({refera}) => {
             Ends in <span style={{font: '700 italic 28px sans', color: "yellow"}}>{duration}</span>
             </Typography>
 
-            <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'24px', paddingBottom: '16px'}} >
+            <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '8px'}} >
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                     Remaining Tokens
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {remain}/{init} {token?.symbol}
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                        {remain} / {init} {token?.symbol}
                     </Typography>
                 </Stack>
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex',  fontStyle: 'italic', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                         USDT Raised
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                         {total_usdt_raised} USDT
                     </Typography>
                 </Stack>
@@ -220,18 +217,18 @@ const IDO = ({refera}) => {
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
                     IDO price
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '16px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '90%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '90%'}}>
                         <span style={{font: '400 italic 14px sans'}}>Whitelist pice: </span>{whitelistPrice} USDT | <span style={{font: '400 italic 14px sans'}}>Public pice: </span> {price} USDT
                     </Typography>
                 </Stack>
             </Stack>
 
-            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', paddingBottom: '16px'}}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px'}}>
                 {/* <Typography component='div' sx={{fontSize: '28px', fontStyle: 'italic',  fontWeight: '700', paddingTop: '32px'}}>
                     Create a Betting Pool
                 </Typography> */}
                 <Stack direction='row' width='90%' justifyContent="space-between"  gap='4px' alignItems="center" sx={{ marginTop: '32px'}}>
-                    <Stack direction='row' width='50%' justifyContent="flex-start"  alignItems="center"  sx={{ marginTop: '8px'}}>
+                    <Stack direction='row' width='50%' justifyContent="flex-start"  alignItems="center">
                     {isConnected &&<Box height='8px' width='8px' sx={{backgroundColor:"#06FC99", border: "1px solid #06FC99", borderRadius: "100%", marginRight: '8px'}}/>}
                     {isConnected &&<Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px'}}>
                             {address?.slice(0, 6) + '...' + address?.slice(38)}
@@ -247,12 +244,12 @@ const IDO = ({refera}) => {
                     </Stack>
                 </Stack>
                 <Stack direction='row' justifyContent="space-between" alignItems="center" width='90%' height='48px' sx={{border: "1px solid #333333"}} >
-                    <input  style={{paddingLeft: '10px', width: '90%', height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} type='numbmic' placeholder='Input amount (50 USDT - 50,000 USDT)' value={value || ''} onChange={handleInput}/>
+                    <input  style={{paddingLeft: '10px', width: '90%', height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} type='numbmic' placeholder='Input amount (Min 50 USDT)' value={value || ''} onChange={handleInput}/>
                     <button style={{width: '10%', cursor: 'pointer',height:'100%', border:'none', outline:'null', backgroundColor: 'transparent'}} onClick={handleMax} > MAX </button>
                 </Stack>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
-                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333",  backgroundColor: '#333333',  borderRadius: '5px',  marginTop: '24px'}}>
+                <Stack direction='column' width='90%' justifyContent="space-between" alignItems="center" sx={{border: "1px solid #333333",  backgroundColor: '#333333',  borderRadius: '5px',  marginTop: '10px'}}>
                     {/* <Typography component='div' width='100%' sx={{fontSize: '16px', fontWeight: '700', paddingTop: '16px', paddingLeft: '32px', textAlign: 'left'}}>
                         Information
                     </Typography> */}
@@ -300,7 +297,7 @@ const IDO = ({refera}) => {
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained"  disabled={isConnected && (!value || (value < 50 || value > 50000)) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleBuy}>
+                <Button variant="contained"  disabled={isConnected && (!value || value < 50) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '20px', marginBottom: '32px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleBuy}>
                     {tipContent()}
                 </Button>
                
@@ -350,7 +347,7 @@ const IDO = ({refera}) => {
             </Stack>
         </Stack>
         :
-        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="620px" marginBottom="32px">
+        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="720px" marginBottom="32px"  marginTop="32px">
             <Stack direction='row' alignItems='baseline' sx={{columnGap: '4px'}} >
                 <Image  alt="" src='./fire.png' width='32' height='32' />
                 <Typography component='div' sx={{marginTop: '18px', font: '900 oblique 36px Arial'}}>
@@ -367,8 +364,8 @@ const IDO = ({refera}) => {
             If you have a referral rebate, you can claim it immediately.
             </Typography>
 
-            <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'30px', paddingBottom: '16px'}} >
-                <Typography component='div' sx={{ font: '700 normal 20px sans',  padding: '8px 0px 16px 32px',  textAlign: 'left', width: '100%'}}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'30px', paddingBottom: '24px'}} >
+                <Typography component='div' sx={{ font: '700 normal 20px sans',  padding: '24px 0px 16px 32px',  textAlign: 'left', width: '100%'}}>
                 My Subscribed
                 </Typography>
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
@@ -376,7 +373,7 @@ const IDO = ({refera}) => {
                     Amount Spent
                     </Typography>
                     <Typography component='div' sx={{fontSize: '18px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {isSuccess  ? (isWhitelist?formatAmount(subscribed*BigInt(whitelistPrice)):formatAmount(BigInt(subscribed)*price)) : '--'} USDT
+                        {isSuccess&&subscribed  ? (isWhitelist?formatAmount(subscribed*BigInt(whitelistPrice*1e8)/100000000n):formatAmount(subscribed*(BigInt(price*1e8))/100000000n)) : '--'} USDT
                     </Typography>
                 </Stack>
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex',  fontStyle: 'italic', flexDirection: 'row',  alignItems: 'center',  marginTop: '8px'}}>
@@ -404,7 +401,7 @@ const IDO = ({refera}) => {
                             {formatTime(data)}
                             </Typography>
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
-                            {formatAmount(subscribed/3n)} {token?.symbol} - 33.3%
+                            {isConnected&&subscribed?formatAmount(subscribed/3n):"0.00"} {token?.symbol} - 33.3%
                             </Typography>
                             {getClaimStatus(data, index)}
                         </Stack>
@@ -412,30 +409,30 @@ const IDO = ({refera}) => {
                 })}
             </Stack>
 
-            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'16px', }}>
-                <Typography component='div' sx={{ font: '700 normal 20px sans', padding: '8px 0px 16px 32px', textAlign: 'left', width: '100%'}}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'24px', }}>
+                <Typography component='div' sx={{ font: '700 normal 20px sans', padding: '24px 0px 8px 32px',  textAlign: 'left', width: '100%'}}>
                 My Rebate
                 </Typography>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
-                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',  marginTop: 'px'}}>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '16px'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
+                    Total Rebate
+                    </Typography>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                        {referaFund} USDT
+                    </Typography>
+                </Stack>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px', marginBottom: '16px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Invitee Transaction Count
                     </Typography>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                    {referaCount}
+                    {referaCount} 
                     </Typography>
                 </Stack>
-                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',   marginBottom: '16px'}}>
-                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
-                    Tokens Subscribed
-                    </Typography>
-                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', color: '#06FC99', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
-                        {referaFund}
-                    </Typography>
-                </Stack>
-                <Button variant="contained"  disabled={isConnected && referaFund == 0 } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleFund}>
-                    {referaFund!=0?isConnected?'Connect Wallet':'Claim':"You don&apos;t have a referral rebate"}
+                <Button variant="contained"  disabled={isConnected && referaFund == 0 } color='error' sx={{textTransform:'none', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleFund}>
+                    {referaFund!=0?!isConnected?'Connect Wallet':"Claim":"You don't have a referral rebate"}
                 </Button>
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '18px'}}/>
                 <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", textAlign: 'center', marginTop: '18px'}} >

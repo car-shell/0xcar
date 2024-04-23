@@ -96,14 +96,14 @@ function StickyHeadTable({columns, data, maxHeight="478px", type=null}) {
     }
     const clickHeight = (item) => {
         console.log(item);
-        window.open("https://testnet.bscscan.com/block/"+item.height, '_bank')
+        window.open("https://base-sepolia.blockscout.com//block/"+item.height, '_bank')
     }
     const clickTime = (item) => {
         if (!item.transactionHash) {
             return
         }
         console.log(item);
-        window.open("https://testnet.bscscan.com/tx/"+item.transactionHash, '_bank')
+        window.open("https://base-sepolia.blockscout.com//tx/"+item.transactionHash, '_bank')
     }
 
 
@@ -112,11 +112,11 @@ function StickyHeadTable({columns, data, maxHeight="478px", type=null}) {
         const transactionHash = item.transactionHash
         if ( transactionHash ) {
             console.log(transactionHash);
-            window.open("https://testnet.bscscan.com/tx/"+ transactionHash, '_bank')
+            window.open("https://base-sepolia.blockscout.com//tx/"+ transactionHash, '_bank')
         }
     }
     const clickAddress = (item) => {
-         window.open("https://testnet.bscscan.com/address/"+item.winner, '_bank')
+         window.open("https://base-sepolia.blockscout.com//address/"+item.winner, '_bank')
     }
     const formatNumber = (n, i) => {
         if (i != 1) {

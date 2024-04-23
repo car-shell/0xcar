@@ -19,31 +19,31 @@ import Checkbox from '@mui/material/Checkbox';
 const APool = () => {
     return (
     <React.Fragment>
-        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="800px" marginBottom="32px">
+        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="720px" marginBottom="32px">
             <Typography component='div' sx={{fontSize: '48px', fontStyle: 'italic', fontWeight: '900', marginTop: '48px'}}>
-            Alliance Pool
+            <span style={{color: '#06FC99'}}>Alliance</span> <span style={{color: 'yellow'}}>Pool</span>
             </Typography>
             <Typography component='div' sx={{fontSize: '48px',  fontStyle: 'italic', fontWeight: '900', }}>
             Creation Application
             </Typography>
             <Stack direction='column' justifyContent="space-between" alignItems="leflt" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '5px', marginTop:'32px', padding: '28px 48px 48px 48px'}} >
-                <Typography component='div' sx={{font: '700 20px normal', margin: '22px 0 14px 0'}}>
+                <Typography component='div' sx={{font: '700 20px normal', margin: '8px 0 14px 0'}}>
                 Application Guidelines
                 </Typography>
                 <Typography component='div' sx={{font: '700 16px normal', marginBottom: '10px'}}>
-                1.Eligibility: <span style={{font: '400 14px normal'}}> Applicants must demonstrate significant promotional capabilities and a
+                1. Eligibility: <span style={{font: '400 14px normal'}}> Applicants must demonstrate significant promotional capabilities and a
 notable social media presence. (No initial fees are required to open an Alliance Pool.)</span>
                 </Typography>
                 <Typography component='div' sx={{font: '700 16px20px normal', marginBottom: '10px'}}>
-                2.Process:  <span style={{font: '400 14px normal'}}> Submit an application -&gt; Receive approval -&gt; Create Alliance Pool -&gt;
+                2. Process:  <span style={{font: '400 14px normal'}}> Submit an application -&gt; Receive approval -&gt; Create Alliance Pool -&gt;
 Invite users to place bets -&gt; Earn commission from fees.</span>
                 </Typography>
                 <Typography component='div' sx={{font: '700 16px normal', marginBottom: '10px'}}>
-                3.Inviting Users: <span style={{font: '400 14px normal'}}> Once an Alliance Pool is established, the applicant can invite other users to
+                3. Inviting Users: <span style={{font: '400 14px normal'}}> Once an Alliance Pool is established, the applicant can invite other users to
 place bets within their Alliance Pool.</span>
                 </Typography>
                 <Typography component='div' sx={{font: '700 16px normal'}}>
-                4.No Initial Fees: <span style={{font: '400 14px normal'}}> Opening an Alliance Pool does not require any initial fees.</span>
+                4. No Initial Fees: <span style={{font: '400 14px normal'}}> Opening an Alliance Pool does not require any initial fees.</span>
                 </Typography>
 
                 <Typography component='div' sx={{font: '700 20px normal', margin: '22px 0 14px 0'}}>
@@ -58,16 +58,16 @@ dissolve the pool in cases of mismanagement.
                 Additional Information
                 </Typography>
                 <Typography component='div' sx={{font: '400 14px normal', marginBottom: '10px'}}>
-                1.Funds for the Alliance Pool are sourced from the official pool. Should the Alliance Pool be dissolved,
+                1. Funds for the Alliance Pool are sourced from the official pool. Should the Alliance Pool be dissolved,
 funds will revert to the official pool.
                 </Typography>
                 <Typography component='div' sx={{font: '400 14px normal'}}>
-                2.Accounts placing their first bet exclusively in the Alliance Pool will benefit from reduced transaction
+                2. Accounts placing their first bet exclusively in the Alliance Pool will benefit from reduced transaction
 fees.
                 </Typography>
 
                 <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' maxWidth="100%">
-                    <Button variant="contained" alignSelf='center' color='error' sx={{textTransform:'none', height: '40px', width: '80%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} >
+                    <Button variant="contained" alignSelf='center' color='error' sx={{textTransform:'none', height: '40px', width: '100%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} >
                         Apply Now
                     </Button>
                 </Stack>

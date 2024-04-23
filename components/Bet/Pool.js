@@ -46,10 +46,10 @@ const Pool = ({id}) => {
         useGrouping: false
     }).format(poolId)} Pool { (whitelistPool == poolId) && <span style={{color: "#06FC99", font: "900 italic 11px arial", marginLeft: '8px'}}> Fee Reduction </span>}
         </div>
-          {/* Burned: <a style={{textDecoration: 'none3', color: '#2471fe'}} target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}>{deadBalance}</a> CDNT */}
+          {/* Burned: <a style={{textDecoration: 'none3', color: '#2471fe'}} target="_blank" rel="noreferrer" href={`https://base-sepolia.blockscout.com//token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}>{deadBalance}</a> CDNT */}
           <div className={styles.content}> 
           <span className={styles.title}> Total Burned: </span> {formatAmount(deadBalance)} <span style={{color: '#7F7F7F', fontSize: "12px"}}>{token?.symbol}</span>
-          <a target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}><img style={{marginLeft: '4px', width: '12px', height: '12px'}} src="jump.png"/></a>
+          <a target="_blank" rel="noreferrer" href={`https://base-sepolia.blockscout.com//token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}><img style={{marginLeft: '4px', width: '12px', height: '12px'}} src="jump.png"/></a>
         </div>
       </div>
      

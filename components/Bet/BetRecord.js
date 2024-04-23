@@ -72,7 +72,7 @@ const BetRecord = () => {
                     } else if ( row.status==BetStatus.started ) {
                         
                     } else {
-                        window.open("https://testnet.bscscan.com/tx/"+row.transactionHash, '_bank')
+                        window.open("https://base-sepolia.blockscout.com/tx/"+row.transactionHash, '_bank')
                     }
                 }
             },

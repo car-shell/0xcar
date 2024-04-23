@@ -109,22 +109,19 @@ export const useIDOContract = () => {
         }).then( async ({request})=>{
             await writeContract(wagmiClient, request).then(async (hash)=>{
                 console.log("----------writeContract-----------");
-                setStepStatus('withdraw', 1)
+                setStepStatus(1, true)
                 const receipt = await waitForTransaction(wagmiClient, {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
-                setStepStatus('withdraw', 2)
+                setStepStatus(0, false)
                 console.log("transfer receipt",receipt)
                 success()
             }).catch((e)=>{
                 console.log("withdraw failed")
-                console.log(e.message)
-                setStepStatus('withdraw', 1)
                 fail(e)
             })
         }).catch((e)=>{
-            console.log("withdraw failed")
             console.log(e.message)
             setStepStatus('withdraw', 1)
             fail(e)
@@ -141,24 +138,20 @@ export const useIDOContract = () => {
         }).then( async ({request})=>{
             await writeContract(wagmiClient, request).then(async (hash)=>{
                 console.log("----------writeContract-----------");
-                setStepStatus('withdraw', 1)
+                setStepStatus(1, true)
                 const receipt = await waitForTransaction(wagmiClient, {
                     hash,
                     onReplaced: (transaction) => console.log(transaction),
                 })
-                setStepStatus('withdraw', 2)
+                setStepStatus(0, false)
                 console.log("transfer receipt",receipt)
                 success()
             }).catch((e)=>{
                 console.log("withdraw failed")
-                console.log(e.message)
-                setStepStatus('withdraw', 1)
                 fail(e)
             })
         }).catch((e)=>{
             console.log("withdraw failed")
-            console.log(e.message)
-            setStepStatus('withdraw', 1)
             fail(e)
         })
     }
@@ -196,7 +189,7 @@ export const useIDOContract = () => {
 
         return true;
     }, [addressIDOContract, address, allowance, approve, isConnected]);
-   
+    
     return { isSuccess, 
         init:isSuccess?formatAmount(idoInfo[1]):'--', 
         remain:isSuccess?formatAmount(idoInfo[0]):'--', 
@@ -207,7 +200,7 @@ export const useIDOContract = () => {
         price: isSuccess?Number(100000n/idoInfo[5])/100000: 1, 
         whitelistPrice: isSuccess?Number(100000n/idoInfo[6])/100000: 1, 
         subscribed: infoSuccess?info[0]:0,
-        claimed: infoSuccess?Number(info[1]):0,
+        claimed: infoSuccess?info[1]:0,
         referaFund: infoSuccess?formatAmount(info[2]):"--",
         isWhitelist: infoSuccess?info[3]:false,
         referaCount: infoSuccess?Number(info[4]):0,

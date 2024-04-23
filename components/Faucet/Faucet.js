@@ -121,7 +121,7 @@ const Faucet = () => {
                 },
                 // rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
                 rpcUrls: ['https://bsc-testnet.publicnode.com'],
-                blockExplorerUrls: ['https://testnet.bscscan.com']
+                blockExplorerUrls: ['https://base-sepolia.blockscout.com/']
             }]
         }).then(()=>{
             showToast('success!')

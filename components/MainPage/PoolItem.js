@@ -64,7 +64,7 @@ const WithdrawSuccessContent = ({token, withdrawContentInfo}) => {
                     Transaction Hash
                 </Typography>
                 <Typography gutterBottom sx={{font:'400 italic 16px Arial',color:'#41A0DA'}}>
-                    <Link href={"https://testnet.bscscan.com/tx/" + withdrawContentInfo.hash} target='_blank'>
+                    <Link href={"https://base-sepolia.blockscout.com//tx/" + withdrawContentInfo.hash} target='_blank'>
                         {withdrawContentInfo.hash.slice(0,6)+"..."+withdrawContentInfo.hash.slice(-6)}
                     </Link>
                 </Typography>
@@ -169,7 +169,7 @@ const ClosureSuccessContent = ({token, withdrawContentInfo}) => {
                     Transaction Hash
                 </Typography>
                 <Typography gutterBottom sx={{font:'400 italic 16px Arial',color:'#41A0DA'}}>
-                    <Link href={"https://testnet.bscscan.com/tx/" + withdrawContentInfo.hash} target='_blank'>
+                    <Link href={"https://base-sepolia.blockscout.com//tx/" + withdrawContentInfo.hash} target='_blank'>
                         {withdrawContentInfo.hash.slice(0,6)+"..."+withdrawContentInfo.hash.slice(-6)}
                     </Link>
                 </Typography>
@@ -183,7 +183,7 @@ const ClosureSuccessContent = ({token, withdrawContentInfo}) => {
 const PoolItem = ({poolPro, my=false}) => {
     const [pool, setPool] = React.useState(poolPro);
     const {token} = useTokenContract();
-    const {preRemovePool, removePool, withdrawPool, whitelistPool} = useGameContract();
+    const {preRemovePool, removePool, withdrawPool, whitelistPool, last} = useGameContract();
     const [openDialog, handleClose, props] = useCustomizedDialog()
     const [dialogInfo, setDialogInfo] = useState({})
     const [withdrawContentInfo, setWithdrawContentInfo] = useState({})
@@ -313,6 +313,13 @@ const PoolItem = ({poolPro, my=false}) => {
             </Box>
             <Card variant="outlined" sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center',  border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', backgroundColor: 'transparent' , borderRadius: '10px'}}>
                 <Box alignItems='center' sx={{ width: '100%',display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '128px'}}>
+                    {poolPro.isLocked || (last && last?.guess == last?.random)?
+                    <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', borderRight: pool.id==1n?'1px solid #F59A23':'1px solid #797979', width:'56%'}}>
+                        <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '80%', color: 'white'}}>
+                        The pool has been closed, and you still have assets that have not been withdrawn. Please withdraw immediately.
+                        </Typography>
+                    </Box>
+                    :
                     <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', borderRight: pool.id==1n?'1px solid #F59A23':'1px solid #797979', width:'56%'}}>
                         <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width: '100%'}}>
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '160px'}}>
@@ -339,12 +346,13 @@ const PoolItem = ({poolPro, my=false}) => {
                             </Typography>
                         </Box>
                     </Box>
+                    }
 
                     { !my?
                     <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center',  alignItems: 'center', width:'42%'}}>
                         <BaseLink href={"/pool?id="+pool.id} style={{width: "280px"}} >
                             <Button variant="contained" color="error"  sx={{ width: "100%", height:'50px', backgroundColor: pool.id==1n?'#F59A23':"#d9001b", borderRadius: '150px', textTransform:'none' }} >
-                                    Bet
+                                    {poolPro.isLocked?"Closing soon":"Bet"}
                             </Button>
                         </BaseLink>
                     </Box>
@@ -387,7 +395,19 @@ const PoolItem = ({poolPro, my=false}) => {
                     <Button variant="contained" disabled sx={{textTransform: 'none', borderRadius: '90px', height: '32px',  width: "340px", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleWithdraw} >
                     The prize pool has been closed
                     </Button>
-                    </Stack>} */}
+                    </Stack>}  */}
+                    {pool.isUsed?
+                    <Box sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', justifyContent: 'space-around', color: pool.id==1n?'#F59A23':"white", width:'42%'}}>
+                        <Button variant="contained" color="error" sx={{textTransform: 'none',borderRadius: '90px', height: '32px',  width: "340px"}} onClick={()=>{window.open(`https://base-sepolia.blockscout.com/address/${address}`,  "_blank")}} >
+                        Check earnings on the blockchain
+                        </Button>
+                    </Box>
+                    :
+                    <Stack direction='row' justifyContent="center" width="42%" alignItems='center' sx={{marginLeft: '16px'}}>
+                    <Button variant="contained" disabled sx={{textTransform: 'none', borderRadius: '90px', height: '32px',  width: "340px", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333', color: "#ccc"}}} onClick={handleWithdraw} >
+                    The prize pool has been closed
+                    </Button>
+                    </Stack>} 
 
                 </Box>}
                 

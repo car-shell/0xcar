@@ -39,7 +39,7 @@ const Pool = () => {
           </div>
         </div>
         <div className={styles.burn}>
-          Burned: <a style={{textDecoration: 'none3', color: '#2471fe'}} target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}>{deadBalance}</a> CDNT
+          Burned: <a style={{textDecoration: 'none3', color: '#2471fe'}} target="_blank" rel="noreferrer" href={`https://base-sepolia.blockscout.com//token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}>{deadBalance}</a> CDNT
         </div>
       </div> */}
       <div className={styles.info}>
@@ -55,7 +55,7 @@ const Pool = () => {
         <div className={styles.title}> Total Burned</div>
         <div className={styles.content}> 
           {formatAmount(deadBalance)} <span style={{color: '#7F7F7F', fontSize: "12px"}}>{token?.symbol}</span>
-          <a target="_blank" rel="noreferrer" href={`https://testnet.bscscan.com/token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}><img style={{marginLeft: '4px', width: '12px', height: '12px'}} src="jump.png"/></a>
+          <a target="_blank" rel="noreferrer" href={`https://base-sepolia.blockscout.com//token/${addressTokenContract}?a=0x000000000000000000000000000000000000dead`}><img style={{marginLeft: '4px', width: '12px', height: '12px'}} src="jump.png"/></a>
         </div>
        </div>
       </div>
