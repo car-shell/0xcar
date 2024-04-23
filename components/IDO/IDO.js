@@ -125,7 +125,7 @@ const IDO = ({refera}) => {
             openConnectModal()
             return
         }
-
+        onStepChange(0, true, 'withdraw' )
         claimTokens((data)=>{
             // showToast("Congratulations，Create pool success", 'success')
         }, (error)=>{
