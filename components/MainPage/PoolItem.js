@@ -313,7 +313,7 @@ const PoolItem = ({poolPro, my=false}) => {
             </Box>
             <Card variant="outlined" sx={{  display: 'flex', flexDirection: 'column', alignItems: 'center',  border: pool.id==1n?'1px solid #F59A23':'1px solid #797979', backgroundColor: 'transparent' , borderRadius: '10px'}}>
                 <Box alignItems='center' sx={{ width: '100%',display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '128px'}}>
-                    {poolPro.isLocked || (last && last?.guess == last?.random)?
+                    {(poolPro.isLocked || (last && last?.guess == last?.random && last?.poolId == poolPro.id))?
                     <Box alignItems='center' sx={{display: 'flex', flexDirection: 'column', borderRight: pool.id==1n?'1px solid #F59A23':'1px solid #797979', width:'56%'}}>
                         <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', width: '80%', color: 'white'}}>
                         The pool has been closed, and you still have assets that have not been withdrawn. Please withdraw immediately.
