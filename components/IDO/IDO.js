@@ -39,8 +39,8 @@ const IDO = ({refera}) => {
     const {openConnectModal} = useConnectModal()
     const router = useRouter()
 
-    const claimInfo = [(endTime-3600*24)*1000, (endTime+3600*24*30)*1000, (endTime+3600*24*60)*1000]
-    // const claimInfo = [(endTime-3600/2)*1000, (endTime+3600)*1000, (endTime+3600*3/2)*1000]
+    // const claimInfo = [(endTime-3600*24)*1000, (endTime+3600*24*30)*1000, (endTime+3600*24*60)*1000]
+    const claimInfo = [(endTime-3600/2)*1000, (endTime+3600)*1000, (endTime+3600*3/2)*1000]
 
     useEffect(()=>{
         setStepNodes({create_pool: [{name: 'Comfirm in Wallet'}, {name: 'Done'}], 
@@ -365,7 +365,7 @@ const IDO = ({refera}) => {
                 <span style={{color: '#ea3423'}}>0x</span>
             </Typography> */}
             <Typography component='div' sx={{fontSize: '20px',  fontStyle: 'italic', fontWeight: '400', marginTop: '30px' }}>
-            Please claim your tokens within the specified time.
+            Please claim your $CDNL within the specified time.
             </Typography>
             <Typography component='div' sx={{fontSize: '20px',  fontStyle: 'italic', fontWeight: '400' }}>
             If you have a referral rebate, you can claim it immediately.
