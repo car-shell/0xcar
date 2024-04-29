@@ -33,7 +33,7 @@ const IDO = ({refera}) => {
     const [checked, setChecked] = React.useState(false);
     const [refUrl, setRefUrl] = React.useState('');
     const {ToastUI, showToast} = useToast()
-    const [isEnd, setIsEnd] = useState(Date.now()/1000<endTime)
+    const [isEnd, setIsEnd] = useState('')
     const {setStepInfo, setStepNodes, StepInfo} = useStepInfo()
 
     const {openConnectModal} = useConnectModal()
@@ -48,7 +48,6 @@ const IDO = ({refera}) => {
             approve: [{name: 'Approve submited'}, {name: 'Approve completed'}]})
     }, [setStepNodes])
     
-
     useEffect(()=>{
         let r = 'Please Connect wallet first';
         if (isConnected) {
@@ -72,6 +71,7 @@ const IDO = ({refera}) => {
             clearInterval(i)
         }
     })
+
     const onStepChange = useCallback((step, isShow, stepName=null, stepTitle=null, buttonContent=null)=>{
         setStepInfo((pre) => {
             let n = { ...pre, isShow: isShow,  active: step, stepName: stepName!=null?stepName:pre.stepName, stepTitle: stepTitle!=null?stepTitle:pre.stepTitle, buttonContent: buttonContent!=null?buttonContent:pre.buttonContent, stepMsg: null}
@@ -149,6 +149,7 @@ const IDO = ({refera}) => {
             openConnectModal()
             return
         }
+
         onStepChange(0, true, 'withdraw' )
         withdrawRefferasFund((data)=>{
             // showToast("Congratulations，Create pool success", 'success')
@@ -162,7 +163,7 @@ const IDO = ({refera}) => {
         if (Date.now() > date && Number(subscribed) > 0) {
             if (subscribed*BigInt(index+1)/3n <= claimed) {
                 return (
-                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '20%'}} onClick={handleFund}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '20%'}}>
                         Claimed
                     </Typography>
                 )
@@ -183,7 +184,7 @@ const IDO = ({refera}) => {
             )
         }
     }
-    return (isSuccess && 
+    return (isEnd!=''&&
     <React.Fragment>
         <ToastUI />
         <StepInfo />
@@ -205,7 +206,10 @@ const IDO = ({refera}) => {
             <Typography component='div' sx={{font: '700 italic 18px sans', color: "#d7d7d7", marginTop: '12px' }}>
             Ends in <span style={{font: '700 italic 28px sans', color: "yellow"}}>{duration}</span>
             </Typography>
-
+            <Typography component='div' sx={{font: '700 italic 16px sans',  marginTop: '12px' }}>
+            The unsold tokens will be sent to a burn address and destroyed within 24 hours after the IDO ends
+            </Typography>
+            
             <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'32px', paddingBottom: '8px'}} >
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingLeft: '32px', textAlign: 'left', width: '40%', color: '#7f7f7f'}}>
@@ -447,7 +451,7 @@ const IDO = ({refera}) => {
                     {referaCount} 
                     </Typography>
                 </Stack>
-                <Button variant="contained"  disabled={isConnected && referaFund == 0 } color='error' sx={{textTransform:'none', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleFund}>
+                <Button variant="contained"  disabled={isConnected && (referaFund == 0 || referasWithdrawed)} color='error' sx={{textTransform:'none', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleFund}>
                     {(!isConnected)?'Connect Wallet':referaFund==0?"You don't have a referral rebate":referasWithdrawed?"You have claimed it":"Claim"}
                 </Button>
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '18px'}}/>
