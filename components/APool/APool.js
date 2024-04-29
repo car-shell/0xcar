@@ -67,7 +67,9 @@ fees.
                 </Typography>
 
                 <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' maxWidth="100%">
-                    <Button variant="contained" alignSelf='center' color='error' sx={{textTransform:'none', height: '40px', width: '100%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} >
+                    <Button variant="contained" onClick={()=>{
+                        window.open('https://docs.google.com/forms/d/1kyU01oLW8TxPDedjnFXLoc3c1asneYFNVd7W8ECHXvU', '_blank')
+                    }} alignSelf='center' color='error' sx={{textTransform:'none', height: '40px', width: '100%', font: "400 normal 14px Arial", marginTop: '28px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} >
                         Apply Now
                     </Button>
                 </Stack>

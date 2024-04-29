@@ -204,6 +204,7 @@ export const useIDOContract = () => {
         referaFund: infoSuccess?formatAmount(info[2]):"--",
         isWhitelist: infoSuccess?info[3]:false,
         referaCount: infoSuccess?Number(info[4]):0,
+        referasWithdrawed: infoSuccess?info[5]:false,
         buyToken,
         claimTokens,
         withdrawRefferasFund}

@@ -235,7 +235,7 @@ const PoolItem = ({poolPro, my=false}) => {
             setDialogInfo({title: "Withdraw", context: "WithdrawSuccessContent", button: {title: 'Got it', disable: false, action: null}})
             showToast("success", "success")
         }, (error)=>{
-            showToast(error.shortMessage || error.message || error.reason, "error")
+            showToast(error.shortMessage.substring(error.shortMessage.lastIndexOf(":")+1) || error.message || error.reason, "error")
             handleClose()
         })
     }

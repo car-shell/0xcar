@@ -24,7 +24,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 
 const IDO = ({refera}) => {
-    const {isSuccess, init, remain, total_usdt_raised, price, whitelistPrice, startTime, endTime, buyToken, usdtBalance, referaFund,referaCount, subscribed, claimed, isWhitelist, claimTokens, withdrawRefferasFund} = useIDOContract();
+    const {isSuccess, init, remain, total_usdt_raised, price, whitelistPrice, startTime, endTime, buyToken, usdtBalance, referaFund,referaCount, subscribed, claimed, isWhitelist, claimTokens, withdrawRefferasFund, referasWithdrawed} = useIDOContract();
     const {token} = useTokenContract();
     const {address, isConnected} = useAccount()
     const {amountsOut} = useSwapContract()
@@ -33,6 +33,7 @@ const IDO = ({refera}) => {
     const [checked, setChecked] = React.useState(false);
     const [refUrl, setRefUrl] = React.useState('');
     const {ToastUI, showToast} = useToast()
+    const [isEnd, setIsEnd] = useState(Date.now()/1000<endTime)
     const {setStepInfo, setStepNodes, StepInfo} = useStepInfo()
 
     const {openConnectModal} = useConnectModal()
@@ -47,6 +48,7 @@ const IDO = ({refera}) => {
             approve: [{name: 'Approve submited'}, {name: 'Approve completed'}]})
     }, [setStepNodes])
     
+
     useEffect(()=>{
         let r = 'Please Connect wallet first';
         if (isConnected) {
@@ -58,6 +60,10 @@ const IDO = ({refera}) => {
     useEffect(()=>{
         const i = setInterval(()=>{
             const n = Date.now()/1000
+            if (!isEnd && n > endTime) {
+                setIsEnd(true)
+            }
+            
             if (isSuccess && n > startTime && n < endTime ) {
                 setDuration(formatDuration(endTime-n))
             }
@@ -88,7 +94,7 @@ const IDO = ({refera}) => {
             showToast("Congratulations，buy token success", 'success')
         }, (error)=>{
             onStepChange(0, false, '', '')
-            showToast(error.shortMessage, 'error')
+            showToast(error.shortMessage.substring(error.shortMessage.lastIndexOf(":")+1), 'error')
         }, onStepChange)
     }, [isConnected, value, refera]);
 
@@ -131,7 +137,7 @@ const IDO = ({refera}) => {
             // showToast("Congratulations，Create pool success", 'success')
         }, (error)=>{
             onStepChange(0, false, '', '')
-            showToast(error.shortMessage, 'error')
+            showToast(error.shortMessage.substring(error.shortMessage.lastIndexOf(":")+1), 'error')
         }, onStepChange)
     },[isConnected, onStepChange])
 
@@ -145,7 +151,7 @@ const IDO = ({refera}) => {
             // showToast("Congratulations，Create pool success", 'success')
         }, (error)=>{
             onStepChange(0, false, '', '')
-            showToast(error.shortMessage, 'error')
+            showToast(error.shortMessage.substring(error.shortMessage.lastIndexOf(":")+1), 'error')
         }, onStepChange)
     },[])
 
@@ -178,7 +184,7 @@ const IDO = ({refera}) => {
     <React.Fragment>
         <ToastUI />
         <StepInfo />
-        { Date.now()/1000<endTime
+        { !isEnd
         ?
         <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="720px" marginBottom="32px"  marginTop="32px">
             <Stack direction='row' alignItems='baseline' sx={{columnGap: '4px'}} >
@@ -395,7 +401,7 @@ const IDO = ({refera}) => {
                 </Stack>
 
                 <Stack width='90%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}} />
-                {claimInfo.map((data, index)=>{
+                {subscribed>0?claimInfo.map((data, index)=>{
                     return (
                         <Stack key={index} width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
                             <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingLeft: '32px', textAlign: 'left', width: '30%'}}>
@@ -407,7 +413,9 @@ const IDO = ({refera}) => {
                             {getClaimStatus(data, index)}
                         </Stack>
                     )
-                })}
+                }):<Button variant="contained"  disabled={true} sx={{textTransform:'none', marginTop: '24px', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={()=>{}}>
+                    You don't have any $CDNL to claim
+                </Button>}
             </Stack>
 
             <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'24px', }}>
@@ -433,7 +441,7 @@ const IDO = ({refera}) => {
                     </Typography>
                 </Stack>
                 <Button variant="contained"  disabled={isConnected && referaFund == 0 } color='error' sx={{textTransform:'none', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleFund}>
-                    {referaFund!=0?!isConnected?'Connect Wallet':"Claim":"You don't have a referral rebate"}
+                    {(!isConnected)?'Connect Wallet':referaFund==0?"You don't have a referral rebate":referasWithdrawed?"You have claimed it":"Claim"}
                 </Button>
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '18px'}}/>
                 <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", textAlign: 'center', marginTop: '18px'}} >
