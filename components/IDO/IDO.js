@@ -39,8 +39,8 @@ const IDO = ({refera}) => {
     const {openConnectModal} = useConnectModal()
     const router = useRouter()
 
-    // const claimInfo = [(endTime-3600*24)*1000, (endTime+3600*24*30)*1000, (endTime+3600*24*60)*1000]
-    const claimInfo = [(endTime-3600/2)*1000, (endTime+3600)*1000, (endTime+3600*3/2)*1000]
+    // const claimInfo = [(endTime+3600*24)*1000, (endTime+3600*24*30)*1000, (endTime+3600*24*60)*1000]
+    const claimInfo = [(endTime+3600/2)*1000, (endTime+3600)*1000, (endTime+3600*3/2)*1000]
 
     useEffect(()=>{
         setStepNodes({create_pool: [{name: 'Comfirm in Wallet'}, {name: 'Done'}], 
