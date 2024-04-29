@@ -170,7 +170,7 @@ const IDO = ({refera}) => {
             } else {
                 return (
                     <Stack direction='column' justifyContent="space-between" alignItems="center" width='20%' sx={{paddingRight: '32px'}} >
-                            <Button variant="contained" color='error' sx={{textTransform:'none', width: '100%', font: "400 normal 14px Arial"}} onClick={handleClaim}>
+                            <Button variant="contained" color='error' sx={{textTransform:'none', width: '100%', font: "400 italic 14px Arial"}} onClick={handleClaim}>
                                 {!isConnected?"Connect":"Claim"}
                             </Button>
                     </Stack>
@@ -190,7 +190,7 @@ const IDO = ({refera}) => {
         <StepInfo />
         { !isEnd
         ?
-        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="720px" marginBottom="32px"  marginTop="32px">
+        <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="720px" marginBottom="32px"  marginTop="32px" sx={{fontStyle: 'italic'}}>
             <Stack direction='row' alignItems='baseline' sx={{columnGap: '4px'}} >
                 <Image  alt="" src='./fire.png' width='32' height='32' />
                 <Typography component='div' sx={{marginTop: '18px', font: '900 oblique 36px Arial'}}>
@@ -311,7 +311,7 @@ const IDO = ({refera}) => {
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained"  disabled={isConnected && (!value || value < 50 || value > amountFromFormatedStr(usdtBalance)) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '20px', marginBottom: '32px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleBuy}>
+                <Button variant="contained"  disabled={isConnected && (!value || value < 50 || value > amountFromFormatedStr(usdtBalance)) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 italic 14px Arial", marginTop: '20px', marginBottom: '32px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleBuy}>
                     {tipContent()}
                 </Button>
                
@@ -355,7 +355,7 @@ const IDO = ({refera}) => {
                 </Stack>
                 
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px'}}/>
-                <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", textAlign: 'center', marginTop: '18px'}} >
+                <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 italic 12px Arial", textAlign: 'center', marginTop: '18px'}} >
                 Through the referral link, the sharer will receive a 3% rebate from the participant&apos;s IDO contribution.
                 </Typography>
             </Stack>
@@ -378,8 +378,8 @@ const IDO = ({refera}) => {
             If you have a referral rebate, you can claim it immediately.
             </Typography>
 
-            <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'30px', paddingBottom: '24px'}} >
-                <Typography component='div' sx={{ font: '700 normal 20px sans',  padding: '24px 0px 16px 32px',  textAlign: 'left', width: '100%'}}>
+            <Stack direction='column' justifyContent="space-between" alignItems="center" width='100%' sx={{border: "1px solid #7f7f7f", fontStyle: 'italic',  borderRadius: '10px', marginTop:'30px', paddingBottom: '24px'}} >
+                <Typography component='div' sx={{ font: '700 italic 20px sans',  padding: '24px 0px 16px 32px',  textAlign: 'left', width: '100%'}}>
                 My Subscribed
                 </Typography>
                 <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row', alignItems: 'center', marginTop: '8px'}}>
@@ -420,7 +420,7 @@ const IDO = ({refera}) => {
                             {getClaimStatus(data, index)}
                         </Stack>
                     )
-                }):<Button variant="contained"  disabled={isConnected} color='error' sx={{textTransform:'none', marginTop: '24px', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={()=>{
+                }):<Button variant="contained"  disabled={isConnected} color='error' sx={{textTransform:'none', marginTop: '24px', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 italic 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={()=>{
                     if (!isConnected) {
                         openConnectModal()
                     }
@@ -430,7 +430,7 @@ const IDO = ({refera}) => {
             </Stack>
 
             <Stack direction='column' justifyContent="space-between" alignItems="center" gap='4px' width='100%' sx={{border: "1px solid #7f7f7f", borderRadius: '10px', marginTop:'24px', }}>
-                <Typography component='div' sx={{ font: '700 normal 20px sans', padding: '24px 0px 8px 32px',  textAlign: 'left', width: '100%'}}>
+                <Typography component='div' sx={{ font: '700 italic 20px sans', padding: '24px 0px 8px 32px',  textAlign: 'left', width: '100%'}}>
                 My Rebate
                 </Typography>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
@@ -451,11 +451,11 @@ const IDO = ({refera}) => {
                     {referaCount} 
                     </Typography>
                 </Stack>
-                <Button variant="contained"  disabled={isConnected && (referaFund == 0 || referasWithdrawed)} color='error' sx={{textTransform:'none', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleFund}>
+                <Button variant="contained"  disabled={isConnected && (referaFund == 0 || referasWithdrawed)} color='error' sx={{textTransform:'none', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 italic 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleFund}>
                     {(!isConnected)?'Connect Wallet':referaFund==0?"You don't have a referral rebate":referasWithdrawed?"You have claimed it":"Claim"}
                 </Button>
                 <Stack width='100%' justifyContent="space-between" height='1px' sx={{borderTop: "1px solid #666666", display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '18px'}}/>
-                <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 12px Arial", textAlign: 'center', marginTop: '18px'}} >
+                <Typography variant="div" sx={{textTransform:'none', height: '40px', width: '90%', font: "400 italic 12px Arial", textAlign: 'center', marginTop: '18px'}} >
                 Through the referral link, the sharer will receive a 3% rebate from the participant&apos;s IDO contribution.
                 </Typography>
             </Stack>
