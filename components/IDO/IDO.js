@@ -386,7 +386,7 @@ const IDO = ({refera}) => {
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Amount Spent
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400',  paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                         {isSuccess&&subscribed  ? (isWhitelist?formatAmount(subscribed*BigInt(whitelistPrice*1e8)/100000000n):formatAmount(subscribed*(BigInt(price*1e8))/100000000n)) : '--'} USDT
                     </Typography>
                 </Stack>
@@ -394,7 +394,7 @@ const IDO = ({refera}) => {
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Subscription Price
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '18px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '60%'}}>
                         {isWhitelist?whitelistPrice:price} USDT
                     </Typography>
                 </Stack>
@@ -402,7 +402,7 @@ const IDO = ({refera}) => {
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Tokens Subscribed
                     </Typography>
-                    <Typography component='div' sx={{fontSize: '16px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '90%'}}>
+                    <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '90%'}}>
                         {formatAmount(subscribed)} {token?.symbol}
                     </Typography>
                 </Stack>
@@ -435,7 +435,7 @@ const IDO = ({refera}) => {
                 </Typography>
                 {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 {/* <TextField id="outlined-number" label="Input amount" variant="outlied" type="number" sx={{ input: { color: 'white' } }} value={value} onChange={handleInput}/> */}
-                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '16px'}}>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', fontStyle: 'italic', flexDirection: 'row',  alignItems: 'center', marginTop: '16px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Total Rebate
                     </Typography>
@@ -443,7 +443,7 @@ const IDO = ({refera}) => {
                         {referaFund} USDT
                     </Typography>
                 </Stack>
-                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center', marginTop: '8px', marginBottom: '16px'}}>
+                <Stack width='100%' justifyContent="space-between"  sx={{display: 'flex', flexDirection: 'row',  fontStyle: 'italic', alignItems: 'center', marginTop: '8px', marginBottom: '16px'}}>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingLeft: '32px', textAlign: 'left', width: '40%'}}>
                     Invitee Transaction Count
                     </Typography>
