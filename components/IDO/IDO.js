@@ -417,7 +417,7 @@ const IDO = ({refera}) => {
                         </Stack>
                     )
                 }):<Button variant="contained"  disabled={true} sx={{textTransform:'none', marginTop: '24px', paddingLeft: '32px', height: '40px', width: 'calc(100% - 64px)', font: "400 normal 14px Arial", '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={()=>{}}>
-                    You don&apos;t have any $CDNL to claim
+                    {isConnected:"You don&apos;t have any $CDNL to claim":"Connect Wallet"}
                 </Button>}
             </Stack>
 
