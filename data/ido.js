@@ -166,12 +166,12 @@ export const useIDOContract = () => {
             console.log('------', result);
             al = result
             if ( al < amount ) {
-                onStepChange(0, true, 'approve', "IDO Buy Token")
+                onStepChange(0, true, 'approve', "Buy $CDNL")
                 approve(addressIDOContract, amount, async (s, data)=>{
                     if ( s == 'write') {
                         onStepChange(1, true)
                     } else {
-                        onStepChange(0, true, 'create_pool', "IDO Buy Token")
+                        onStepChange(0, true, 'create_pool', "Buy $CDNL")
                         console.log(reffera);
                         await _buyToken(amount, reffera, success, fail, onStepChange)
                     }
@@ -180,7 +180,7 @@ export const useIDOContract = () => {
                     fail(e)
                 })
             } else {
-                onStepChange(0, true, 'create_pool', "IDO Buy Token")
+                onStepChange(0, true, 'create_pool', "Buy $CDNL")
                 await _buyToken(amount, reffera, success, fail, onStepChange)
             }
         }, (e)=>{fail(e)})){

@@ -107,6 +107,9 @@ const IDO = ({refera}) => {
         if (!isConnected) {
             return "Connect Wallet"
         }
+        if (value > amountFromFormatedStr(usdtBalance)) {
+            return "Insufficient Balanace"
+        }
         if (!value || value < 50) {
             return "Input amount (Min 50 USDT)"
         }
@@ -304,7 +307,7 @@ const IDO = ({refera}) => {
                         </Typography>
                     </Stack>
                 </Stack>
-                <Button variant="contained"  disabled={isConnected && (!value || value < 50) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '20px', marginBottom: '32px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleBuy}>
+                <Button variant="contained"  disabled={isConnected && (!value || value < 50 || value > amountFromFormatedStr(usdtBalance)) } color='error' sx={{textTransform:'none', height: '40px', width: '90%', font: "400 normal 14px Arial", marginTop: '20px', marginBottom: '32px', '&.MuiButton-contained.Mui-disabled': {backgroundColor: '#333333', color: "#aaaaaa"}}} onClick={handleBuy}>
                     {tipContent()}
                 </Button>
                
