@@ -33,7 +33,7 @@ const IDO = ({refera}) => {
     const [checked, setChecked] = React.useState(false);
     const [refUrl, setRefUrl] = React.useState('');
     const {ToastUI, showToast} = useToast()
-    const [isEnd, setIsEnd] = useState('')
+    const [isEnd, setIsEnd] = useState(null)
     const {setStepInfo, setStepNodes, StepInfo} = useStepInfo()
 
     const {openConnectModal} = useConnectModal()
@@ -57,10 +57,19 @@ const IDO = ({refera}) => {
     }, [address, isConnected, typeof window])
 
     useEffect(()=>{
+        let a = 0;
         const i = setInterval(()=>{
             const n = Date.now()/1000
-            if (!isEnd && n > endTime) {
-                setIsEnd(true)
+            if ( n > endTime) {
+                if (!isEnd || isEnd == ' ') {
+                    console.log("set end to false");
+                    setIsEnd(true)
+                }
+            } else {
+                if (isEnd || isEnd == null) {
+                    console.log("set end to false");
+                    setIsEnd(false)
+                }
             }
             
             if (isSuccess && n > startTime && n < endTime ) {
@@ -70,7 +79,7 @@ const IDO = ({refera}) => {
         return () => {
             clearInterval(i)
         }
-    })
+    }, [])
 
     const onStepChange = useCallback((step, isShow, stepName=null, stepTitle=null, buttonContent=null)=>{
         setStepInfo((pre) => {
@@ -184,7 +193,7 @@ const IDO = ({refera}) => {
             )
         }
     }
-    return (isEnd!=''&&
+    return (isEnd!=null&&
     <React.Fragment>
         <ToastUI />
         <StepInfo />
