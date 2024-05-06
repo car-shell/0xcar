@@ -57,7 +57,6 @@ const IDO = ({refera}) => {
     }, [address, isConnected, typeof window])
 
     useEffect(()=>{
-        let a = 0;
         const i = setInterval(()=>{
             const n = Date.now()/1000
             if ( n > endTime) {
@@ -73,13 +72,13 @@ const IDO = ({refera}) => {
             }
             
             if (isSuccess && n > startTime && n < endTime ) {
-                setDuration(formatDuration(endTime-n))
+                setDuration(()=>{return formatDuration(endTime-n)})
             }
         }, 1000)
         return () => {
             clearInterval(i)
         }
-    }, [])
+    }, [endTime, isSuccess, startTime])
 
     const onStepChange = useCallback((step, isShow, stepName=null, stepTitle=null, buttonContent=null)=>{
         setStepInfo((pre) => {
