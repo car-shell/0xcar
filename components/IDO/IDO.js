@@ -39,8 +39,8 @@ const IDO = ({refera}) => {
     const {openConnectModal} = useConnectModal()
     const router = useRouter()
 
-    // const claimInfo = [(endTime+3600*24)*1000, (endTime+3600*24*30)*1000, (endTime+3600*24*60)*1000]
-    const claimInfo = [(endTime+3600/2)*1000, (endTime+3600)*1000, (endTime+3600*3/2)*1000]
+    const claimInfo = [(endTime+3600*24)*1000, (endTime+3600*24*30)*1000, (endTime+3600*24*60)*1000]
+    // const claimInfo = [(endTime+3600/2)*1000, (endTime+3600)*1000, (endTime+3600*3/2)*1000]
 
     useEffect(()=>{
         setStepNodes({create_pool: [{name: 'Comfirm in Wallet'}, {name: 'Done'}], 
@@ -51,7 +51,9 @@ const IDO = ({refera}) => {
     useEffect(()=>{
         let r = 'Please Connect wallet first';
         if (isConnected) {
-            r = `https://little-shape-9383.on.fleek.co/ido?refera=${address}`
+            // r = `https://little-shape-9383.on.fleek.co/ido?refera=${address}`
+            r = `https://testnet.0xcardinal.io/ido?refera=${address}`
+
         }
         setRefUrl(r)
     }, [address, isConnected, typeof window])
@@ -214,7 +216,7 @@ const IDO = ({refera}) => {
             <Typography component='div' sx={{font: '700 italic 18px sans', color: "#d7d7d7", marginTop: '12px' }}>
             Ends in <span style={{font: '700 italic 28px sans', color: "yellow"}}>{duration}</span>
             </Typography>
-            <Typography component='div' sx={{font: '700 italic 16px sans',  marginTop: '12px' }}>
+            <Typography component='div' sx={{font: '700 italic 14px sans',  marginTop: '12px' }}>
             The unsold tokens will be sent to a burn address and destroyed within 24 hours after the IDO ends
             </Typography>
             
@@ -240,7 +242,7 @@ const IDO = ({refera}) => {
                     IDO price
                     </Typography>
                     <Typography component='div' sx={{fontSize: '14px', fontWeight: '400', paddingRight: '32px', textAlign: 'right', width: '90%'}}>
-                        <span style={{font: '400 italic 14px sans'}}>Whitelist pice: </span>{whitelistPrice} USDT | <span style={{font: '400 italic 14px sans'}}>Public pice: </span> {price} USDT
+                        <span style={{font: '400 italic 14px sans'}}>Whitelist price: </span>{whitelistPrice} USDT | <span style={{font: '400 italic 14px sans'}}>Public price: </span> {price} USDT
                     </Typography>
                 </Stack>
             </Stack>
