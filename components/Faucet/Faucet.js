@@ -25,7 +25,7 @@ const Faucet = () => {
     // const faucetContractAddress = useMemo(()=> {return ADDRESSES[97]?.faucet})
     
     const [timeRequest, setTimeRequest] = useState('')
-    const [timeRemain, setTimeRemain] = useState('')
+    const [timeRemain, setTimeRin] = useState('')
     const [canRequest, setCanRequest] = useState(true)
     const [isLoading, setIsLoading] = useState(false)
     
