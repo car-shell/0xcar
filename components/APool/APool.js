@@ -17,8 +17,10 @@ import Checkbox from '@mui/material/Checkbox';
 
 
 const APool = () => {
+    const {ToastUI, showToast} = useToast()
     return (
     <React.Fragment>
+        <ToastUI />
         <Stack direction='column' justifyContent="space-between" alignItems="center" width='60%' maxWidth="720px" marginBottom="32px">
             <Typography component='div' sx={{fontSize: '48px', fontStyle: 'italic', fontWeight: '900', marginTop: '48px'}}>
             <span style={{color: '#06FC99'}}>Alliance</span> <span style={{color: 'yellow'}}>Pool</span>
