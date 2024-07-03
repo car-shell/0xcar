@@ -6,7 +6,7 @@ export default function Home() {
     <>
     <Layout showFooter={false}>
       <div style={{display: 'flex', justifyContent: 'center'}}>
-        <Mission />
+        <Failed />
       </div>
     </Layout>
     </>
