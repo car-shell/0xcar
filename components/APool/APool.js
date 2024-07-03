@@ -16,7 +16,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
 
-const APool = () => {
+const APool = () => {``
     const {ToastUI, showToast} = useToast()
     return (
     <React.Fragment>

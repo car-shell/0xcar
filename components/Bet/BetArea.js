@@ -80,6 +80,10 @@ const BetArea = () => {
       setTipInfo((pre)=>{ return {...pre, ...last}})
     }}, [address, last])
 
+    useEffect(()=>{
+      sessionStorage.setItem('cur_address', address);
+    }, [address])
+
   useEffect(()=>{
     let l = JSON.parse(localStorage.getItem("LAST_STEPNODEINFO"))
     if ( l != null && l != undefined) {

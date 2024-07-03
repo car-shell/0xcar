@@ -53,7 +53,6 @@ const IDO = ({refera}) => {
         if (isConnected) {
             // r = `https://little-shape-9383.on.fleek.co/ido?refera=${address}`
             r = `https://testnet.0xcardinal.io/ido?refera=${address}`
-
         }
         setRefUrl(r)
     }, [address, isConnected, typeof window])

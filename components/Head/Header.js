@@ -13,9 +13,11 @@ import BaseLink from './BaseLink';
 import { useRouter } from 'next/router';
 import useToast from '../Toast'
 import {formatAmount} from '../utils'
+import { getUrl, post } from "../../pages/api/axios";
+
 
 // import { signIn, signOut, useSession } from 'next-auth/react';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi';
 
 // import { useAuthRequestChallengeEvm } from '@moralisweb3/next';
 import {
@@ -33,6 +35,7 @@ const Header = ({showMenu=true}) => {
   const dispatch = useDispatch()
   const router = useRouter();
   const {ToastUI, showToast} = useToast()
+  const { signMessageAsync } = useSignMessage();
 
   const { disconnectAsync } = useDisconnect();
   const { address, isConnected, isDisconnected} = useAccount();
@@ -56,6 +59,30 @@ const Header = ({showMenu=true}) => {
   useEffect(()=>{
     setCurRouter(router.pathname)
   }, [])
+
+  useEffect(()=>{
+    sessionStorage.setItem('cur_address', address);
+  }, [address])
+
+  useEffect(()=>{
+    const verify = async ()=>{
+      let result =  await getUrl("/auth/message", {params: {address: address}})
+            console.log(result.data.message)
+            const data = await signMessageAsync({ message: result.data.message })
+            console.log(data)
+            const response = await post('/auth/verify', {
+                signature: data,
+                address: address,
+                // referral: referral
+            });
+            let token = response.data.access_token
+            sessionStorage.setItem(`cur_token_${address}`, token)
+    }
+
+    if (isConnected && !sessionStorage.getItem(`cur_token_${address}`)) {
+      verify()
+    }
+  }, [isConnected])
 
   const walletButton = (e) => {
     if (e.target.innerText == 'Launch App >') {
@@ -111,6 +138,8 @@ const Header = ({showMenu=true}) => {
     return (pools && isConnected && pools.filter((item)=>{return item?.beneficiaries.toLowerCase()==address.toLowerCase()}).length != 0 )
   }
 
+
+
   return (
     <>
       <ToastUI />
@@ -153,6 +182,9 @@ const Header = ({showMenu=true}) => {
           {/* <div className={styles.menuItem} style={curRouter=='/nft'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/nft" >NFT</BaseLink>
           </div> */}
+          <div className={styles.menuItem} style={curRouter=='/mission'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
+              <BaseLink href="/mission" >Mission</BaseLink>
+          </div> 
           <div className={styles.menuItem} style={curRouter=='/faucet'?{color: '#06FC99', borderColor: '#06FC99'}:{}}>
               <BaseLink href="/faucet" >Faucet</BaseLink>
           </div>

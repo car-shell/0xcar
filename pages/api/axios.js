@@ -9,19 +9,21 @@ const apiAxios = axios.create({
   }
 })
 
-// apiAxios.interceptors.request.use(
-//     config => {
-//       var currentUser = localStorage.getItem('currentUser')
-//       const {token} = JSON.parse(currentUser) || {}
-//       if (token) {
-//         config.headers['Authorization'] = 'Bearer ' + token;
-//       }
-//       return config;
-//     },
-//     error => {
-//       return Promise.reject(error);
-//     }
-// )
+apiAxios.interceptors.request.use(
+    config => {
+      console.log(`-------------`)
+      let address = sessionStorage.getItem('cur_address')
+      let token = sessionStorage.getItem(`cur_token_${address}`)
+      console.log(`token:${token}`)
+      if (token) {
+          config.headers['Authorization'] = 'Bearer ' + token;
+      }
+      return config;
+    },
+    error => {
+      return Promise.reject(error);
+    }
+)
 
 // apiAxios.interceptors.response.use(
 //     resp => {
@@ -52,11 +54,15 @@ export const getUrl = (url, params = {}) => {
 };
 
 export const remove = (url, params = {}) => {
-    return axios.delete(url, params);
+    return apiAxios.delete(url, params);
 };
 
 export const put = (url, params = {}) => {
-    return axios.put(url, params);
+    return apiAxios.put(url, params);
+};
+
+export const post = (url, params = {}) => {
+  return apiAxios.post(url, params);
 };
 
 export default apiAxios;

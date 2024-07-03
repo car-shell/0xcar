@@ -9,6 +9,10 @@ import { formatAmount, n1e18, formatTime } from "../utils";
 import { useGameContract } from "../../data/game";
 
 const MyPool = () => {
+    useEffect(()=>{
+        sessionStorage.setItem('cur_address', address);
+    }, [address])
+    
     const {pools, preRemovePool, removePool} = useGameContract();
     console.log(pools);
     const {address, isConnected} = useAccount()
