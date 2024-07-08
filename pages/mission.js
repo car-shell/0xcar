@@ -1,5 +1,5 @@
-import {Mission} from '../../components/Mission'
-import Layout from '../../components/Layout/Layout'
+import {Mission} from '../components/Mission'
+import Layout from '../components/Layout/Layout'
 import { useRouter } from 'next/router';
 
 export default function Home() {
