@@ -5,6 +5,7 @@ const initialState = {
   betLogs: [],
   winLogs: [],
   betAction: null,
+  connected: {},
 }
 
 const store = createContext(initialState)
@@ -14,6 +15,7 @@ export const SET_SELECTED_ADDR = 'SET_SELECTED_ADDR'
 export const SET_LOG_CHANGE = 'SET_LOG_CHANGE'
 export const SET_ACTION = 'SET_ACTION'
 export const SET_WIN_LOGS = 'SET_WIN_LOGS'
+export const SET_CONNECTED = 'SET_CONNECTED'
 
 const StateProvider = ({ children }) => {
   const [state, dispatch] = useReducer((state, action) => {
@@ -30,6 +32,8 @@ const StateProvider = ({ children }) => {
       case SET_WIN_LOGS:
         // console.log(`push ${action.payload}, type ${SET_WIN_LOGS}`);
         return { ...state, winLogs: action.payload }
+      case SET_CONNECTED:
+        return {...state, connected: action.data}
       default:
         throw new Error("")
     }

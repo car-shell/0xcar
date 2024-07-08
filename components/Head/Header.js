@@ -3,7 +3,7 @@
 import { useCallback, useState, useEffect, useContext} from "react";
 import { ethers } from "ethers";
 import styles from "../../styles/Header.module.css";
-import { store, SET_SELECTED_ADDR, SET_ACTION } from '../../store/store'
+import { store, SET_SELECTED_ADDR, SET_ACTION, SET_CONNECTED } from '../../store/store'
 import useDispatch from '../../store/useDispatch'
 import useTokenContract from "../../data/token";
 import {useGameContract} from "../../data/game";
@@ -28,8 +28,9 @@ import {
 } from '@rainbow-me/rainbowkit';
 
 
-const Header = ({showMenu=true}) => {
+const Header = ({referral='', showMenu=true}) => {
   const {balance, token} = useTokenContract()
+  const {state: {connected}} = useContext(store)
   const [curRouter, setCurRouter] = useState('')
   const [showWalletInfo, setShowWalletInfo] = useState(false)
   const dispatch = useDispatch()
@@ -73,16 +74,30 @@ const Header = ({showMenu=true}) => {
             const response = await post('/auth/verify', {
                 signature: data,
                 address: address,
-                // referral: referral
+                referral: referral
             });
             let token = response.data.access_token
             sessionStorage.setItem(`cur_token_${address}`, token)
+            dispatch({
+              type: SET_CONNECTED,
+              payload: {
+                connected: true,
+                verifid: true
+              }
+            })
     }
 
-    if (isConnected && !sessionStorage.getItem(`cur_token_${address}`)) {
+    if (!connected.connected && isConnected && !sessionStorage.getItem(`cur_token_${address}`)) {
+      dispatch({
+        type: SET_CONNECTED,
+        payload: {
+          connected: true,
+          verifid: false
+        }
+      })
       verify()
     }
-  }, [isConnected])
+  }, [isConnected, address, signMessageAsync])
 
   const walletButton = (e) => {
     if (e.target.innerText == 'Launch App >') {

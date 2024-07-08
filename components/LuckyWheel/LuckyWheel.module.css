@@ -17,12 +17,13 @@
 
 .pointer {
   position: absolute;
-  top: -20px; 
-  left: calc(50% - 20px);
+  top: calc(50% - 15px);
+  /* top: -20px; */
+  right: -10px;
   width: 0px;
   height: 0px;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
   border-top: 30px solid red;
-  transform: rotate(180, 0, 0);
+  transform: rotate(90deg);
 }

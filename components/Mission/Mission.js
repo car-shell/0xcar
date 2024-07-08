@@ -19,10 +19,11 @@ import useToast from '../Toast'
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import useDispatch from '../../store/useDispatch'
+import { store, SET_CONNECTED } from '../../store/store'
 
 
 const Mission = ({referral}) => {
-    console.log(referral)
     const {token} = useTokenContract();
     const {address, isConnected} = useAccount()
     const {ToastUI, showToast} = useToast()
@@ -34,18 +35,25 @@ const Mission = ({referral}) => {
     const [activites, setActivites] = useState([]);
     const [userActivites, setUserActivites] = useState([]);
     const [user, setUser] = useState({});
-
-    const { signMessageAsync } = useSignMessage();
+    const {state:{connected: {connected, verifid}}} = useContext(store)
 
     useEffect(()=>{
         getActives()
-        let token = sessionStorage.getItem(`cur_token_${address}`)
-        console.log(token)
-        if (token) {
-            getUserActives()
-            getMe()
-        }
     }, [])
+
+    useEffect(()=>{
+        if (isConnected) {
+            let token = sessionStorage.getItem(`cur_token_${address}`)
+            if (token) {
+                getMe()
+                getUserActives()
+            }
+        } else {
+            setUser({})
+            setUserActivites([])
+        }
+    
+    }, [isConnected, verifid])
 
     useEffect(()=>{
         sessionStorage.setItem('cur_address', address);
@@ -79,11 +87,21 @@ const Mission = ({referral}) => {
     const checkRetweet = async () => {
         const resp = await getUrl("/x/retweeted")
         console.log(resp)
+        if ( resp.data.isFollowed ) {
+            showToast("check success")
+        } else {
+            showToast("check failed", 'warning')
+        }
     }
 
     const checkFollowed = async () => {
         const resp = await getUrl("/x/followed")
         console.log(resp)
+        if ( resp.data.isRetweeted ) {
+            showToast("check success")
+        } else {
+            showToast("check failed", 'warning')
+        }
     }   
 
     const hasRole = async () => {
@@ -91,6 +109,8 @@ const Mission = ({referral}) => {
         console.log(resp.data.has_role)
         if ( resp.data.has_role ) {
             showToast("check success")
+        } else {
+            showToast("check failed", 'warning')
         }
     }   
 
@@ -106,32 +126,22 @@ const Mission = ({referral}) => {
         window.open(resp.data, '_bank')
     }
 
-    const betRecordCheck = async ()=>{
+    const betRecordCheck = async (cnt)=>{
         const resp = await getUrl("/bet_record/check")
-        console.log(resp)
+        console.log(resp.data)
+        if (resp.data.cnt >= cnt) {
+            showToast('check success!')
+        } else {
+            showToast('check failed!', 'warning')
+        }   
     }
 
-    
     const handleCheck = useCallback(async (r)=> {
-        let token = sessionStorage.getItem(`cur_token_${address}`)
-        if (!token) {
-            let result =  await getUrl("/auth/message", {params: {address: address}})
-            console.log(result.data.message)
-            const data = await signMessageAsync({ message: result.data.message })
-            console.log(data)
-            const response = await post('/auth/verify', {
-                signature: data,
-                address: address,
-                referral: referral
-            });
-            token = response.data.access_token
-            sessionStorage.setItem(`cur_token_${address}`, token)
-
-            getActives()
-            getMe()
+        if (!isConnected) {
+            openConnectModal()
+            return
         }
-
-        console.log(user)
+    
         if (!user.t_user_id && (r.atype=='retweet' || r.atype=='follow')) {
             xLogin()
             getMe()
@@ -152,23 +162,54 @@ const Mission = ({referral}) => {
                     hasRole()
                     break
                 case 'place_bet':
-                    betRecordCheck()
+                    betRecordCheck(parseInt(r.additional))
                     break;
             }
         }
     })
-
+    const done = (r) => {
+        return (userActivites.findIndex((x)=>(x.activite_id==r.id && x.user_id==user.id)) != -1)
+    }
+    const getGoStyle = (r)=>{
+        return {
+            font: '400 normal 16px Arial',
+            visibility: done(r)?"hidden":"visible",
+            height: '35px', 
+            width: '120px',
+            backgroundColor: '#555', 
+            textTransform: 'none', 
+            flex: 1, 
+            marginRight: '4px', 
+            border: '1px solid #555555', 
+            borderRadius: '10px',
+        }
+    }
+    const checkButton = (r)=> {
+        if (done(r)) {
+            return <><Image style={{marginRight: '44px', marginLeft: '44px'}} width='32' height='32' alt="" placeholder='empty' src='Done.png'>
+            </Image>
+            </>
+        } else {
+            return <><Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1, border: '1px solid #555555', borderRadius: '10px' }} onClick={()=>{
+                handleCheck(r)
+            }}>
+            Check
+            </Button>
+            </>
+        }
+        
+    }
     const goButton = (r) => {
         switch( r.atype ) {
             case 'follow':
-                return <><Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1, marginRight: '4px' }}  >
+                return <><Button variant='contained' sx={getGoStyle(r)}  >
                         <a target="_blank"
                         rel="noreferrer"
                         href="https://twitter.com/0xcardinal_io">
                         GO</a>
                     </Button></>
             case 'retweet':
-                return <><Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1, marginRight: '4px' }}  >
+                return <><Button variant='contained' sx={getGoStyle(r)}  >
                     <a target="_blank"
                         rel="noreferrer"
                         href={`https://twitter.com/intent/retweet?tweet_id=${r.additional}`}>
@@ -176,14 +217,14 @@ const Mission = ({referral}) => {
                     </a>
                     </Button></>
             case 'has_role':
-                return <><Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1, marginRight: '4px' }}  >
+                return <><Button variant='contained' sx={getGoStyle(r)}  >
                 <a target="_blank"
                     rel="noreferrer"
                     href="https://discord.gg/6b6JFrNzsT">
                     GO</a>
                     </Button></>
             case 'place_bet':
-                return <><Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1, marginRight: '4px' }} onClick={()=>{router.push({ pathname: "/pool", query: {'id': 1}})}}  >
+                return <><Button variant='contained' sx={getGoStyle(r)} onClick={()=>{router.push({ pathname: "/pool", query: {'id': 1}})}}  >
                         GO
                     </Button></>
         }
@@ -225,7 +266,7 @@ const Mission = ({referral}) => {
                 </Stack>
                 <Stack direction='column' justifyContent="space-between" alignItems="center" width='80%' marginBottom="24px"  marginTop="24px">
                     <Stack direction='row' justifyContent="space-between" alignItems="center" sx={{marginTop: '12px' }} columnGap='4px'>
-                        <Typography component='div' sx={{font: '400 normal 14px Arial', marginTop: '12px' }}>
+                        <Typography component='div' sx={{font: '400 normal 14px Arial'}}>
                         Referral Code
                         </Typography>
                         <Image src='/ask.png' alt=''  width='16' height='16' onClick={()=>{}}/>
@@ -243,7 +284,7 @@ const Mission = ({referral}) => {
                     <Typography component='div' sx={{font: '400 normal 16px Arial' , flex: 9}} >
                     Participate in the daily lottery to earn more points
                     </Typography>
-                    <Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1}} onClick={()=>{
+                    <Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1, border: '1px solid #555555', borderRadius: '10px' }} onClick={()=>{
                         router.push('/luckywheel')
                     }}  >
                     GO
@@ -259,11 +300,7 @@ const Mission = ({referral}) => {
                         {r.points} PTS
                         </Typography>
                         {goButton(r)}
-                        <Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1}} onClick={()=>{
-                            handleCheck(r)
-                        }}>
-                        Check
-                        </Button>
+                        {checkButton(r)}
                     </Stack>)
                 })}
                 {/* <Stack direction='row' justifyContent="space-between" alignItems="center" width='90%' height='58px' margin="24px 24px 12px 12px" padding='0 16px 0 16px'  backgroundColor="black" border="1px solid black" borderRadius='5px'>

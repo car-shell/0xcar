@@ -38,24 +38,23 @@ const LuckyWheel = () => {
     if (spinning) return;
 
     let resp = await getUrl("/wheel/random")
-    if (resp.status != 200 || resp.data.hit == -1 ) return 
+    if (resp.status != 200 || resp.data.hit == -1 ) {
+      showToast("You have checked today")
+      return
+    }
     console.log(segments)
 
     console.log(resp.data)
     let targetIndex = segments.findIndex((x)=>x.id==resp.data.hit);
     console.log(targetIndex)
-    const targetSegment = segments[targetIndex];
-    const targetRotation = calculateRotation(targetIndex);
-    console.log(rotation)
-    console.log(targetRotation)
 
-    const newRotation = rotation + targetRotation + 360 * 5; 
+    const newRotation = 10*360 - 360 / segments.length * (targetIndex + 0.5)
     setRotation(newRotation);
     setSpinning(true);
 
     setTimeout(() => {
       setSpinning(false);
-      showToast(`You won ${targetSegment.points} PTS!`);
+      showToast(`You won ${segments[targetIndex].points} PTS!`);
     }, 4000);
   };
 
@@ -76,8 +75,43 @@ const LuckyWheel = () => {
     <Box display="flex" flexDirection="column" alignItems="center" marginTop='40px' rowGap='24px'>
         <ToastUI />
       {totalSize == 0? <></>: 
+  
       <Box className={styles.wheelContainer}>
         <svg className={styles.wheel} viewBox="-190 -190 380 380" style={{ transform: `rotate(${rotation}deg)` }}>
+          {segments.map((segment, index) => {
+            const angle = 360 / segments.length;
+            const largeArcFlag = angle > 180 ? 1 : 0;
+            const x1 = 180 * Math.cos((angle * index * Math.PI) / 180);
+            const y1 = 180 * Math.sin((angle * index * Math.PI) / 180);
+            const x2 = 180 * Math.cos((angle * (index + 1) * Math.PI) / 180);
+            const y2 = 180 * Math.sin((angle * (index + 1) * Math.PI) / 180);
+            const textX = 100 * Math.cos((angle * (index + 0.5) * Math.PI) / 180);
+            const textY = 100 * Math.sin((angle * (index + 0.5) * Math.PI) / 180);
+
+            return (
+              <g key={index}>
+                <path
+                  d={`M 0 0 L ${x1} ${y1} A 180 180 0 ${largeArcFlag} 1 ${x2} ${y2} Z`}
+                  fill={segment.color}
+                  // transform={`rotate(${angle * index}, 0, 0)`}
+                />
+                <text
+                  x={textX}
+                  y={textY}
+                  fill="white"
+                  fontSize="12"
+                  textAnchor="middle"
+                  alignmentBaseline="middle"
+                  transform={`rotate(${angle * (index + 0.5)}, ${textX}, ${textY})`}
+                  zIndex="9999"
+                >
+                  {segment.points} PTS
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+        {/* <svg className={styles.wheel} viewBox="-190 -190 380 380" style={{ transform: `rotate(${rotation}deg)` }}>
           {segments.map((segment, index) => {
             const startAngle = (cumulativeSize / totalSize) * 360 - 90;
             cumulativeSize += Number(segment.additional);
@@ -110,7 +144,7 @@ const LuckyWheel = () => {
               </g>
             );
           })}
-        </svg>
+        </svg> */}
         <Box className={styles.pointer}></Box>
       </Box>}
       <Button variant="contained" color="primary" onClick={handleSpin} disabled={spinning}>
