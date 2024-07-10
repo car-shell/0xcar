@@ -11,7 +11,7 @@ const LiveBettingRecord = () => {
 
     useEffect(()=>{
         let i = setInterval(async () => {
-            const logs = await getUrl("/bet_record", {})
+            const logs = await getUrl("/bet_record")
             const r = logs.data.map((item, i)=>{
                 return { 
                     id: item["bet_time"] + item["player"],
@@ -22,6 +22,7 @@ const LiveBettingRecord = () => {
                     profit: item["profit"],
                     transactionHash: item["trans_hash"]}
             })
+
             setBetRows(r)
         }, 10000);
         return () => {

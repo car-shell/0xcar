@@ -21,6 +21,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import useDispatch from '../../store/useDispatch'
 import { store, SET_CONNECTED } from '../../store/store'
+import LuckyWheelModal from '../LuckyWheel/LuckyWheelModal'
 
 
 const Mission = ({referral}) => {
@@ -36,6 +37,15 @@ const Mission = ({referral}) => {
     const [userActivites, setUserActivites] = useState([]);
     const [user, setUser] = useState({});
     const {state:{connected: {connected, verifid}}} = useContext(store)
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     useEffect(()=>{
         getActives()
@@ -58,7 +68,7 @@ const Mission = ({referral}) => {
     useEffect(()=>{
         sessionStorage.setItem('cur_address', address);
     }, [address])
-
+    
     const getActives = async () => {
         const resp = await getUrl("/activite/list")
         console.log(resp.data)
@@ -81,7 +91,7 @@ const Mission = ({referral}) => {
     const getUserActives = async () => {
         const resp = await getUrl("/user_activite/list")
         console.log(resp.data)
-        setUserActivites(resp.data)
+        setUserActivites([...resp.data])
     }
 
     const checkRetweet = async () => {
@@ -89,8 +99,10 @@ const Mission = ({referral}) => {
         console.log(resp)
         if ( resp.data.isFollowed ) {
             showToast("check success")
+            getUserActives()
+            getMe()
         } else {
-            showToast("check failed", 'warning')
+            showToast("You haven\'t completed the task yet. Please finish the task before checking.", 'warning')
         }
     }
 
@@ -99,8 +111,10 @@ const Mission = ({referral}) => {
         console.log(resp)
         if ( resp.data.isRetweeted ) {
             showToast("check success")
+            getUserActives()
+            getMe()
         } else {
-            showToast("check failed", 'warning')
+            showToast("You haven\'t completed the task yet. Please finish the task before checking.", 'warning')
         }
     }   
 
@@ -109,8 +123,10 @@ const Mission = ({referral}) => {
         console.log(resp.data.has_role)
         if ( resp.data.has_role ) {
             showToast("check success")
+            getUserActives()
+            getMe()
         } else {
-            showToast("check failed", 'warning')
+            showToast("You haven\'t completed the task yet. Please finish the task before checking.", 'warning')
         }
     }   
 
@@ -129,10 +145,12 @@ const Mission = ({referral}) => {
     const betRecordCheck = async (cnt)=>{
         const resp = await getUrl("/bet_record/check")
         console.log(resp.data)
-        if (resp.data.cnt >= cnt) {
+        if (resp.data.count >= cnt) {
             showToast('check success!')
+            getUserActives()
+            getMe()
         } else {
-            showToast('check failed!', 'warning')
+            showToast('You haven\'t completed the task yet. Please finish the task before checking.!', 'warning')
         }   
     }
 
@@ -165,11 +183,13 @@ const Mission = ({referral}) => {
                     betRecordCheck(parseInt(r.additional))
                     break;
             }
+
         }
     })
-    const done = (r) => {
+    const done = useCallback((r) => {
         return (userActivites.findIndex((x)=>(x.activite_id==r.id && x.user_id==user.id)) != -1)
-    }
+    }, [userActivites])
+
     const getGoStyle = (r)=>{
         return {
             font: '400 normal 16px Arial',
@@ -184,7 +204,7 @@ const Mission = ({referral}) => {
             borderRadius: '10px',
         }
     }
-    const checkButton = (r)=> {
+    const checkButton = useCallback((r)=> {
         if (done(r)) {
             return <><Image style={{marginRight: '44px', marginLeft: '44px'}} width='32' height='32' alt="" placeholder='empty' src='Done.png'>
             </Image>
@@ -198,8 +218,9 @@ const Mission = ({referral}) => {
             </>
         }
         
-    }
-    const goButton = (r) => {
+    }, [userActivites])
+
+    const goButton = useCallback((r) => {
         switch( r.atype ) {
             case 'follow':
                 return <><Button variant='contained' sx={getGoStyle(r)}  >
@@ -228,10 +249,11 @@ const Mission = ({referral}) => {
                         GO
                     </Button></>
         }
-    }
+    }, [userActivites])
 
     return (<React.Fragment>
         <ToastUI />
+        <LuckyWheelModal open={open} handleClose={handleClose} />
         <Stack direction='column' justifyContent="space-between" alignItems="center" width='80%' maxWidth="1024px" marginBottom="32px"  marginTop="32px" sx={{fontStyle: 'italic'}}>
             <Typography component='div' sx={{marginTop: '18px', font: '700 normal 36px Arial'}}>
             Ultimate Mission: Break of Dawn
@@ -285,7 +307,11 @@ const Mission = ({referral}) => {
                     Participate in the daily lottery to earn more points
                     </Typography>
                     <Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1, border: '1px solid #555555', borderRadius: '10px' }} onClick={()=>{
-                        router.push('/luckywheel')
+                        if (!isConnected) {
+                            openConnectModal()
+                        } else {
+                            handleOpen()
+                        }
                     }}  >
                     GO
                     </Button>

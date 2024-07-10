@@ -10,13 +10,13 @@ const LuckyWheel = () => {
   const [totalSize, setTotalSize] = useState(0)
   const [segments, setSegments] = useState([])
   const {ToastUI, showToast} = useToast()
-
+  const COLOR = ['#391099', '#9f2922', '#4d8280', '#417f60', '#8f46f4']
   useEffect( ()=>{
     const getList = async () => { 
         let resp = await getUrl("/activite/list")
         if (resp.status == 200) {
             let s = resp.data.filter(item=>item.atype.startsWith('wheel'))
-            s = s.map((x)=>({...x, color: getRandomColor()}))
+            s = s.map((x, index)=>({...x, color: COLOR[index%5]}))
             setSegments(s)  
             let t = s.reduce((acc, segment) => acc + Number(segment.additional), 0)
             setTotalSize(t)
@@ -99,13 +99,13 @@ const LuckyWheel = () => {
                   x={textX}
                   y={textY}
                   fill="white"
-                  fontSize="12"
+                  fontSize="24"
                   textAnchor="middle"
                   alignmentBaseline="middle"
                   transform={`rotate(${angle * (index + 0.5)}, ${textX}, ${textY})`}
                   zIndex="9999"
                 >
-                  {segment.points} PTS
+                  {segment.points}
                 </text>
               </g>
             );

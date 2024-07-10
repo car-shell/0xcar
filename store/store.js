@@ -5,7 +5,7 @@ const initialState = {
   betLogs: [],
   winLogs: [],
   betAction: null,
-  connected: {},
+  connected: {connected: false, verifid: false},
 }
 
 const store = createContext(initialState)
