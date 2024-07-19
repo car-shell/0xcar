@@ -27,13 +27,12 @@ const StateProvider = ({ children }) => {
         // console.log(`push ${JSON.stringify(action.payload)}, type ${SET_LOG_CHANGE}`);
         return { ...state, betLogs: action.payload }
       case SET_ACTION:
-        console.log(`push ${action.payload}, type ${SET_ACTION}`);
         return { ...state, betAction: action.payload }
       case SET_WIN_LOGS:
         // console.log(`push ${action.payload}, type ${SET_WIN_LOGS}`);
         return { ...state, winLogs: action.payload }
       case SET_CONNECTED:
-        return {...state, connected: action.data}
+        return { ...state, connected: action.payload }
       default:
         throw new Error("")
     }

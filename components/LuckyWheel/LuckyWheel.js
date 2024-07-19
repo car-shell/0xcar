@@ -3,7 +3,7 @@ import { Box, Button,Typography } from '@mui/material';
 import styles from './LuckyWheel.module.css';
 import { getUrl, post } from "../../pages/api/axios";
 import useToast from '../Toast'
-import {formatDuration} from '../utils'
+import {formatDuration, isDictEmpty} from '../utils'
 
 const LuckyWheel = ({data}) => {
   const [rotation, setRotation] = useState(0);
@@ -13,14 +13,21 @@ const LuckyWheel = ({data}) => {
   const [last, setLast] = useState(0)
   const {ToastUI, showToast} = useToast()
   const COLOR = ['#391099', '#9f2922', '#4d8280', '#417f60', '#8f46f4']
+  
   useEffect(()=>{
     let s = data?.segments?.map((x, index)=>({...x, color: COLOR[index%5]}))
     setSegments(s)
     if (data?.last) {
-      let dur = 24*3600 - (new Date().getTime() - new Date(data.last.time+"Z").getTime())/1000;
-      setLast(dur)
+      if (!isDictEmpty(data.last)) {
+        let dur = 24*3600 - (new Date().getTime() - new Date(data.last.time+"Z").getTime())/1000;
+        setLast(dur)
+      } else {
+        setLast(0xfffffff)
+      }
+     
     }
   }, [data])
+
   useEffect(()=>{
     let i = setInterval(() => {
       setLast((pre)=>pre-1)

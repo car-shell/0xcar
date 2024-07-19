@@ -37,9 +37,10 @@ const Mission = ({referral}) => {
     const [wheelInfo, setWheelInfo] = useState([]);
     const [userActivites, setUserActivites] = useState([]);
     const [user, setUser] = useState({});
-    const {state:{connected, verified}} = useContext(store)
+    const {state:{connected}} = useContext(store)
     const [open, setOpen] = useState(false);
     
+    console.log(connected);
     const handleOpen = () => {
         setOpen(true);
     };
@@ -63,8 +64,7 @@ const Mission = ({referral}) => {
             setUser({})
             setUserActivites([])
         }
-    
-    }, [isConnected, verified])
+    }, [isConnected, connected])
 
     useEffect(()=>{
         sessionStorage.setItem('cur_address', address);
@@ -75,7 +75,6 @@ const Mission = ({referral}) => {
         console.log(resp.data)
         setWheelInfo(resp.data.filter(item=> item.atype == ('wheel')))
         setActivites(resp.data.filter(item=> item.atype == ('retweet') || item.atype == ('has_role') || item.atype == ('follow') || item.atype == ('place_bet')))
-        getLastWheelAction()
     }
 
     const getLastWheelAction = ()=>{
