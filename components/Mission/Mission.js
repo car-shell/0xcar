@@ -47,6 +47,8 @@ const Mission = ({referral}) => {
 
     const handleClose = () => {
         setOpen(false);
+        getMe()
+        getUserActives()
     };
 
     useEffect(()=>{

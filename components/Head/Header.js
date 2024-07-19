@@ -91,7 +91,7 @@ const Header = ({referral='', showMenu=true}) => {
     }
   
 
-    if (!connected?.connected && isConnected && !sessionStorage.getItem(`cur_token_${address}`)) {
+    if (isConnected && !sessionStorage.getItem(`cur_token_${address}`)) {
       dispatch({
         type: SET_CONNECTED,
         payload: {
