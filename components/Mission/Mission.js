@@ -34,11 +34,12 @@ const Mission = ({referral}) => {
     const [message, setMessage] = useState('hello');
 
     const [activites, setActivites] = useState([]);
+    const [wheelInfo, setWheelInfo] = useState([]);
     const [userActivites, setUserActivites] = useState([]);
     const [user, setUser] = useState({});
-    const {state:{connected: {connected, verifid}}} = useContext(store)
+    const {state:{connected, verified}} = useContext(store)
     const [open, setOpen] = useState(false);
-
+    
     const handleOpen = () => {
         setOpen(true);
     };
@@ -63,7 +64,7 @@ const Mission = ({referral}) => {
             setUserActivites([])
         }
     
-    }, [isConnected, verifid])
+    }, [isConnected, verified])
 
     useEffect(()=>{
         sessionStorage.setItem('cur_address', address);
@@ -72,8 +73,22 @@ const Mission = ({referral}) => {
     const getActives = async () => {
         const resp = await getUrl("/activite/list")
         console.log(resp.data)
-        
+        setWheelInfo(resp.data.filter(item=> item.atype == ('wheel')))
         setActivites(resp.data.filter(item=> item.atype == ('retweet') || item.atype == ('has_role') || item.atype == ('follow') || item.atype == ('place_bet')))
+        getLastWheelAction()
+    }
+
+    const getLastWheelAction = ()=>{
+        for (let index = 0; index < userActivites.length; index++) {
+            const ua = userActivites[userActivites.length-index-1];
+            for (let index = 0; index < wheelInfo.length; index++) {
+                const w = wheelInfo[index];
+                if (ua.activite_id == w.id) {
+                    return ua
+                }
+            }
+        }
+        return {}
     }
     
     const getMe = async () => {
@@ -253,7 +268,7 @@ const Mission = ({referral}) => {
 
     return (<React.Fragment>
         <ToastUI />
-        <LuckyWheelModal open={open} handleClose={handleClose} />
+        <LuckyWheelModal data={{segments: wheelInfo, last: getLastWheelAction()}} open={open} handleClose={handleClose} />
         <Stack direction='column' justifyContent="space-between" alignItems="center" width='80%' maxWidth="1024px" marginBottom="32px"  marginTop="32px" sx={{fontStyle: 'italic'}}>
             <Typography component='div' sx={{marginTop: '18px', font: '700 normal 36px Arial'}}>
             Ultimate Mission: Break of Dawn

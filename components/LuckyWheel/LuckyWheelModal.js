@@ -22,7 +22,7 @@ const closeButtonStyle = {
   right: 8,
 };
 
-const LuckyWheelModal = ({ open, handleClose }) => {
+const LuckyWheelModal = ({ data, open, handleClose }) => {
   return (
     <Modal
       open={open}
@@ -38,7 +38,7 @@ const LuckyWheelModal = ({ open, handleClose }) => {
           <IconButton sx={closeButtonStyle} onClick={handleClose}>
             <CloseIcon />
           </IconButton>
-          <LuckyWheel />
+          <LuckyWheel data={data}/>
         </Box>
       </Fade>
     </Modal>

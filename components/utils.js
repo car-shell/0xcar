@@ -48,6 +48,7 @@ export const padStart = (x) => {
         useGrouping: false
     }).format(x)
 } 
+
 export const formatTime = (timestamp, needYear=false, onlyTime=false) => {
     let d = new Date(Number(timestamp))
     if (onlyTime) {
@@ -56,6 +57,6 @@ export const formatTime = (timestamp, needYear=false, onlyTime=false) => {
     return `${needYear?padStart(d.getFullYear())+"-":""}${padStart(d.getMonth()+1)}-${padStart(d.getDate())} ${padStart(d.getHours())}:${padStart(d.getMinutes())}:${padStart(d.getSeconds())}`
 }
 
-export const formatDuration = (durationInMiSecond) => {
-   return `${(Math.floor(durationInMiSecond/3600)).toString().padStart(2,0)}:${(Math.floor((durationInMiSecond%3600)/60)).toString().padStart(2,0)}:${(Math.floor(durationInMiSecond%60)).toString().padStart(2,0)}`
+export const formatDuration = (durationInSecond) => {
+   return `${(Math.floor(durationInSecond/3600)).toString().padStart(2,0)}:${(Math.floor((durationInSecond%3600)/60)).toString().padStart(2,0)}:${(Math.floor(durationInSecond%60)).toString().padStart(2,0)}`
 }

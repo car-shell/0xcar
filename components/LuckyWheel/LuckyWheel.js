@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button,Typography } from '@mui/material';
 import styles from './LuckyWheel.module.css';
 import { getUrl, post } from "../../pages/api/axios";
 import useToast from '../Toast'
+import {formatDuration} from '../utils'
 
-const LuckyWheel = () => {
+const LuckyWheel = ({data}) => {
   const [rotation, setRotation] = useState(0);
   const [spinning, setSpinning] = useState(false);
   const [totalSize, setTotalSize] = useState(0)
-  const [segments, setSegments] = useState([])
+  const [segments, setSegments] = useState(data?.segments)
+  const [last, setLast] = useState(0)
   const {ToastUI, showToast} = useToast()
   const COLOR = ['#391099', '#9f2922', '#4d8280', '#417f60', '#8f46f4']
-  useEffect( ()=>{
-    const getList = async () => { 
-        let resp = await getUrl("/activite/list")
-        if (resp.status == 200) {
-            let s = resp.data.filter(item=>item.atype.startsWith('wheel'))
-            s = s.map((x, index)=>({...x, color: COLOR[index%5]}))
-            setSegments(s)  
-            let t = s.reduce((acc, segment) => acc + Number(segment.additional), 0)
-            setTotalSize(t)
-        }
+  useEffect(()=>{
+    let s = data?.segments?.map((x, index)=>({...x, color: COLOR[index%5]}))
+    setSegments(s)
+    if (data?.last) {
+      let dur = 24*3600 - (new Date().getTime() - new Date(data.last.time+"Z").getTime())/1000;
+      setLast(dur)
     }
-    getList()
+  }, [data])
+  useEffect(()=>{
+    let i = setInterval(() => {
+      setLast((pre)=>pre-1)
+    }, 1000);
+    return(()=>{
+      clearInterval(i)
+    })
   }, [])
 
   const getRandomColor = () => {
@@ -74,8 +79,9 @@ const LuckyWheel = () => {
     
     <Box display="flex" flexDirection="column" alignItems="center" marginTop='40px' rowGap='24px'>
         <ToastUI />
-      {totalSize == 0? <></>: 
-  
+      {segments.length == 0? <> <Typography component='div' sx={{font: '400 normal 14px Arial', marginTop: '12px' }}>
+                    Loading
+      </Typography></>:
       <Box className={styles.wheelContainer}>
         <svg className={styles.wheel} viewBox="-190 -190 380 380" style={{ transform: `rotate(${rotation}deg)` }}>
           {segments.map((segment, index) => {
@@ -103,7 +109,6 @@ const LuckyWheel = () => {
                   textAnchor="middle"
                   alignmentBaseline="middle"
                   transform={`rotate(${angle * (index + 0.5)}, ${textX}, ${textY})`}
-                  zIndex="9999"
                 >
                   {segment.points}
                 </text>
@@ -147,8 +152,8 @@ const LuckyWheel = () => {
         </svg> */}
         <Box className={styles.pointer}></Box>
       </Box>}
-      <Button variant="contained" color="primary" onClick={handleSpin} disabled={spinning}>
-        Spin the Wheel
+      <Button disabled={last<24*3600 || spinning} variant="contained" color="primary" sx={{'&.MuiButton-contained.Mui-disabled':{backgroundColor: '#999', color: "#ddd"}}} onClick={handleSpin} >
+        {last>24*3600?"Spin the Wheel":formatDuration(last)}
       </Button>
     
     </Box>

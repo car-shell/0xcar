@@ -67,25 +67,29 @@ const Header = ({referral='', showMenu=true}) => {
 
   useEffect(()=>{
     const verify = async ()=>{
-      let result =  await getUrl("/auth/message", {params: {address: address}})
-            console.log(result.data.message)
-            const data = await signMessageAsync({ message: result.data.message })
-            console.log(data)
-            const response = await post('/auth/verify', {
-                signature: data,
-                address: address,
-                referral: referral
-            });
-            let token = response.data.access_token
-            sessionStorage.setItem(`cur_token_${address}`, token)
-            dispatch({
-              type: SET_CONNECTED,
-              payload: {
-                connected: true,
-                verifid: true
-              }
-            })
+      try {
+        let result =  await getUrl("/auth/message", {params: {address: address}})
+        const data = await signMessageAsync({ message: result.data.message })
+        const response = await post('/auth/verify', {
+            signature: data,
+            address: address,
+            referral: referral
+        });
+        
+        let token = response.data.access_token
+        sessionStorage.setItem(`cur_token_${address}`, token)
+        dispatch({
+          type: SET_CONNECTED,
+          payload: {
+            connected: true,
+            verifid: true
+          }
+        })
+      } catch (error) {
+      
+      }
     }
+  
 
     if (!connected?.connected && isConnected && !sessionStorage.getItem(`cur_token_${address}`)) {
       dispatch({
