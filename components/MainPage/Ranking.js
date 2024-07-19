@@ -171,7 +171,6 @@ export default function Ranking({width = '920px'}) {
     setShowPointsRules((pre)=>{
       return !pre
     })
-    
   }
   const betColumns = React.useMemo(
         () => [
@@ -296,7 +295,6 @@ export default function Ranking({width = '920px'}) {
                 Header: "Boost(24H)",
                 accessor: "boost",
                 align: "center",
-                
                 // format: (x)=>{
                 //   return formatAmount(x)
                 // }

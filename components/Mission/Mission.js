@@ -28,6 +28,7 @@ const Mission = ({referral}) => {
     const {token} = useTokenContract();
     const {address, isConnected} = useAccount()
     const {ToastUI, showToast} = useToast()
+    const askRef = React.useRef()
 
     const {openConnectModal} = useConnectModal()
     const router = useRouter()
@@ -39,6 +40,7 @@ const Mission = ({referral}) => {
     const [user, setUser] = useState({});
     const {state:{connected}} = useContext(store)
     const [open, setOpen] = useState(false);
+    const [showReferralNotice, setShowReferralNotice] = useState(false)
     
     console.log(connected);
     const handleOpen = () => {
@@ -54,6 +56,20 @@ const Mission = ({referral}) => {
     useEffect(()=>{
         getActives()
     }, [])
+
+    const shutdown = useCallback((event)=>{
+        setShowReferralNotice((pre)=>{
+        if( pre ) {
+            return false;
+        }})
+    }, [])
+
+    useEffect(() => {
+        document.body.addEventListener('click', shutdown)
+        return () => {
+              document.body.removeEventListener('click', shutdown);
+          };
+    }, []);
 
     useEffect(()=>{
         if (isConnected) {
@@ -144,7 +160,7 @@ const Mission = ({referral}) => {
             showToast("You haven\'t completed the task yet. Please finish the task before checking.", 'warning')
         }
     }   
-
+    
     const discordLogin = async () => {
         let resp = await getUrl("/discord/login")
         console.log(resp.data)
@@ -267,6 +283,13 @@ const Mission = ({referral}) => {
         }       return <><Button variant='contained' sx={getGoStyle(r)}  ></Button></>
     }, [userActivites])
 
+    const handleShowTip = (e) => {
+        e.nativeEvent.stopImmediatePropagation();
+        setShowReferralNotice((pre)=>{
+          return !pre
+        })
+    }
+
     return (<React.Fragment>
         <ToastUI />
         <LuckyWheelModal data={{segments: wheelInfo, last: getLastWheelAction()}} open={open} handleClose={handleClose} />
@@ -307,7 +330,7 @@ const Mission = ({referral}) => {
                         <Typography component='div' sx={{font: '400 normal 14px Arial'}}>
                         Referral Code
                         </Typography>
-                        <Image src='/ask.png' alt=''  width='16' height='16' onClick={()=>{}}/>
+                        <Image src='/ask.png' alt=''  ref={askRef} width='16' height='16' onClick={handleShowTip}/>
                     </Stack>
                     <Stack direction='row' justifyContent="space-between" alignItems="center" sx={{marginTop: '12px' }} columnGap='4px' onClick={copyURL}>
                         <Typography component='div' sx={{font: '700 normal 36px Arial' }}>
@@ -412,6 +435,20 @@ const Mission = ({referral}) => {
             </Stack>
         </Stack>
         
+        {showReferralNotice && <Box sx={{ position: 'absolute',
+          left: askRef.current.getBoundingClientRect().right + 2,
+          top: askRef.current.getBoundingClientRect().top,
+          width: "220px",
+          height: "64px",
+          zIndex: '999',
+          backgroundColor: "#272a2e",
+          borderRadius: "8px"
+          }} >
+          
+          <Typography component='div' sx={{ font: '400 normal 14px Arial', padding: '8px 4px 4px 12px'}} >
+            When others use your referral code, you will receive a points reward (200 points each time).
+          </Typography>
+      </Box>}
     </React.Fragment>)
 }
 
