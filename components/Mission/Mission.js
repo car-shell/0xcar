@@ -74,9 +74,8 @@ const Mission = ({referral}) => {
     
     const getActives = async () => {
         const resp = await getUrl("/activite/list")
-        console.log(resp.data)
         setWheelInfo(resp.data.filter(item=> item.atype == ('wheel')))
-        setActivites(resp.data.filter(item=> item.atype == ('retweet') || item.atype == ('has_role') || item.atype == ('follow') || item.atype == ('place_bet')))
+        setActivites(resp.data.filter(item=> item.atype == ('retweet') || item.atype == ('has_role') || item.atype == ('follow') || item.atype == ('place_bet') || item.atype == 'early_bird'))
     }
 
     const getLastWheelAction = ()=>{
@@ -203,7 +202,7 @@ const Mission = ({referral}) => {
         }
     })
     const done = useCallback((r) => {
-        return (userActivites.findIndex((x)=>(x.activite_id==r.id && x.user_id==user.id)) != -1)
+        return (userActivites.findIndex((x)=>(x.activite_id==r.id && x.user_id==user.id)) != -1) || r.atype=='early_bird'
     }, [userActivites])
 
     const getGoStyle = (r)=>{
@@ -264,7 +263,8 @@ const Mission = ({referral}) => {
                 return <><Button variant='contained' sx={getGoStyle(r)} onClick={()=>{router.push({ pathname: "/pool", query: {'id': 1}})}}  >
                         GO
                     </Button></>
-        }
+            case 'early_bird':
+        }       return <><Button variant='contained' sx={getGoStyle(r)}  ></Button></>
     }, [userActivites])
 
     return (<React.Fragment>
