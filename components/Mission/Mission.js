@@ -42,7 +42,6 @@ const Mission = ({referral}) => {
     const [open, setOpen] = useState(false);
     const [showReferralNotice, setShowReferralNotice] = useState(false)
     
-    console.log(connected);
     const handleOpen = () => {
         setOpen(true);
     };

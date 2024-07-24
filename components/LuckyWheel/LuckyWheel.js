@@ -18,13 +18,13 @@ const LuckyWheel = ({data}) => {
     let s = data?.segments?.map((x, index)=>({...x, color: COLOR[index%5]}))
     setSegments(s)
     if (data?.last) {
+      console.log(data?.last)
       if (!isDictEmpty(data.last)) {
         let dur = 24*3600 - (new Date().getTime() - new Date(data.last.time+"Z").getTime())/1000;
         setLast(dur)
       } else {
-        setLast(0xfffffff)
+        setLast(-0xfffffff)
       }
-     
     }
   }, [data])
 
@@ -159,8 +159,8 @@ const LuckyWheel = ({data}) => {
         </svg> */}
         <Box className={styles.pointer}></Box>
       </Box>}
-      <Button disabled={last<24*3600 || spinning} variant="contained" color="primary" sx={{'&.MuiButton-contained.Mui-disabled':{backgroundColor: '#999', color: "#ddd"}}} onClick={handleSpin} >
-        {last>24*3600?"Spin the Wheel":formatDuration(last)}
+      <Button disabled={last>0 || spinning} variant="contained" color="primary" sx={{'&.MuiButton-contained.Mui-disabled':{backgroundColor: '#999', color: "#ddd"}}} onClick={handleSpin} >
+        {last<0?"Spin the Wheel":formatDuration(last)}
       </Button>
     
     </Box>
