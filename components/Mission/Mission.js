@@ -10,7 +10,7 @@ import { useAccount, useSignMessage, useConnect } from "wagmi";
 import { useIDOContract } from "../../data/ido";
 import { useTokenContract } from "../../data/token";
 import { useSwapContract } from "../../data/swap";
-import { amountFromFormatedStr, formatAmount, formatTime, formatDuration, n1e18} from "../utils"
+import { amountFromFormatedStr, formatAmount, formatTime, formatDuration, n1e18, isDictEmpty} from "../utils"
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import Link from "next/link";
 import { useRouter } from 'next/router'
@@ -87,11 +87,12 @@ const Mission = ({referral}) => {
         sessionStorage.setItem('cur_address', address);
     }, [address])
     
-    const getActives = async () => {
+    const getActives = useCallback(async () => {
         const resp = await getUrl("/activite/list")
         setWheelInfo(resp.data.filter(item=> item.atype == ('wheel')))
-        setActivites(resp.data.filter(item=> item.atype == ('retweet') || item.atype == ('has_role') || item.atype == ('follow') || item.atype == ('place_bet') || item.atype == 'early_bird'))
-    }
+        let a = resp.data.filter(item=> item.atype == ('retweet') || item.atype == ('has_role') || item.atype == ('follow') || item.atype == ('place_bet') )
+        setActivites(a)
+    }, [])
 
     const getLastWheelAction = ()=>{
         for (let index = 0; index < userActivites.length; index++) {
@@ -106,11 +107,20 @@ const Mission = ({referral}) => {
         return {}
     }
     
-    const getMe = async () => {
+    const getMe = useCallback( async () => {
         const resp = await getUrl("/user/me")
         console.log(resp.data)
         setUser(resp.data)
-    }
+        if (resp.data.early_bird_points != 0) {
+            setActivites( (pre)=> {
+                if ( pre.findIndex((x)=>x.id==13) == -1) {
+                    return [ {id:13, atype: 'early_bird', description: "Early Bird Points", points: '2000'},  ...pre]
+                } else {
+                    return [...pre]
+                }
+            })
+        }
+    }, [activites])
 
     const copyURL = (e) => {
         navigator.clipboard.writeText(`https://testnet.0xcarinal.io/mission?referral=${user.referral}`);
@@ -226,7 +236,7 @@ const Mission = ({referral}) => {
             visibility: done(r)?"hidden":"visible",
             height: '35px', 
             width: '120px',
-            backgroundColor: '#555', 
+            backgroundColor: '#333', 
             textTransform: 'none', 
             flex: 1, 
             marginRight: '4px', 
@@ -240,14 +250,13 @@ const Mission = ({referral}) => {
             </Image>
             </>
         } else {
-            return <><Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1, border: '1px solid #555555', borderRadius: '10px' }} onClick={()=>{
+            return <><Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#333', textTransform: 'none', flex: 1, border: '1px solid #555555', borderRadius: '10px' }} onClick={()=>{
                 handleCheck(r)
             }}>
             Check
             </Button>
             </>
         }
-        
     }, [userActivites])
 
     const goButton = useCallback((r) => {
@@ -344,7 +353,7 @@ const Mission = ({referral}) => {
                     <Typography component='div' sx={{font: '400 normal 16px Arial' , flex: 9}} >
                     Participate in the daily lottery to earn more points
                     </Typography>
-                    <Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#555', textTransform: 'none', flex: 1, border: '1px solid #555555', borderRadius: '10px' }} onClick={()=>{
+                    <Button variant='contained' sx={{font: '400 normal 16px Arial', height: '35px', width: '120px', backgroundColor: '#333', textTransform: 'none', flex: 1, border: '1px solid #555555', borderRadius: '10px' }} onClick={()=>{
                         if (!isConnected) {
                             openConnectModal()
                         } else {
